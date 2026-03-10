@@ -209,6 +209,8 @@ main.content {
   position: relative;
   isolation: isolate;
   margin-left: var(--sidebar-width);
+  width: calc(100vw - var(--sidebar-width));
+  width: calc(100dvw - var(--sidebar-width));
   height: 100vh;
   height: 100dvh;
   min-height: 100vh;
@@ -220,12 +222,13 @@ main.content {
   scroll-behavior: smooth;
   scroll-padding-top: 1rem;
   background: var(--project-bg);
-  transition: margin-left 0.35s ease;
+  transition: margin-left 0.35s ease, width 0.35s ease;
   -ms-overflow-style: none;
   scrollbar-width: none;
   overflow-x: clip;
-  width: 100%;
-  max-width: 100%;
+  max-width: calc(100vw - var(--sidebar-width));
+  max-width: calc(100dvw - var(--sidebar-width));
+  min-width: 0;
   touch-action: pan-y pinch-zoom;
 }
 
@@ -245,15 +248,27 @@ main.content > section {
 
 .portfolio-sidebar--hidden ~ main.content {
   margin-left: 0;
+  width: 100%;
+  max-width: 100%;
   padding-top: 0;
 }
 
 main.content.content--page {
   margin-left: 0;
+  width: 100%;
+  max-width: 100%;
   height: auto;
   min-height: 100vh;
   min-height: 100dvh;
   overflow: visible;
+}
+
+main.content.content--home {
+  margin-left: 0;
+  width: 100vw;
+  width: 100dvw;
+  max-width: 100vw;
+  max-width: 100dvw;
 }
 
 @media (max-width: 1080px) {
@@ -263,6 +278,8 @@ main.content.content--page {
 
   main.content {
     margin-left: 0;
+    width: 100%;
+    max-width: 100%;
     padding-top: 0;
     scroll-padding-top: calc(var(--mobile-nav-offset) + 0.6rem);
   }

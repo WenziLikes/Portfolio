@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import {BrowserRouter as Router, Route, Routes} from "react-router-dom"
+import {BrowserRouter as Router, Route, Routes, useLocation} from "react-router-dom"
 import {Footer, RouteMeta, ScrollToSection, SideBar} from "./components"
 import {MAIN_SECTIONS} from "./content/site"
 import {CopyrightPage, MainContent, NotFound, PrivacyPage, Resume} from "./pages"
@@ -48,11 +48,14 @@ interface PortfolioLayoutProps {
 }
 
 const PortfolioLayout: React.FC<PortfolioLayoutProps> = ({setTheme, theme}) => {
+    const location = useLocation()
+    const isHomePath = location.pathname === "/" || location.pathname === "/home"
+
     return (
         <>
             <ScrollToSection/>
             <SideBar setTheme={setTheme} theme={theme}/>
-            <main className="content">
+            <main className={isHomePath ? "content content--home" : "content"}>
                 <MainContent theme={theme}/>
                 <Footer/>
             </main>

@@ -125,3 +125,74 @@ test("mobile home and projects stay inside the viewport", async ({page}, testInf
     expect(featuredTitleBox!.y).toBeGreaterThanOrEqual(featuredImageBox!.y + featuredImageBox!.height - 2)
     expect(homeMetrics.scrollWidth).toBeLessThanOrEqual(homeMetrics.clientWidth + 1)
 })
+
+test("desktop sections and footer stay inside the viewport with the sidebar open", async ({page}, testInfo) => {
+    test.skip(testInfo.project.name !== "chromium")
+
+    const content = page.locator("main.content")
+    const viewport = page.viewportSize()
+
+    expect(viewport).not.toBeNull()
+
+    for (const route of ["/home", "/about", "/experience", "/projects"]) {
+        await page.goto(route)
+
+        const metrics = await content.evaluate((element) => ({
+            clientWidth: element.clientWidth,
+            scrollWidth: element.scrollWidth,
+        }))
+
+        expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.clientWidth + 1)
+    }
+
+    await page.goto("/home")
+
+    const homeHeadingBox = await page.getByRole("heading", {name: /^Murakhin$/i}).boundingBox()
+    expect(homeHeadingBox).not.toBeNull()
+    expect(homeHeadingBox!.x).toBeGreaterThanOrEqual(0)
+    expect(homeHeadingBox!.x + homeHeadingBox!.width).toBeLessThanOrEqual(viewport!.width + 1)
+
+    await page.goto("/about")
+
+    const aboutTitleBox = await page.getByRole("heading", {name: /About Me/i}).boundingBox()
+    expect(aboutTitleBox).not.toBeNull()
+    expect(aboutTitleBox!.x).toBeGreaterThanOrEqual(0)
+    expect(aboutTitleBox!.x + aboutTitleBox!.width).toBeLessThanOrEqual(viewport!.width + 1)
+
+    await page.goto("/experience")
+
+    const experienceTitleBox = await page.getByRole("heading", {name: /^Experience$/i}).boundingBox()
+    expect(experienceTitleBox).not.toBeNull()
+    expect(experienceTitleBox!.x).toBeGreaterThanOrEqual(0)
+    expect(experienceTitleBox!.x + experienceTitleBox!.width).toBeLessThanOrEqual(viewport!.width + 1)
+
+    await page.goto("/projects")
+
+    const projectsTitleBox = await page.getByRole("heading", {name: /^Projects$/i}).boundingBox()
+    expect(projectsTitleBox).not.toBeNull()
+    expect(projectsTitleBox!.x).toBeGreaterThanOrEqual(0)
+    expect(projectsTitleBox!.x + projectsTitleBox!.width).toBeLessThanOrEqual(viewport!.width + 1)
+
+    await content.evaluate((element) => {
+        element.scrollTo({top: element.scrollHeight, behavior: "auto"})
+    })
+
+    const footerBox = await page.locator("footer").boundingBox()
+    expect(footerBox).not.toBeNull()
+    expect(footerBox!.x).toBeGreaterThanOrEqual(0)
+    expect(footerBox!.x + footerBox!.width).toBeLessThanOrEqual(viewport!.width + 1)
+
+    await page.goto("/resume")
+
+    const resumeMetrics = await content.evaluate((element) => ({
+        clientWidth: element.clientWidth,
+        scrollWidth: element.scrollWidth,
+    }))
+
+    expect(resumeMetrics.scrollWidth).toBeLessThanOrEqual(resumeMetrics.clientWidth + 1)
+
+    const resumeSheetBox = await page.locator("article").first().boundingBox()
+    expect(resumeSheetBox).not.toBeNull()
+    expect(resumeSheetBox!.x).toBeGreaterThanOrEqual(0)
+    expect(resumeSheetBox!.x + resumeSheetBox!.width).toBeLessThanOrEqual(viewport!.width + 1)
+})

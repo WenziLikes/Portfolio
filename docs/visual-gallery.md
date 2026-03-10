@@ -47,7 +47,7 @@ Use it for:
 
 ### Projects on mobile
 
-![Projects mobile](./assets/projects-mobile.jpg)
+![Projects mobile](./assets/projects-mobile.png)
 
 ## Maintenance Note
 
