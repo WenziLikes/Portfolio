@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" href="/favicon.ico" />
+    <link rel="canonical" href="https://viacheslavmurakhin.com/" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#14171B" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="VM Portfolio" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="author" content="Viacheslav Murakhin" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <meta name="format-detection" content="telephone=yes,email=yes,address=no" />
+    <meta
+      name="description"
+      content="Portfolio of Viacheslav Murakhin, a full stack developer building responsive product interfaces, maintainable frontend systems, and production-ready web experiences."
+    />
+    <meta property="og:site_name" content="VM Portfolio" />
+    <meta property="og:title" content="Viacheslav Murakhin | Full Stack Developer" />
+    <meta property="og:description" content="Portfolio of Viacheslav Murakhin, a full stack developer building responsive product interfaces, maintainable frontend systems, and production-ready web experiences." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://viacheslavmurakhin.com/" />
+    <meta property="og:image" content="https://viacheslavmurakhin.com/logo512.png" />
+    <meta property="og:image:alt" content="VM Portfolio preview" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Viacheslav Murakhin | Full Stack Developer" />
+    <meta name="twitter:description" content="Portfolio of Viacheslav Murakhin, a full stack developer building responsive product interfaces, maintainable frontend systems, and production-ready web experiences." />
+    <meta name="twitter:image" content="https://viacheslavmurakhin.com/logo512.png" />
+    <link rel="apple-touch-icon" href="/logo192.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <title>Viacheslav Murakhin | Portfolio</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Viacheslav Murakhin",
+        "jobTitle": "Full Stack Developer",
+        "url": "https://viacheslavmurakhin.com",
+        "email": "mailto:viacheslavmurakhin@icloud.com",
+        "telephone": "+1-437-557-9029",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Niagara-on-the-Lake",
+          "addressRegion": "ON",
+          "addressCountry": "CA"
+        },
+        "sameAs": [
+          "https://github.com/WenziLikes",
+          "https://www.linkedin.com/in/viacheslav-murakhin"
+        ]
+      }
+    </script>
+    <script>
+      (() => {
+        try {
+          const savedTheme = localStorage.getItem("theme")
+          const theme = savedTheme === "light" ? "light" : "dark"
+          const isLight = theme === "light"
+          const themeColor = isLight ? "#D9E3EA" : "#14171B"
+          const backgroundColor = isLight ? "#D4DDE5" : "#080B10"
+          const statusBarStyle = isLight ? "default" : "black-translucent"
+
+          document.documentElement.setAttribute("data-theme", theme)
+          document.documentElement.style.colorScheme = theme
+          document.documentElement.style.backgroundColor = backgroundColor
+
+          const themeColorMeta = document.querySelector('meta[name="theme-color"]')
+          themeColorMeta?.setAttribute("content", themeColor)
+
+          const statusBarMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]')
+          statusBarMeta?.setAttribute("content", statusBarStyle)
+        } catch {
+          // Ignore unavailable storage during initial paint.
+        }
+      })()
+    </script>
+  </head>
+  <body>
+    <noscript>This portfolio uses JavaScript for routed navigation, resume access, and interactive project browsing.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/index.tsx"></script>
+  </body>
+</html>

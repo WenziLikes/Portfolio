@@ -1,0 +1,262 @@
+.footer {
+  position: relative;
+  z-index: 2;
+  padding: 2rem 2rem calc(env(safe-area-inset-bottom, 0px) + 1.8rem);
+  border-top: 1px solid var(--surface-stroke);
+  background:
+    linear-gradient(180deg, rgba(4, 7, 11, 0.08) 0%, rgba(4, 7, 11, 0.22) 100%),
+    var(--surface);
+}
+
+[data-theme="light"] .footer {
+  border-top-color: rgba(84, 163, 193, 0.16);
+  background: linear-gradient(180deg, rgba(248, 251, 253, 0.94) 0%, rgba(231, 239, 246, 0.98) 100%);
+}
+
+.content {
+  width: min(100%, 112rem);
+  margin: 0 auto 1.6rem;
+  display: grid;
+  gap: 1.2rem 2.4rem;
+  grid-template-columns: minmax(0, 1.2fr) minmax(28rem, 0.9fr);
+  align-items: start;
+}
+
+.brand {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.eyebrow {
+  color: var(--light-blue);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(1.8rem, 2.2vw, 2.55rem);
+  line-height: 1.04;
+}
+
+.copy {
+  margin: 0;
+  max-width: 46ch;
+  color: var(--muted-text);
+  font-size: 1.28rem;
+  line-height: 1.58;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem 1rem;
+  color: var(--muted-text);
+  font-size: 1.16rem;
+}
+
+.dot {
+  color: rgba(96, 116, 134, 0.66);
+}
+
+.meta a,
+.nav a,
+.external a,
+.legal a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.meta a:hover,
+.nav a:hover,
+.external a:hover,
+.legal a:hover {
+  color: var(--light-blue);
+}
+
+.side {
+  display: grid;
+  gap: 0.95rem;
+  justify-items: end;
+  text-align: right;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.8rem;
+}
+
+.primaryCta,
+.secondaryCta {
+  display: inline-flex;
+  min-height: 3.7rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.4rem;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 1.12rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.primaryCta {
+  border: 1px solid rgba(39, 211, 246, 0.24);
+  background: var(--light-blue);
+  color: #082033;
+}
+
+.primaryCta:hover {
+  background: #58e0ff;
+  color: #041723;
+}
+
+.secondaryCta {
+  border: 1px solid var(--surface-stroke);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-color);
+}
+
+.secondaryCta:hover {
+  border-color: rgba(39, 211, 246, 0.28);
+  color: var(--light-blue);
+}
+
+[data-theme="light"] .primaryCta {
+  border-color: rgba(28, 108, 140, 0.24);
+  background: linear-gradient(180deg, #2a8db1 0%, #1c708f 100%);
+  box-shadow: 0 0.9rem 2rem rgba(50, 105, 131, 0.16);
+  color: #f8fbff;
+}
+
+[data-theme="light"] .primaryCta:hover {
+  background: linear-gradient(180deg, #247f9f 0%, #155f7b 100%);
+  color: #ffffff;
+}
+
+.nav {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem 1rem;
+  margin: 0;
+  padding: 0;
+  font-size: 1.14rem;
+}
+
+.navLink {
+  display: inline-flex;
+  min-height: 2.8rem;
+  align-items: center;
+}
+
+.external {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.45rem 0.8rem;
+  color: var(--muted-text);
+  font-size: 1.12rem;
+}
+
+.externalDivider {
+  color: rgba(96, 116, 134, 0.66);
+}
+
+.bottom {
+  width: min(100%, 112rem);
+  margin: 0 auto;
+  padding-top: 1.1rem;
+  border-top: 1px solid rgba(39, 211, 246, 0.1);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.8rem 1.6rem;
+}
+
+.notice,
+.legal {
+  margin: 0;
+  color: var(--muted-text);
+  font-size: 1.06rem;
+  line-height: 1.55;
+}
+
+.legal {
+  max-width: 40ch;
+  text-align: right;
+}
+
+@media (max-width: 760px) {
+  .footer {
+    padding: 1.7rem 1.4rem calc(env(safe-area-inset-bottom, 0px) + 1.6rem);
+  }
+
+  .content {
+    margin-bottom: 1.2rem;
+    grid-template-columns: 1fr;
+  }
+
+  .side {
+    justify-items: start;
+    text-align: left;
+  }
+
+  .actions {
+    justify-content: flex-start;
+  }
+
+  .nav {
+    justify-content: flex-start;
+  }
+
+  .external {
+    justify-content: flex-start;
+  }
+
+  .bottom {
+    justify-content: flex-start;
+  }
+
+  .legal {
+    text-align: left;
+  }
+}
+
+@media (max-width: 560px) {
+  .meta {
+    gap: 0.4rem 0.75rem;
+    font-size: 1.08rem;
+  }
+
+  .dot {
+    display: none;
+  }
+
+  .meta span,
+  .meta a {
+    width: 100%;
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .primaryCta,
+  .secondaryCta {
+    width: 100%;
+  }
+}
+
+@media print {
+  .footer {
+    display: none;
+  }
+}

@@ -1,0 +1,398 @@
+.resume {
+  min-height: 100vh;
+  padding: clamp(1.4rem, 2vw, 2.4rem);
+  background:
+    radial-gradient(circle at top, rgba(36, 75, 118, 0.08), transparent 34%),
+    #e9edf2;
+  color: #253347;
+}
+
+.toolbar {
+  width: min(100%, 86rem);
+  margin: 0 auto 1.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.backLink,
+.downloadLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.8rem;
+  padding: 0 1.45rem;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 1.25rem;
+  font-weight: 600;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.backLink {
+  border: 1px solid rgba(24, 58, 93, 0.16);
+  background: rgba(255, 255, 255, 0.72);
+  color: #173e6b;
+}
+
+.backLink:hover {
+  border-color: rgba(24, 58, 93, 0.26);
+  color: #0f2f52;
+}
+
+.downloadLink {
+  border: 1px solid rgba(21, 72, 123, 0.18);
+  background: #173e6b;
+  color: #ffffff;
+}
+
+.downloadLink:hover {
+  background: #0f2f52;
+}
+
+.paperStack {
+  display: grid;
+  gap: 1.8rem;
+}
+
+.sheet {
+  width: min(100%, 86rem);
+  margin: 0 auto;
+  padding: clamp(2.4rem, 3vw, 4rem);
+  background: #ffffff;
+  border-radius: 0.6rem;
+  box-shadow:
+    0 1.2rem 3.2rem rgba(18, 31, 50, 0.08),
+    0 0.3rem 0.8rem rgba(18, 31, 50, 0.06);
+}
+
+.header {
+  display: grid;
+  gap: 0;
+}
+
+.headerMain {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(20rem, 1fr);
+  gap: 1.4rem 2rem;
+  align-items: end;
+}
+
+.identityBlock,
+.contactBlock {
+  display: grid;
+}
+
+.identityBlock {
+  gap: 0.5rem;
+}
+
+.contactBlock {
+  justify-items: end;
+  align-self: center;
+  gap: 0.75rem;
+  text-align: right;
+}
+
+.name {
+  margin: 0;
+  font-size: clamp(2.4rem, 3vw, 3.2rem);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: #15406d;
+  text-transform: uppercase;
+}
+
+.roleTitle,
+.roleLine,
+.location,
+.copy,
+.skillRow,
+.experienceMeta,
+.bulletList li,
+.plainList li {
+  margin: 0;
+  font-size: 1.28rem;
+  line-height: 1.48;
+  color: #303d4f;
+}
+
+.roleTitle {
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 1.2;
+  color: #2c3747;
+}
+
+.roleLine {
+  color: #5b6778;
+}
+
+.location {
+  color: #5b6778;
+}
+
+.contactLinks,
+.socialLinks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 1.2rem;
+}
+
+.contactLinks a,
+.socialLinks a,
+.bulletList a {
+  color: #2572c8;
+  text-decoration: none;
+}
+
+.contactLinks a:hover,
+.socialLinks a:hover,
+.bulletList a:hover {
+  color: #174f8d;
+}
+
+.contactDivider {
+  color: #95a2b3;
+}
+
+.section {
+  margin-top: 2.6rem;
+}
+
+.sectionHeader {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 1.48rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #15406d;
+  text-transform: uppercase;
+}
+
+.sectionRule {
+  height: 1px;
+  background: #d8dde3;
+}
+
+.sectionBody {
+  padding-top: 1rem;
+}
+
+.skillList {
+  display: grid;
+  gap: 1rem;
+}
+
+.skillRow strong {
+  color: #232d3a;
+}
+
+.experienceCard + .experienceCard {
+  margin-top: 2.2rem;
+}
+
+.experienceTitle,
+.educationTitle {
+  margin: 0;
+  font-size: 1.42rem;
+  font-weight: 700;
+  color: #2572c8;
+}
+
+.experienceTitle a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.experienceTitle a:hover {
+  color: #174f8d;
+  text-decoration: underline;
+  text-decoration-color: rgba(23, 79, 141, 0.35);
+  text-underline-offset: 0.16em;
+}
+
+.experienceMeta {
+  margin-top: 0.55rem;
+  font-style: italic;
+}
+
+.bulletList,
+.plainList {
+  margin: 0.9rem 0 0;
+  padding-left: 1.55rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.plainList {
+  padding-left: 1.3rem;
+}
+
+.educationBlock {
+  display: grid;
+  gap: 0.4rem;
+}
+
+@media (max-width: 760px) {
+  .resume {
+    padding: 1rem;
+  }
+
+  .toolbar {
+    margin-bottom: 1rem;
+  }
+
+  .toolbar,
+  .sheet {
+    width: 100%;
+  }
+
+  .sheet {
+    padding: 1.8rem 1.4rem;
+    border-radius: 1rem;
+  }
+
+  .backLink,
+  .downloadLink {
+    width: 100%;
+  }
+
+  .name {
+    font-size: clamp(2rem, 8vw, 2.7rem);
+  }
+
+  .headerMain {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .contactBlock {
+    justify-items: start;
+    text-align: left;
+  }
+
+  .roleTitle,
+  .roleLine,
+  .location,
+  .copy,
+  .skillRow,
+  .experienceMeta,
+  .bulletList li,
+  .plainList li {
+    font-size: 1.18rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .resume {
+    padding: 0.8rem;
+  }
+
+  .sheet {
+    padding: 1.45rem 1.15rem;
+    border-radius: 0.8rem;
+  }
+
+  .backLink,
+  .downloadLink {
+    min-height: 3.5rem;
+    padding: 0 1.1rem;
+    font-size: 1.15rem;
+  }
+
+  .name {
+    font-size: clamp(1.8rem, 9vw, 2.35rem);
+  }
+
+  .section {
+    margin-top: 2rem;
+  }
+
+  .sectionBody {
+    padding-top: 0.8rem;
+  }
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  .resume {
+    padding: 0;
+    background: #ffffff;
+  }
+
+  .toolbar {
+    display: none;
+  }
+
+  .paperStack {
+    gap: 0;
+  }
+
+  .headerMain {
+    grid-template-columns: minmax(0, 1.18fr) minmax(0, 1fr);
+    gap: 1rem 1.35rem;
+    align-items: start;
+  }
+
+  .contactBlock {
+    gap: 0.45rem;
+  }
+
+  .roleTitle {
+    font-size: 1.48rem;
+  }
+
+  .roleLine,
+  .location {
+    font-size: 1.08rem;
+  }
+
+  .contactLinks,
+  .socialLinks {
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    gap: 0.22rem;
+    font-size: 1.02rem;
+    line-height: 1.3;
+  }
+
+  .sheet {
+    width: 100%;
+    min-height: auto;
+    padding: 1.6cm 1.4cm;
+    box-sizing: border-box;
+    box-shadow: none;
+    border-radius: 0;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    break-after: page;
+    break-inside: avoid;
+  }
+
+  .sheet:last-child {
+    break-after: auto;
+  }
+
+  .section,
+  .experienceCard,
+  .educationBlock {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}

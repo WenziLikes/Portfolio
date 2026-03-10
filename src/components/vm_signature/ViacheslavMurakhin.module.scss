@@ -1,0 +1,75 @@
+.signature {
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  top: clamp(15rem, 23vh, 22rem);
+  width: min(52vw, 70rem);
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+  transform: translateX(-8%);
+}
+
+.signatureInner {
+  display: block;
+  background: linear-gradient(90deg, rgba(46, 49, 146, 0.72), rgba(95, 176, 233, 0.74), rgba(27, 255, 255, 0.8));
+  background-size: 240%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: var(--font-family2), sans-serif;
+  font-size: clamp(2.9rem, 4.8vw, 6.2rem);
+  line-height: 0.88;
+  white-space: nowrap;
+  transform: rotate(-8deg);
+  transform-origin: center center;
+  opacity: 0.22;
+  filter: drop-shadow(0 0 1rem rgba(27, 255, 255, 0.1));
+}
+
+@media (max-width: 1400px) {
+  .signature {
+    left: 52%;
+    top: clamp(13.5rem, 20vh, 18rem);
+    width: min(50vw, 54rem);
+    transform: translateX(-10%);
+  }
+
+  .signatureInner {
+    font-size: clamp(2.6rem, 4.1vw, 5rem);
+  }
+}
+
+@media (max-width: 1200px) {
+  .signature {
+    left: 54%;
+    top: 12.2rem;
+    width: min(48vw, 42rem);
+    transform: translateX(-12%);
+  }
+
+  .signatureInner {
+    font-size: clamp(2.3rem, 4vw, 4.2rem);
+    opacity: 0.18;
+  }
+}
+
+@media (max-width: 980px) {
+  .signature {
+    left: 56%;
+    top: 10.2rem;
+    width: min(50vw, 34rem);
+    transform: translateX(-18%);
+  }
+
+  .signatureInner {
+    font-size: clamp(2rem, 4.4vw, 3.2rem);
+    opacity: 0.14;
+  }
+}
+
+@media (max-width: 760px) {
+  .signature {
+    display: none;
+  }
+}

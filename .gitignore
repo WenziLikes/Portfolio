@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/node_modules.cra-backup
 /.pnp
 .pnp.js
 
@@ -10,9 +11,11 @@
 
 # production
 /build
+/dist
 
 # misc
 .DS_Store
+.idea/
 .env.local
 .env.development.local
 .env.test.local
@@ -21,3 +24,11 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+playwright-report
+test-results
+
+# IDE-generated CSS artifacts from SCSS sources
+/src/index.css
+/src/index.css.map
+/src/**/*.module.css
+/src/**/*.module.css.map

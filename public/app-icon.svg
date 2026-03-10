@@ -1,0 +1,30 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="52" y1="26" x2="464" y2="486" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1A2027"/>
+      <stop offset="1" stop-color="#070A0E"/>
+    </linearGradient>
+    <radialGradient id="glowPrimary" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(342 384) rotate(-145) scale(332 294)">
+      <stop stop-color="#27D3F6" stop-opacity="0.64"/>
+      <stop offset="1" stop-color="#27D3F6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowSecondary" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(132 120) rotate(35) scale(198 168)">
+      <stop stop-color="#1D3B5F" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#1D3B5F" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="accent" x1="248" y1="182" x2="396" y2="366" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8AF2FF"/>
+      <stop offset="1" stop-color="#27D3F6"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="512" height="512" rx="136" fill="url(#bg)"/>
+  <rect x="0" y="0" width="512" height="512" rx="136" fill="url(#glowPrimary)"/>
+  <rect x="0" y="0" width="512" height="512" rx="136" fill="url(#glowSecondary)"/>
+  <rect x="22" y="22" width="468" height="468" rx="114" stroke="#88E1FF" stroke-opacity="0.14"/>
+
+  <path d="M118 156L188 356L250 214" stroke="#F4F8FB" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M250 214V356" stroke="url(#accent)" stroke-width="34" stroke-linecap="round"/>
+  <path d="M250 214L314 286L378 214" stroke="url(#accent)" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M378 214V356" stroke="url(#accent)" stroke-width="34" stroke-linecap="round"/>
+</svg>

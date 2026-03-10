@@ -1,0 +1,139 @@
+.legalPage {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: clamp(1.4rem, 2vw, 2.4rem);
+  background:
+    radial-gradient(circle at top, rgba(36, 75, 118, 0.08), transparent 34%),
+    #e9edf2;
+  color: #253347;
+}
+
+.toolbar {
+  width: min(100%, 86rem);
+  margin: 0 auto 1.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.backLink,
+.resumeLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.8rem;
+  padding: 0 1.45rem;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 1.25rem;
+  font-weight: 600;
+  transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+
+.backLink {
+  border: 1px solid rgba(24, 58, 93, 0.16);
+  background: rgba(255, 255, 255, 0.72);
+  color: #173e6b;
+}
+
+.resumeLink {
+  border: 1px solid rgba(21, 72, 123, 0.18);
+  background: #173e6b;
+  color: #ffffff;
+}
+
+.backLink:hover {
+  border-color: rgba(24, 58, 93, 0.26);
+  color: #0f2f52;
+}
+
+.resumeLink:hover {
+  background: #0f2f52;
+}
+
+.sheet {
+  width: min(100%, 86rem);
+  margin: 0 auto;
+  padding: clamp(2.4rem, 3vw, 4rem);
+  background: #ffffff;
+  border-radius: 1rem;
+  box-shadow:
+    0 1.2rem 3.2rem rgba(18, 31, 50, 0.08),
+    0 0.3rem 0.8rem rgba(18, 31, 50, 0.06);
+}
+
+.eyebrow {
+  margin: 0 0 0.8rem;
+  color: #2572c8;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(2.6rem, 3.2vw, 3.8rem);
+  line-height: 1.02;
+  color: #15406d;
+}
+
+.lead {
+  margin: 1.2rem 0 0;
+  max-width: 64ch;
+  color: #465468;
+  font-size: 1.42rem;
+  line-height: 1.7;
+}
+
+.section + .section {
+  margin-top: 2.2rem;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #15406d;
+  text-transform: uppercase;
+}
+
+.sectionBody {
+  margin-top: 0.9rem;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.copy,
+.list {
+  margin: 0;
+  font-size: 1.26rem;
+  line-height: 1.7;
+  color: #303d4f;
+}
+
+.list {
+  padding-left: 1.55rem;
+}
+
+@media (max-width: 760px) {
+  .legalPage {
+    padding: 1rem;
+  }
+
+  .toolbar,
+  .sheet {
+    width: 100%;
+  }
+
+  .sheet {
+    padding: 1.8rem 1.4rem;
+  }
+
+  .backLink,
+  .resumeLink {
+    width: 100%;
+  }
+}
