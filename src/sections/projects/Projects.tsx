@@ -6,13 +6,43 @@ import {Card} from "../../components"
 import {PROJECTS_INFO, type CardInfo} from "../../content/projects"
 
 export const PROJECTS_STORAGE_KEY = "vm-projects-order"
+export const PROJECTS_CUSTOM_ORDER_STORAGE_KEY = "vm-projects-order-customized"
+
+const DEFAULT_PROJECT_IDS = [4, 3, 1, 2]
+
+const getDefaultProjects = (): CardInfo[] => {
+    const projectsById = new Map(PROJECTS_INFO.map((card) => [card.id, card]))
+    const seenIds = new Set<number>()
+    const orderedProjects: CardInfo[] = []
+
+    DEFAULT_PROJECT_IDS.forEach((cardId) => {
+        const card = projectsById.get(cardId)
+
+        if (!card || seenIds.has(cardId)) {
+            return
+        }
+
+        seenIds.add(cardId)
+        orderedProjects.push(card)
+    })
+
+    PROJECTS_INFO.forEach((card) => {
+        if (!seenIds.has(card.id)) {
+            orderedProjects.push(card)
+        }
+    })
+
+    return orderedProjects
+}
+
+const DEFAULT_PROJECTS = getDefaultProjects()
 
 const resolveProjectsOrder = (storedOrder: unknown): CardInfo[] => {
     if (!Array.isArray(storedOrder)) {
-        return PROJECTS_INFO
+        return DEFAULT_PROJECTS
     }
 
-    const projectsById = new Map(PROJECTS_INFO.map((card) => [card.id, card]))
+    const projectsById = new Map(DEFAULT_PROJECTS.map((card) => [card.id, card]))
     const seenIds = new Set<number>()
     const orderedProjects: CardInfo[] = []
 
@@ -33,7 +63,7 @@ const resolveProjectsOrder = (storedOrder: unknown): CardInfo[] => {
         orderedProjects.push(card)
     })
 
-    PROJECTS_INFO.forEach((card) => {
+    DEFAULT_PROJECTS.forEach((card) => {
         if (!seenIds.has(card.id)) {
             orderedProjects.push(card)
         }
@@ -42,21 +72,37 @@ const resolveProjectsOrder = (storedOrder: unknown): CardInfo[] => {
     return orderedProjects
 }
 
-const getInitialProjects = (): CardInfo[] => {
+const hasStoredCustomOrder = (): boolean => {
     if (typeof window === "undefined") {
-        return PROJECTS_INFO
+        return false
     }
 
     try {
+        return window.localStorage.getItem(PROJECTS_CUSTOM_ORDER_STORAGE_KEY) === "true"
+    } catch {
+        return false
+    }
+}
+
+const getInitialProjects = (): CardInfo[] => {
+    if (typeof window === "undefined") {
+        return DEFAULT_PROJECTS
+    }
+
+    try {
+        if (!hasStoredCustomOrder()) {
+            return DEFAULT_PROJECTS
+        }
+
         const storedOrder = window.localStorage.getItem(PROJECTS_STORAGE_KEY)
 
         if (!storedOrder) {
-            return PROJECTS_INFO
+            return DEFAULT_PROJECTS
         }
 
         return resolveProjectsOrder(JSON.parse(storedOrder))
     } catch {
-        return PROJECTS_INFO
+        return DEFAULT_PROJECTS
     }
 }
 
@@ -124,6 +170,7 @@ const Projects: React.FC = () => {
         pointerup: (event: PointerEvent) => void
     } | null>(null)
     const [projectCards, setProjectCards] = useState<CardInfo[]>(getInitialProjects)
+    const [hasCustomProjectOrder, setHasCustomProjectOrder] = useState(hasStoredCustomOrder)
     const [draggedCardId, setDraggedCardId] = useState<number | null>(null)
     const [dragPreview, setDragPreview] = useState<DragPreviewState | null>(null)
     const [featuredProject, ...secondaryProjects] = projectCards
@@ -131,16 +178,17 @@ const Projects: React.FC = () => {
     useScrollProgress(projectsRef)
 
     useEffect(() => {
-        if (typeof window === "undefined") {
+        if (typeof window === "undefined" || !hasCustomProjectOrder) {
             return
         }
 
         try {
             window.localStorage.setItem(PROJECTS_STORAGE_KEY, JSON.stringify(projectCards.map((card) => card.id)))
+            window.localStorage.setItem(PROJECTS_CUSTOM_ORDER_STORAGE_KEY, "true")
         } catch {
             return
         }
-    }, [projectCards])
+    }, [hasCustomProjectOrder, projectCards])
 
     useEffect(() => () => {
         detachWindowDragListeners()
@@ -266,7 +314,8 @@ const Projects: React.FC = () => {
 
         const targetCardId = getProjectIdAtPoint(clientX, clientY)
 
-        if (targetCardId !== null) {
+        if (targetCardId !== null && targetCardId !== activeDrag.cardId) {
+            setHasCustomProjectOrder(true)
             setProjectCards((currentCards) => reorderProjects(currentCards, activeDrag.cardId, targetCardId))
         }
 
@@ -282,26 +331,52 @@ const Projects: React.FC = () => {
     }
 
     const handleDragKeyDown = (cardId: number) => (event: React.KeyboardEvent<HTMLElement>) => {
+        const currentIndex = projectCards.findIndex((card) => card.id === cardId)
+
         if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+            const nextIndex = currentIndex - 1
+
+            if (currentIndex === -1 || nextIndex < 0) {
+                return
+            }
+
             event.preventDefault()
-            setProjectCards((currentCards) => moveProjectToIndex(currentCards, cardId, currentCards.findIndex((card) => card.id === cardId) - 1))
+            setHasCustomProjectOrder(true)
+            setProjectCards((currentCards) => moveProjectToIndex(currentCards, cardId, nextIndex))
             return
         }
 
         if (event.key === "ArrowDown" || event.key === "ArrowRight") {
+            const nextIndex = currentIndex + 1
+
+            if (currentIndex === -1 || nextIndex >= projectCards.length) {
+                return
+            }
+
             event.preventDefault()
-            setProjectCards((currentCards) => moveProjectToIndex(currentCards, cardId, currentCards.findIndex((card) => card.id === cardId) + 1))
+            setHasCustomProjectOrder(true)
+            setProjectCards((currentCards) => moveProjectToIndex(currentCards, cardId, nextIndex))
             return
         }
 
         if (event.key === "Home") {
+            if (currentIndex <= 0) {
+                return
+            }
+
             event.preventDefault()
+            setHasCustomProjectOrder(true)
             setProjectCards((currentCards) => moveProjectToIndex(currentCards, cardId, 0))
             return
         }
 
         if (event.key === "End") {
+            if (currentIndex === -1 || currentIndex >= projectCards.length - 1) {
+                return
+            }
+
             event.preventDefault()
+            setHasCustomProjectOrder(true)
             setProjectCards((currentCards) => moveProjectToIndex(currentCards, cardId, currentCards.length - 1))
         }
     }
