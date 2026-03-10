@@ -79,3 +79,49 @@ test("mobile menu switches to About and keeps it active", async ({page}, testInf
     await menuButton.click()
     await expect(aboutLink).toHaveAttribute("aria-current", "location")
 })
+
+test("mobile home and projects stay inside the viewport", async ({page}, testInfo) => {
+    test.skip(!/^(phone|tablet)-/.test(testInfo.project.name))
+
+    await page.goto("/")
+
+    const content = page.locator("main.content")
+    const homeMetrics = await content.evaluate((element) => ({
+        clientWidth: element.clientWidth,
+        scrollWidth: element.scrollWidth,
+    }))
+
+    const homeHeading = page.getByRole("heading", {name: /Murakhin/i}).first()
+    const homeHeadingBox = await homeHeading.boundingBox()
+    const homeViewport = page.viewportSize()
+
+    expect(homeHeadingBox).not.toBeNull()
+    expect(homeViewport).not.toBeNull()
+    expect(homeHeadingBox!.x).toBeGreaterThanOrEqual(0)
+    expect(homeHeadingBox!.x + homeHeadingBox!.width).toBeLessThanOrEqual(homeViewport!.width + 1)
+
+    await page.goto("/projects")
+    await expect(page.getByRole("heading", {name: /^Projects$/i})).toBeVisible()
+
+    const projectMetrics = await content.evaluate((element) => ({
+        clientWidth: element.clientWidth,
+        scrollWidth: element.scrollWidth,
+    }))
+
+    expect(projectMetrics.scrollWidth).toBeLessThanOrEqual(projectMetrics.clientWidth + 1)
+
+    const featuredCard = page.locator('[data-project-card-id="4"]').first()
+    const featuredImageBox = await featuredCard.locator("img").first().boundingBox()
+    const featuredTitleBox = await featuredCard.getByRole("heading", {name: /^Flip Clock$/i}).boundingBox()
+    const featuredCardBox = await featuredCard.boundingBox()
+    const projectsViewport = page.viewportSize()
+
+    expect(featuredImageBox).not.toBeNull()
+    expect(featuredTitleBox).not.toBeNull()
+    expect(featuredCardBox).not.toBeNull()
+    expect(projectsViewport).not.toBeNull()
+    expect(featuredCardBox!.x).toBeGreaterThanOrEqual(0)
+    expect(featuredCardBox!.x + featuredCardBox!.width).toBeLessThanOrEqual(projectsViewport!.width + 1)
+    expect(featuredTitleBox!.y).toBeGreaterThanOrEqual(featuredImageBox!.y + featuredImageBox!.height - 2)
+    expect(homeMetrics.scrollWidth).toBeLessThanOrEqual(homeMetrics.clientWidth + 1)
+})

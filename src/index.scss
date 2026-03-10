@@ -114,11 +114,14 @@ body,
 #root {
   height: 100%;
   min-height: 100%;
+  max-width: 100%;
 }
 
 html {
   font-size: 10px;
   scroll-behavior: smooth;
+  overflow-x: clip;
+  overscroll-behavior-x: none;
 }
 
 body {
@@ -129,6 +132,8 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
   text-rendering: optimizeLegibility;
+  overflow-x: clip;
+  overscroll-behavior-x: none;
 }
 
 body.mobile-nav-open {
@@ -164,6 +169,10 @@ svg {
   display: block;
 }
 
+img {
+  max-width: 100%;
+}
+
 h1,
 h2,
 h3,
@@ -193,6 +202,7 @@ h4 {
   min-height: 100vh;
   min-height: 100dvh;
   background: var(--page-bg);
+  overflow-x: clip;
 }
 
 main.content {
@@ -206,12 +216,17 @@ main.content {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain;
+  overscroll-behavior-x: none;
   scroll-behavior: smooth;
   scroll-padding-top: 1rem;
   background: var(--project-bg);
   transition: margin-left 0.35s ease;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  overflow-x: clip;
+  width: 100%;
+  max-width: 100%;
+  touch-action: pan-y pinch-zoom;
 }
 
 main.content::-webkit-scrollbar {
@@ -225,6 +240,7 @@ main.content > section {
   min-height: 100vh;
   min-height: 100dvh;
   scroll-margin-top: 1rem;
+  max-width: 100%;
 }
 
 .portfolio-sidebar--hidden ~ main.content {

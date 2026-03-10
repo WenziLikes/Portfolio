@@ -24,7 +24,13 @@ const Card: React.FC<CardProps> = ({
     const {actions, description, eyebrow, image, scope, stack, title, year} = card
     const isFeatured = variant === "featured"
     const isContainedImage = image.fit === "contain"
+    const isPointerReorderable = !isDragOverlay && !isPlaceholder && Boolean(onReorderPointerDown)
     const isReorderable = !isDragOverlay && !isPlaceholder && Boolean(onReorderPointerDown || onReorderKeyDown)
+    const reorderLabel = isReorderable
+        ? isPointerReorderable
+            ? `${title}. Drag and drop to reorder.`
+            : `${title}. Use keyboard to reorder.`
+        : undefined
     const imageStyle = {
         "--card-image-frame-inset": image.frameInset ?? "5.6rem",
         objectFit: image.fit ?? "cover",
@@ -38,7 +44,7 @@ const Card: React.FC<CardProps> = ({
         <article
             aria-grabbed={isPlaceholder || undefined}
             aria-hidden={isDragOverlay || undefined}
-            aria-label={isReorderable ? `${title}. Drag and drop to reorder.` : undefined}
+            aria-label={reorderLabel}
             className={`${styles.card} ${isFeatured ? styles.cardFeatured : styles.cardCompact} ${isContainedImage ? styles.cardContained : ""} ${isPlaceholder ? styles.cardPlaceholder : ""} ${isDragOverlay ? styles.cardDragOverlay : ""} ${isReorderable ? styles.cardReorderable : ""}`}
             data-project-card-id={card.id}
             onKeyDown={onReorderKeyDown}
@@ -46,21 +52,23 @@ const Card: React.FC<CardProps> = ({
             style={style}
             tabIndex={isReorderable ? 0 : undefined}
         >
-            {isReorderable && <span className={styles.card__dragHint}>Drag & drop</span>}
+            {isPointerReorderable && <span className={styles.card__dragHint}>Drag & drop</span>}
 
-            <img
-                className={`${styles.card__background} ${isContainedImage ? styles.card__backgroundContained : ""}`}
-                src={image.src}
-                srcSet={image.srcSet}
-                sizes={image.sizes}
-                width={image.width}
-                height={image.height}
-                loading="lazy"
-                decoding="async"
-                draggable={false}
-                alt={image.alt}
-                style={imageStyle}
-            />
+            <div className={styles.card__media}>
+                <img
+                    className={`${styles.card__background} ${isContainedImage ? styles.card__backgroundContained : ""}`}
+                    src={image.src}
+                    srcSet={image.srcSet}
+                    sizes={image.sizes}
+                    width={image.width}
+                    height={image.height}
+                    loading="lazy"
+                    decoding="async"
+                    draggable={false}
+                    alt={image.alt}
+                    style={imageStyle}
+                />
+            </div>
 
             <div className={styles.card__content}>
                 <div className={styles.card__meta}>

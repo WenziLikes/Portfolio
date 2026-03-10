@@ -214,6 +214,10 @@ const Projects: React.FC = () => {
     }
 
     const handleDragPointerDown = (cardId: number) => (event: React.PointerEvent<HTMLElement>) => {
+        if (event.pointerType !== "mouse") {
+            return
+        }
+
         if (event.pointerType === "mouse" && event.button !== 0) {
             return
         }
