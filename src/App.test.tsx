@@ -16,7 +16,8 @@ describe("App routing", () => {
         expect(screen.getByRole("button", {name: "Resume"})).toBeInTheDocument()
         expect(screen.getByRole("button", {name: "Portfolio"})).toBeInTheDocument()
         expect(screen.getByRole("link", {name: "About"})).toHaveAttribute("href", "/about")
-        expect(screen.getAllByText(/viacheslavmurakhin \[at\] icloud \[dot\] com/i).length).toBeGreaterThan(0)
+        expect(screen.queryByText(/viacheslavmurakhin \[at\] icloud \[dot\] com/i)).not.toBeInTheDocument()
+        expect(screen.getAllByRole("button", {name: /open email composer/i}).length).toBeGreaterThan(0)
         expect(document.querySelector('a[href^="mailto:"]')).toBeNull()
     })
 

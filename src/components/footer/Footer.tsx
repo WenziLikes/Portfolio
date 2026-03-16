@@ -23,15 +23,19 @@ const Footer: React.FC = () => {
                     <span className={styles.eyebrow}>{PROFILE.role}</span>
                     <h2 className={styles.title}>{PROFILE.fullName}</h2>
                     <p className={styles.copy}>
-                        Full stack developer building responsive product experiences with clean frontend architecture
-                        and strong production polish.
+                        Full stack developer building responsive product experiences with clean frontend
+                        architecture and strong production{"\u00A0"}polish.
                     </p>
                     <div className={styles.meta}>
-                        <ProtectedEmailLink eventSource="footer_meta" title="Email Viacheslav"/>
+                        <span className={styles.metaLine}>{PROFILE.location}</span>
                         <span className={styles.dot} aria-hidden="true">•</span>
-                        <span>{PROFILE.location}</span>
-                        <span className={styles.dot} aria-hidden="true">•</span>
-                        <a href={PROFILE.phoneHref} onClick={() => trackContactClick("phone", "footer_meta")}>{PROFILE.phone}</a>
+                        <a
+                            className={styles.metaLine}
+                            href={PROFILE.phoneHref}
+                            onClick={() => trackContactClick("phone", "footer_meta")}
+                        >
+                            {PROFILE.phone}
+                        </a>
                     </div>
                 </div>
 
