@@ -146,14 +146,14 @@
   font-size: 1.2rem;
 }
 
-.contactLinks a,
+.contactLinks :is(a, button),
 .socialLinks a,
 .bulletList a {
   color: #2572c8;
   text-decoration: none;
 }
 
-.contactLinks a:hover,
+.contactLinks :is(a, button):hover,
 .socialLinks a:hover,
 .bulletList a:hover {
   color: #174f8d;

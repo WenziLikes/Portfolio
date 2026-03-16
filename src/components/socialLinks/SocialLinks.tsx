@@ -1,6 +1,7 @@
 import React from "react"
 import {SOCIAL_LINKS, type SocialLink} from "../../content/site"
 import {trackContactClick, trackSocialClick} from "../../utils/analytics"
+import ProtectedEmailLink from "../protectedEmailLink/ProtectedEmailLink"
 
 const ICON_PATHS: Record<SocialLink["id"], string> = {
     email: "M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm8 6.4L4.6 7.2A1 1 0 0 0 4 8v.2l8 4.6 8-4.6V8a1 1 0 0 0-.6-.8L12 11.4z",
@@ -41,19 +42,32 @@ const SocialLinks: React.FC<SocialLinksProps> = ({
         <ul className={listClassName} aria-label={ariaLabel}>
             {SOCIAL_LINKS.map((link) => (
                 <li className={itemClassName} key={link.id}>
-                    <a
-                        aria-label={link.label}
-                        className={linkClassName}
-                        href={link.href}
-                        onClick={() => handleClick(link.id)}
-                        rel={link.external ? "noreferrer noopener" : undefined}
-                        target={link.external ? "_blank" : undefined}
-                        title={link.label}
-                    >
-                        <svg viewBox="0 0 24 24" className={iconClassName} aria-hidden="true">
-                            <path d={ICON_PATHS[link.id]}/>
-                        </svg>
-                    </a>
+                    {link.id === "email" ? (
+                        <ProtectedEmailLink
+                            ariaLabel="Open email composer"
+                            className={linkClassName}
+                            eventSource={eventSource}
+                            title={link.label}
+                        >
+                            <svg viewBox="0 0 24 24" className={iconClassName} aria-hidden="true">
+                                <path d={ICON_PATHS[link.id]}/>
+                            </svg>
+                        </ProtectedEmailLink>
+                    ) : (
+                        <a
+                            aria-label={link.label}
+                            className={linkClassName}
+                            href={link.href!}
+                            onClick={() => handleClick(link.id)}
+                            rel={link.external ? "noreferrer noopener" : undefined}
+                            target={link.external ? "_blank" : undefined}
+                            title={link.label}
+                        >
+                            <svg viewBox="0 0 24 24" className={iconClassName} aria-hidden="true">
+                                <path d={ICON_PATHS[link.id]}/>
+                            </svg>
+                        </a>
+                    )}
                 </li>
             ))}
         </ul>

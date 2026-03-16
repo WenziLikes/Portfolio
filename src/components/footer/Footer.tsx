@@ -4,6 +4,7 @@ import styles from "./Footer.module.scss"
 import {COPYRIGHT_NOTICE, PROFILE, SITE_META, SOCIAL_LINKS} from "../../content/site"
 import {RESUME_DOWNLOAD_NAME, RESUME_FILE_URL} from "../../constants/resume"
 import {trackContactClick, trackResumeClick, trackSocialClick} from "../../utils/analytics"
+import ProtectedEmailLink from "../protectedEmailLink/ProtectedEmailLink"
 
 const footerLinks = [
     {label: "Portfolio", to: "/"},
@@ -26,7 +27,7 @@ const Footer: React.FC = () => {
                         and strong production polish.
                     </p>
                     <div className={styles.meta}>
-                        <a href={`mailto:${PROFILE.email}`} onClick={() => trackContactClick("email", "footer_meta")}>{PROFILE.email}</a>
+                        <ProtectedEmailLink eventSource="footer_meta" title="Email Viacheslav"/>
                         <span className={styles.dot} aria-hidden="true">•</span>
                         <span>{PROFILE.location}</span>
                         <span className={styles.dot} aria-hidden="true">•</span>
@@ -44,13 +45,13 @@ const Footer: React.FC = () => {
                         >
                             Download Resume
                         </a>
-                        <a
+                        <ProtectedEmailLink
                             className={styles.secondaryCta}
-                            href={`mailto:${PROFILE.email}`}
-                            onClick={() => trackContactClick("email", "footer_secondary_cta")}
+                            eventSource="footer_secondary_cta"
+                            title="Email Viacheslav"
                         >
                             Email Me
-                        </a>
+                        </ProtectedEmailLink>
                     </div>
 
                     <ul className={styles.nav}>
@@ -71,7 +72,7 @@ const Footer: React.FC = () => {
                         {externalLinks.map((link, index, array) => (
                             <React.Fragment key={link.id}>
                                 <a
-                                    href={link.href}
+                                    href={link.href!}
                                     target="_blank"
                                     rel="noreferrer noopener"
                                     onClick={() => {

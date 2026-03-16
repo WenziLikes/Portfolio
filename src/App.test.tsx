@@ -16,6 +16,8 @@ describe("App routing", () => {
         expect(screen.getByRole("button", {name: "Resume"})).toBeInTheDocument()
         expect(screen.getByRole("button", {name: "Portfolio"})).toBeInTheDocument()
         expect(screen.getByRole("link", {name: "About"})).toHaveAttribute("href", "/about")
+        expect(screen.getAllByText(/viacheslavmurakhin \[at\] icloud \[dot\] com/i).length).toBeGreaterThan(0)
+        expect(document.querySelector('a[href^="mailto:"]')).toBeNull()
     })
 
     test("renders the resume page on /resume", () => {
@@ -25,6 +27,8 @@ describe("App routing", () => {
         expect(screen.getByRole("link", {name: /back to portfolio/i})).toHaveAttribute("href", "/")
         expect(screen.getByRole("link", {name: /download pdf/i})).toHaveAttribute("href", RESUME_FILE_URL)
         expect(screen.getByRole("link", {name: /download pdf/i})).toHaveAttribute("download", RESUME_DOWNLOAD_NAME)
+        expect(screen.getAllByText(/viacheslavmurakhin \[at\] icloud \[dot\] com/i).length).toBeGreaterThan(0)
+        expect(document.querySelector('a[href^="mailto:"]')).toBeNull()
     })
 
     test("renders the 404 page for unknown routes", () => {

@@ -62,7 +62,7 @@
   color: rgba(96, 116, 134, 0.66);
 }
 
-.meta a,
+.meta :is(a, button),
 .nav a,
 .external a,
 .legal a {
@@ -70,7 +70,7 @@
   text-decoration: none;
 }
 
-.meta a:hover,
+.meta :is(a, button):hover,
 .nav a:hover,
 .external a:hover,
 .legal a:hover {
@@ -241,7 +241,7 @@
   }
 
   .meta span,
-  .meta a {
+  .meta :is(a, button) {
     width: 100%;
   }
 
