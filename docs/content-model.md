@@ -10,15 +10,17 @@ This project keeps marketing, hiring, legal, and resume copy in structured TypeS
 | --- | --- |
 | `src/content/site.ts` | Identity, SEO, route metadata, navigation labels, about copy, experience data, resume data, legal content, footer contact copy |
 | `src/content/projects.ts` | Project card order, labels, descriptions, outbound links, stack chips, and responsive image metadata |
+| `src/utils/contact.ts` | Protected email helpers used to render and open the email address without exposing it directly in static markup |
 
 ## `site.ts` Breakdown
 
 | Export | Purpose |
 | --- | --- |
 | `SITE_META` | Site-level title, description, URL, social preview image path |
-| `PROFILE` | Name, role, summary, location, direct contact details |
+| `PROFILE` | Name, role, summary, location, phone details, and availability |
 | `MAIN_SECTIONS` | One-page navigation model |
 | `SOCIAL_LINKS` | Footer and sidebar contact destinations |
+| `contact.ts` helpers | Protected email rendering and click-through behavior |
 | `ABOUT_COPY`, `ABOUT_PRINCIPLES`, `ABOUT_STACK` | Homepage about section copy and capability framing |
 | `EXPERIENCE_TIMELINE` | Homepage experience section |
 | `RESUME_PROFILE`, `RESUME_SKILLS`, `RESUME_EXPERIENCE`, `RESUME_CERTIFICATIONS` | Resume page and exported resume content |
@@ -41,9 +43,12 @@ Each project card defines:
 
 ### Updating personal information
 
-Edit `PROFILE` in `src/content/site.ts` when changing:
+Edit `src/utils/contact.ts` when changing:
 
 - email
+
+Edit `PROFILE` in `src/content/site.ts` when changing:
+
 - phone
 - location
 - role

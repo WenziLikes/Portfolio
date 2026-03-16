@@ -1,6 +1,7 @@
 import React from "react"
 import {Link} from "react-router-dom"
 import styles from "./Resume.module.scss"
+import ProtectedEmailLink from "../../components/protectedEmailLink/ProtectedEmailLink"
 import {RESUME_DOWNLOAD_NAME, RESUME_FILE_URL} from "../../constants/resume"
 import {
     PROFILE,
@@ -57,7 +58,7 @@ const Resume: React.FC = () => {
                                 <p className={styles.location}>{PROFILE.location}</p>
 
                                 <div className={styles.contactLinks}>
-                                    <a href={`mailto:${PROFILE.email}`} onClick={() => trackContactClick("email", "resume_contact_block")}>{PROFILE.email}</a>
+                                    <ProtectedEmailLink eventSource="resume_contact_block" title="Email Viacheslav"/>
                                     <span className={styles.contactDivider} aria-hidden="true">|</span>
                                     <a href={PROFILE.phoneHref} onClick={() => trackContactClick("phone", "resume_contact_block")}>{PROFILE.phone}</a>
                                 </div>

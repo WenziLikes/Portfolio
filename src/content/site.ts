@@ -9,7 +9,7 @@ export type MainSectionId = MainSection["id"]
 
 export interface SocialLink {
     id: "email" | "phone" | "github" | "linkedin"
-    href: string
+    href?: string
     label: string
     text: string
     external?: boolean
@@ -70,7 +70,6 @@ export const COPYRIGHT_NOTICE = `© ${COPYRIGHT_YEAR} ${SITE_META.name}. All rig
 
 export const PROFILE = {
     availability: "Open to full-time roles, freelance projects, and product collaborations.",
-    email: "viacheslavmurakhin@icloud.com",
     firstName: "Viacheslav",
     fullName: "Viacheslav Murakhin",
     lastName: "Murakhin",
@@ -92,10 +91,9 @@ export const MAIN_SECTIONS: MainSection[] = [
 
 export const SOCIAL_LINKS: SocialLink[] = [
     {
-        href: `mailto:${PROFILE.email}`,
         id: "email",
         label: "Email",
-        text: PROFILE.email,
+        text: "Email",
     },
     {
         href: PROFILE.phoneHref,
