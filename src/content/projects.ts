@@ -13,6 +13,7 @@ export interface CardImage {
     height: number
     hoverScale?: number
     panelInsetBottom?: string
+    panelInsetBottomMobile?: string
     position?: string
     scale?: number
     sizes?: string
@@ -132,6 +133,7 @@ export const PROJECTS_INFO: CardInfo[] = [
             frameInset: "5.2rem",
             height: 675,
             hoverScale: 1.04,
+            panelInsetBottomMobile: "-2.4rem",
             scale: 1,
             sizes: "(max-width: 760px) 100vw, (max-width: 1200px) 50vw, 32rem",
             src: flipClockPreview1200,

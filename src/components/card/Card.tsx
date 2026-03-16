@@ -33,11 +33,18 @@ const Card: React.FC<CardProps> = ({
         : undefined
     const imageStyle = {
         "--card-image-frame-inset": image.frameInset ?? "5.6rem",
-        objectFit: image.fit ?? "cover",
-        objectPosition: image.position ?? "center",
         "--card-image-translate-y": image.panelInsetBottom ?? "0px",
+        "--card-image-mobile-translate-y": image.panelInsetBottomMobile ?? "0px",
         "--card-image-scale": image.scale ?? 1.01,
         "--card-image-hover-scale": image.hoverScale,
+    } as React.CSSProperties
+    const coverImageStyle = {
+        ...imageStyle,
+        objectFit: image.fit ?? "cover",
+        objectPosition: image.position ?? "center",
+    } as React.CSSProperties
+    const containedImageStyle = {
+        objectPosition: image.position ?? "center",
     } as React.CSSProperties
 
     return (
@@ -55,19 +62,37 @@ const Card: React.FC<CardProps> = ({
             {isPointerReorderable && <span className={styles.card__dragHint}>Drag & drop</span>}
 
             <div className={styles.card__media}>
-                <img
-                    className={`${styles.card__background} ${isContainedImage ? styles.card__backgroundContained : ""}`}
-                    src={image.src}
-                    srcSet={image.srcSet}
-                    sizes={image.sizes}
-                    width={image.width}
-                    height={image.height}
-                    loading="lazy"
-                    decoding="async"
-                    draggable={false}
-                    alt={image.alt}
-                    style={imageStyle}
-                />
+                {isContainedImage ? (
+                    <div className={styles.card__containedFrame} style={imageStyle}>
+                        <img
+                            className={`${styles.card__background} ${styles.card__backgroundContained}`}
+                            src={image.src}
+                            srcSet={image.srcSet}
+                            sizes={image.sizes}
+                            width={image.width}
+                            height={image.height}
+                            loading="lazy"
+                            decoding="async"
+                            draggable={false}
+                            alt={image.alt}
+                            style={containedImageStyle}
+                        />
+                    </div>
+                ) : (
+                    <img
+                        className={styles.card__background}
+                        src={image.src}
+                        srcSet={image.srcSet}
+                        sizes={image.sizes}
+                        width={image.width}
+                        height={image.height}
+                        loading="lazy"
+                        decoding="async"
+                        draggable={false}
+                        alt={image.alt}
+                        style={coverImageStyle}
+                    />
+                )}
             </div>
 
             <div className={styles.card__content}>

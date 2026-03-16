@@ -128,25 +128,35 @@
   will-change: transform;
 }
 
-.card__backgroundContained {
+.card__containedFrame {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  inset: 0;
   z-index: 0;
+  margin: auto;
+  overflow: hidden;
   width: calc(100% - var(--card-image-frame-inset, 5.6rem));
   height: calc(100% - var(--card-image-frame-inset, 5.6rem));
   max-width: calc(100% - var(--card-image-frame-inset, 5.6rem));
   max-height: calc(100% - var(--card-image-frame-inset, 5.6rem));
   border-radius: 1.4rem;
+  transform: translate3d(0, calc(var(--card-image-translate-y, 0px) * -1), 0);
+}
+
+.card__backgroundContained {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   background: transparent;
   border: 0;
   object-fit: contain;
   object-position: center center;
-  transform: translate(-50%, calc(-50% - var(--card-image-translate-y, 0px))) scale(var(--card-image-scale, 1));
+  transform: scale(var(--card-image-scale, 1));
+  transform-origin: center center;
 }
 
 .card:hover .card__backgroundContained {
-  transform: translate(-50%, calc(-50% - var(--card-image-translate-y, 0px))) scale(var(--card-image-hover-scale, var(--card-image-scale, 1)));
+  transform: scale(var(--card-image-hover-scale, var(--card-image-scale, 1)));
 }
 
 .card__dragHint {
@@ -504,7 +514,7 @@
   }
 
   .card:hover .card__backgroundContained {
-    transform: translate(-50%, calc(-50% - var(--card-image-translate-y, 0px))) scale(var(--card-image-scale, 1));
+    transform: scale(var(--card-image-scale, 1));
   }
 }
 
@@ -557,7 +567,8 @@
   }
 
   .card__background,
-  .card__backgroundContained {
+  .card__backgroundContained,
+  .card__containedFrame {
     position: relative;
     inset: auto;
     top: auto;
@@ -567,6 +578,12 @@
     max-width: none;
     max-height: none;
     transform: none;
+  }
+
+  .card__containedFrame {
+    overflow: hidden;
+    margin: 0;
+    transform: translate3d(0, calc(var(--card-image-mobile-translate-y, 0px) * -1), 0);
   }
 
   [data-theme="light"] .cardContained .card__media {
@@ -624,7 +641,7 @@
     width: 100%;
   }
 
-  .card__backgroundContained {
+  .card__containedFrame {
     width: calc(100% - min(var(--card-image-frame-inset, 5.6rem), 3rem));
     height: calc(100% - min(var(--card-image-frame-inset, 5.6rem), 3rem));
     max-width: calc(100% - min(var(--card-image-frame-inset, 5.6rem), 3rem));
