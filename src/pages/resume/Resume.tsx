@@ -57,13 +57,16 @@ const Resume: React.FC = () => {
                             <div className={styles.contactBlock}>
                                 <p className={styles.location}>{PROFILE.location}</p>
 
-                                <div className={styles.contactLinks}>
+                                <div className={styles.contactLine}>
                                     <ProtectedEmailLink eventSource="resume_contact_block" title="Email Viacheslav"/>
                                     <span className={styles.contactDivider} aria-hidden="true">|</span>
+                                </div>
+
+                                <div className={styles.contactLine}>
                                     <a href={PROFILE.phoneHref} onClick={() => trackContactClick("phone", "resume_contact_block")}>{PROFILE.phone}</a>
                                 </div>
 
-                                <div className={styles.socialLinks}>
+                                <div className={styles.contactLine}>
                                     <a href={SITE_META.url} target="_blank" rel="noreferrer noopener">
                                         {SITE_META.url.replace(/^https?:\/\//, "")}
                                     </a>

@@ -78,9 +78,9 @@
 
 .headerMain {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(20rem, 1fr);
-  gap: 1.4rem 2rem;
-  align-items: end;
+  grid-template-columns: minmax(0, 1.52fr) minmax(22rem, 1fr);
+  gap: 1.25rem 2rem;
+  align-items: start;
 }
 
 .identityBlock,
@@ -94,18 +94,19 @@
 
 .contactBlock {
   justify-items: end;
-  align-self: center;
-  gap: 0.75rem;
+  align-self: start;
+  gap: 0.55rem;
   text-align: right;
 }
 
 .name {
   margin: 0;
-  font-size: clamp(2.4rem, 3vw, 3.2rem);
-  line-height: 1;
-  letter-spacing: 0.02em;
+  font-size: clamp(2.2rem, 2.65vw, 3.1rem);
+  line-height: 0.96;
+  letter-spacing: 0.03em;
   color: #15406d;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .roleTitle,
@@ -134,33 +135,36 @@
 }
 
 .location {
+  font-size: 1.42rem;
+  line-height: 1.32;
+  letter-spacing: 0.01em;
   color: #5b6778;
 }
 
-.contactLinks,
-.socialLinks {
+.contactLine {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.45rem;
-  font-size: 1.2rem;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  font-size: 1.24rem;
+  line-height: 1.35;
 }
 
-.contactLinks :is(a, button),
-.socialLinks a,
+.contactLine :is(a, button),
 .bulletList a {
   color: #2572c8;
   text-decoration: none;
 }
 
-.contactLinks :is(a, button):hover,
-.socialLinks a:hover,
+.contactLine :is(a, button):hover,
 .bulletList a:hover {
   color: #174f8d;
 }
 
 .contactDivider {
   color: #95a2b3;
+  line-height: 1;
 }
 
 .section {
@@ -271,6 +275,7 @@
 
   .name {
     font-size: clamp(2rem, 8vw, 2.7rem);
+    white-space: normal;
   }
 
   .headerMain {
@@ -281,6 +286,10 @@
   .contactBlock {
     justify-items: start;
     text-align: left;
+  }
+
+  .contactLine {
+    justify-content: flex-start;
   }
 
   .roleTitle,
@@ -363,8 +372,7 @@
     font-size: 1.08rem;
   }
 
-  .contactLinks,
-  .socialLinks {
+  .contactLine {
     justify-content: flex-end;
     flex-wrap: nowrap;
     gap: 0.22rem;
