@@ -149,6 +149,8 @@ const getProjectIdAtPoint = (clientX: number, clientY: number): number | null =>
 
 const getProjectVariant = (cards: CardInfo[], cardId: number): "featured" | "compact" => (cards[0]?.id === cardId ? "featured" : "compact")
 
+const getProjectSequenceLabel = (index: number): string => String(index + 1).padStart(2, "0")
+
 interface DragPreviewState {
     cardId: number
     height: number
@@ -174,6 +176,12 @@ const Projects: React.FC = () => {
     const [draggedCardId, setDraggedCardId] = useState<number | null>(null)
     const [dragPreview, setDragPreview] = useState<DragPreviewState | null>(null)
     const [featuredProject, ...secondaryProjects] = projectCards
+    const projectCountLabel = String(projectCards.length).padStart(2, "0")
+    const railItemClassNames = [
+        styles.projects__railItemFirst,
+        styles.projects__railItemSecond,
+        styles.projects__railItemThird,
+    ]
 
     useScrollProgress(projectsRef)
 
@@ -408,30 +416,51 @@ const Projects: React.FC = () => {
     return (
         <>
             <div className={styles.projects} ref={projectsRef}>
-                <h2 className={styles["projects__title"]}>Projects</h2>
-                <p className={styles.sub__title}>Selected work and shipped product experiences.</p>
+                <div className={styles.projects__intro}>
+                    <div className={styles.projects__introLead}>
+                        <span className={styles.projects__eyebrow}>Curated portfolio selection</span>
+                        <h2 className={styles["projects__title"]}>Projects</h2>
+                    </div>
 
-                <div className={styles.projects__layout}>
+                    <div className={styles.projects__introCopy}>
+                        <p className={styles.sub__title}>Asymmetric editorial showcase for product work, frontend systems, and shipped interfaces.</p>
+
+                        <div className={styles.projects__facts} aria-label="Projects section summary">
+                            <span className={styles.projects__fact}>
+                                <strong>{projectCountLabel}</strong> shipped builds
+                            </span>
+                            <span className={styles.projects__fact}>Featured case study first</span>
+                            <span className={styles.projects__fact}>Drag to curate the order</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className={styles.projects__deck}>
                     {featuredProject && (
-                        <Card
-                            card={featuredProject}
-                            isPlaceholder={draggedCardId === featuredProject.id}
-                            onReorderKeyDown={handleDragKeyDown(featuredProject.id)}
-                            onReorderPointerDown={handleDragPointerDown(featuredProject.id)}
-                            variant="featured"
-                        />
+                        <div className={styles.projects__featuredSlot}>
+                            <Card
+                                card={featuredProject}
+                                isPlaceholder={draggedCardId === featuredProject.id}
+                                onReorderKeyDown={handleDragKeyDown(featuredProject.id)}
+                                onReorderPointerDown={handleDragPointerDown(featuredProject.id)}
+                                sequence={getProjectSequenceLabel(0)}
+                                variant="featured"
+                            />
+                        </div>
                     )}
 
                     <div className={styles.projects__rail}>
-                        {secondaryProjects.map((card) => (
-                            <Card
-                                card={card}
-                                isPlaceholder={draggedCardId === card.id}
-                                key={card.id}
-                                onReorderKeyDown={handleDragKeyDown(card.id)}
-                                onReorderPointerDown={handleDragPointerDown(card.id)}
-                                variant="compact"
-                            />
+                        {secondaryProjects.map((card, index) => (
+                            <div className={`${styles.projects__railItem} ${railItemClassNames[index] ?? ""}`} key={card.id}>
+                                <Card
+                                    card={card}
+                                    isPlaceholder={draggedCardId === card.id}
+                                    onReorderKeyDown={handleDragKeyDown(card.id)}
+                                    onReorderPointerDown={handleDragPointerDown(card.id)}
+                                    sequence={getProjectSequenceLabel(index + 1)}
+                                    variant="compact"
+                                />
+                            </div>
                         ))}
                     </div>
                 </div>

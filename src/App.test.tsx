@@ -1,11 +1,27 @@
-import {describe, expect, test} from "vitest"
-import {render, screen} from "@testing-library/react"
+import {describe, expect, test, vi} from "vitest"
+import {fireEvent, render, screen} from "@testing-library/react"
 import App from "./App"
 import {RESUME_DOWNLOAD_NAME, RESUME_FILE_URL} from "./constants/resume"
 
 const renderAt = (path: string) => {
     window.history.pushState({}, "", path)
     return render(<App/>)
+}
+
+const mockDesktopMatchMedia = () => {
+    Object.defineProperty(window, "matchMedia", {
+        writable: true,
+        value: vi.fn().mockImplementation((query: string) => ({
+            matches: false,
+            media: query,
+            onchange: null,
+            addEventListener: vi.fn(),
+            removeEventListener: vi.fn(),
+            addListener: vi.fn(),
+            removeListener: vi.fn(),
+            dispatchEvent: vi.fn(),
+        })),
+    })
 }
 
 describe("App routing", () => {
@@ -46,5 +62,24 @@ describe("App routing", () => {
         expect(screen.getByRole("heading", {name: /privacy/i})).toBeInTheDocument()
         expect(screen.getByRole("link", {name: /back to portfolio/i})).toHaveAttribute("href", "/")
         expect(screen.getByRole("link", {name: /copyright/i})).toHaveAttribute("href", "/copyright")
+    })
+
+    test("collapses the desktop sidebar into icon mode", () => {
+        window.localStorage.clear()
+        mockDesktopMatchMedia()
+
+        renderAt("/about")
+
+        const sidebar = document.querySelector(".portfolio-sidebar")
+        const collapseButton = document.querySelector('button[title="Collapse sidebar"]')
+
+        expect(sidebar).not.toHaveClass("portfolio-sidebar--compact")
+        expect(collapseButton).not.toBeNull()
+
+        fireEvent.click(collapseButton!)
+
+        expect(sidebar).toHaveClass("portfolio-sidebar--compact")
+        expect(window.localStorage.getItem("portfolio-sidebar-collapsed")).toBe("true")
+        expect(screen.getByRole("link", {name: "About"})).toHaveAttribute("title", "About")
     })
 })

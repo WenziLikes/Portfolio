@@ -4,10 +4,12 @@ import type {CardInfo} from "../../content/projects"
 
 interface CardProps {
     card: CardInfo
+    className?: string
     isDragOverlay?: boolean
     isPlaceholder?: boolean
     onReorderKeyDown?: (event: React.KeyboardEvent<HTMLElement>) => void
     onReorderPointerDown?: (event: React.PointerEvent<HTMLElement>) => void
+    sequence?: string
     style?: React.CSSProperties
     variant?: "featured" | "compact"
 }
@@ -15,15 +17,22 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({
     card,
     variant = "compact",
+    className,
     isDragOverlay = false,
     isPlaceholder = false,
     onReorderKeyDown,
     onReorderPointerDown,
+    sequence,
     style,
 }) => {
-    const {actions, description, eyebrow, image, scope, stack, title, year} = card
+    const {actions, description, eyebrow, featuredActionLabel, featuredDescription, image, proofPoints, scope, stack, title, year} = card
     const isFeatured = variant === "featured"
     const isContainedImage = image.fit === "contain"
+    const visibleStack = isFeatured ? stack.slice(0, 6) : stack.slice(0, 4)
+    const remainingStackCount = stack.length - visibleStack.length
+    const visibleProofPoints = isFeatured ? proofPoints?.slice(0, 3) ?? [] : []
+    const hasFeaturedProofPoints = visibleProofPoints.length > 0
+    const visibleDescription = isFeatured ? featuredDescription ?? description : description
     const isPointerReorderable = !isDragOverlay && !isPlaceholder && Boolean(onReorderPointerDown)
     const isReorderable = !isDragOverlay && !isPlaceholder && Boolean(onReorderPointerDown || onReorderKeyDown)
     const reorderLabel = isReorderable
@@ -52,7 +61,7 @@ const Card: React.FC<CardProps> = ({
             aria-grabbed={isPlaceholder || undefined}
             aria-hidden={isDragOverlay || undefined}
             aria-label={reorderLabel}
-            className={`${styles.card} ${isFeatured ? styles.cardFeatured : styles.cardCompact} ${isContainedImage ? styles.cardContained : ""} ${isPlaceholder ? styles.cardPlaceholder : ""} ${isDragOverlay ? styles.cardDragOverlay : ""} ${isReorderable ? styles.cardReorderable : ""}`}
+            className={`${styles.card} ${isFeatured ? styles.cardFeatured : styles.cardCompact} ${isContainedImage ? styles.cardContained : ""} ${isPlaceholder ? styles.cardPlaceholder : ""} ${isDragOverlay ? styles.cardDragOverlay : ""} ${isReorderable ? styles.cardReorderable : ""} ${className ?? ""}`}
             data-project-card-id={card.id}
             onKeyDown={onReorderKeyDown}
             onPointerDown={onReorderPointerDown}
@@ -96,26 +105,45 @@ const Card: React.FC<CardProps> = ({
             </div>
 
             <div className={styles.card__content}>
-                <div className={styles.card__meta}>
-                    <span className={styles.card__eyebrow}>{eyebrow}</span>
-                    <span className={styles.card__metaDivider}/>
-                    <span className={styles.card__scope}>{year}</span>
-                    <span className={styles.card__metaDivider}/>
-                    <span className={styles.card__scope}>{scope}</span>
+                <div className={styles.card__header}>
+                    <div className={styles.card__meta}>
+                        <span className={styles.card__eyebrow}>{eyebrow}</span>
+                        <span className={styles.card__metaDivider}/>
+                        <span className={styles.card__scope}>{year}</span>
+                        <span className={styles.card__metaDivider}/>
+                        <span className={styles.card__scope}>{scope}</span>
+                    </div>
+
+                    {sequence ? (
+                        <span className={styles.card__sequence} aria-hidden="true">
+                            {sequence}
+                        </span>
+                    ) : null}
                 </div>
 
                 <div className={styles.card__body}>
                     <h3 className={styles.card__title}>{title}</h3>
-                    <p className={styles.card__description}>{description}</p>
+                    <p className={styles.card__description}>{visibleDescription}</p>
                 </div>
 
-                <ul className={styles.card__chips} aria-label={`${title} tech stack`}>
-                    {stack.map((item) => (
-                        <li className={styles.card__chip} key={item}>
-                            {item}
-                        </li>
-                    ))}
-                </ul>
+                {hasFeaturedProofPoints ? (
+                    <ul className={styles.card__proofs} aria-label={`${title} highlights`}>
+                        {visibleProofPoints.map((point) => (
+                            <li className={styles.card__proof} key={point}>
+                                {point}
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <ul className={styles.card__chips} aria-label={`${title} tech stack`}>
+                        {visibleStack.map((item) => (
+                            <li className={styles.card__chip} key={item}>
+                                {item}
+                            </li>
+                        ))}
+                        {remainingStackCount > 0 ? <li className={`${styles.card__chip} ${styles.card__chipMore}`}>+{remainingStackCount}</li> : null}
+                    </ul>
+                )}
 
                 <div className={styles.card__actions}>
                     {actions.map((action) => (
@@ -126,7 +154,7 @@ const Card: React.FC<CardProps> = ({
                             target="_blank"
                             rel="noreferrer noopener"
                         >
-                            {action.label}
+                            {isFeatured ? featuredActionLabel ?? action.label : action.label}
                         </a>
                     ))}
                 </div>

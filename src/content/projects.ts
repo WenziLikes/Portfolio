@@ -31,8 +31,11 @@ export interface CardInfo {
     actions: CardAction[]
     description: string
     eyebrow: string
+    featuredActionLabel?: string
+    featuredDescription?: string
     id: number
     image: CardImage
+    proofPoints?: string[]
     scope: string
     stack: string[]
     title: string
@@ -126,6 +129,8 @@ export const PROJECTS_INFO: CardInfo[] = [
         ],
         description: "macOS flip-clock screensaver built with a deterministic Canvas 2D engine, floating settings panel, multi-display support, night dimming, audio feedback, and Tauri packaging prepared for App Store distribution.",
         eyebrow: "App Store-ready screensaver",
+        featuredActionLabel: "Explore project",
+        featuredDescription: "Polished macOS flip-clock screensaver with a deterministic Canvas rendering engine, floating controls, multi-display support, night dimming, and packaging prepared for App Store release.",
         id: 4,
         image: {
             alt: "Flip Clock project preview",
@@ -140,6 +145,7 @@ export const PROJECTS_INFO: CardInfo[] = [
             srcSet: `${flipClockPreview720} 720w, ${flipClockPreview1200} 1200w`,
             width: 1200,
         },
+        proofPoints: ["Deterministic Canvas engine", "Multi-display support", "Prepared for App Store"],
         scope: "macOS / Screensaver",
         stack: ["React", "TypeScript", "Tauri v2", "Rust", "Canvas 2D", "CSS Modules"],
         title: "Flip Clock",

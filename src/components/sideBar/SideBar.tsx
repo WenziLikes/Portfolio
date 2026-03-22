@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
 import {useLocation, useNavigate} from "react-router-dom"
 import styles from "./SideBar.module.scss"
-import {MAIN_SECTIONS, PROFILE} from "../../content/site"
+import {MAIN_SECTIONS, PROFILE, type MainSectionId} from "../../content/site"
 import {getSectionIdFromPath, getSectionPath} from "../../constants/navigation"
 import SocialLinks from "../socialLinks/SocialLinks"
 import {scrollToSectionId} from "../../utils/scroll"
@@ -11,9 +11,42 @@ interface SideBarProps {
     theme: "dark" | "light"
 }
 
+const DESKTOP_SIDEBAR_STORAGE_KEY = "portfolio-sidebar-collapsed"
+
+const SECTION_ICON_PATHS: Record<MainSectionId, string> = {
+    about: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-6.4 8a6.4 6.4 0 0 1 12.8 0 .6.6 0 0 1-.6.6H6.2a.6.6 0 0 1-.6-.6Z",
+    experience: "M9.25 4.5a1.25 1.25 0 0 1 1.25-1.25h3a1.25 1.25 0 0 1 1.25 1.25V6h3a1.75 1.75 0 0 1 1.75 1.75v8.5A1.75 1.75 0 0 1 17.75 18h-11A1.75 1.75 0 0 1 5 16.25v-8.5A1.75 1.75 0 0 1 6.75 6h2.5Zm1.25 0V6h3V4.5h-3Zm-3.75 3a.25.25 0 0 0-.25.25V10h4v-.75a.75.75 0 0 1 1.5 0V10h4v-.75a.75.75 0 0 1 1.5 0V10h1.25V7.75a.25.25 0 0 0-.25-.25h-11Zm11 4h-1.25v.75a.75.75 0 0 1-1.5 0v-.75h-4v.75a.75.75 0 0 1-1.5 0v-.75h-4v4.75c0 .14.11.25.25.25h11c.14 0 .25-.11.25-.25V11.5Z",
+    home: "M4.5 10.5 12 4l7.5 6.5v8a1 1 0 0 1-1 1h-4.25v-5.5h-4.5V19.5H5.5a1 1 0 0 1-1-1v-8Z",
+    projects: "M4.5 6.75A1.75 1.75 0 0 1 6.25 5h3.1c.33 0 .65.13.88.37l1.15 1.13c.23.24.55.37.88.37h5.49a1.75 1.75 0 0 1 1.75 1.75v8.13a1.75 1.75 0 0 1-1.75 1.75H6.25A1.75 1.75 0 0 1 4.5 16.75v-10Z",
+}
+
+const THEME_ICON_PATHS: Record<"dark" | "light", string> = {
+    dark: "M14.8 3.2a.75.75 0 0 1 .86.96A7.25 7.25 0 1 0 19.84 13a.75.75 0 0 1 .96.86 8.75 8.75 0 1 1-6.96-10.66.75.75 0 0 1 .96 0Z",
+    light: "M12 3.25a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V4a.75.75 0 0 1 .75-.75Zm0 13a4.25 4.25 0 1 0 0-8.5 4.25 4.25 0 0 0 0 8.5Zm8-4.25a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5a.75.75 0 0 1 .75.75ZM6.25 12a.75.75 0 0 1-.75.75H4a.75.75 0 0 1 0-1.5h1.5a.75.75 0 0 1 .75.75Zm10.17-5.42a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 0 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.06ZM5.46 17.54a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 1 1-1.06 1.06L5.46 18.6a.75.75 0 0 1 0-1.06Zm0-9.9a.75.75 0 0 1 0-1.06L6.52 5.52a.75.75 0 0 1 1.06 1.06L6.52 7.64a.75.75 0 0 1-1.06 0Zm10.96 9.9a.75.75 0 0 1 1.06 0l1.06 1.06a.75.75 0 1 1-1.06 1.06l-1.06-1.06a.75.75 0 0 1 0-1.06Z",
+}
+
+const renderIcon = (path: string, className: string) => (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+        <path d={path}/>
+    </svg>
+)
+
+const getInitialDesktopSidebarCollapsed = () => {
+    if (typeof window === "undefined") {
+        return false
+    }
+
+    try {
+        return window.localStorage.getItem(DESKTOP_SIDEBAR_STORAGE_KEY) === "true"
+    } catch {
+        return false
+    }
+}
+
 const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
     const [activeSection, setActiveSection] = useState<string>("home")
     const [isSidebarVisible, setIsSidebarVisible] = useState<boolean>(true)
+    const [isDesktopSidebarCollapsed, setIsDesktopSidebarCollapsed] = useState<boolean>(getInitialDesktopSidebarCollapsed)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false)
     const [isMobileViewport, setIsMobileViewport] = useState<boolean>(false)
     const [mobileContentScrollTop, setMobileContentScrollTop] = useState<number>(0)
@@ -50,6 +83,14 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
             mediaQuery.removeListener(handleChange)
         }
     }, [])
+
+    useEffect(() => {
+        try {
+            window.localStorage.setItem(DESKTOP_SIDEBAR_STORAGE_KEY, String(isDesktopSidebarCollapsed))
+        } catch {
+            // Ignore unavailable storage; the layout still updates for this session.
+        }
+    }, [isDesktopSidebarCollapsed])
 
     useEffect(() => {
         const className = "mobile-nav-open"
@@ -160,6 +201,14 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
         setIsMobileMenuOpen(false)
     }
 
+    const handleDesktopSidebarToggle = () => {
+        if (isMobileViewport) {
+            return
+        }
+
+        setIsDesktopSidebarCollapsed((currentState) => !currentState)
+    }
+
     const homeSection = MAIN_SECTIONS.find((section) => section.id === "home")
     const secondarySections = MAIN_SECTIONS.filter((section) => section.id !== "home")
     const mobileMenuId = "portfolio-mobile-navigation"
@@ -168,10 +217,50 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
     const routeSectionId = getSectionIdFromPath(location.pathname) ?? "home"
     const isRouteMainSection = MAIN_SECTIONS.some((section) => section.id === routeSectionId)
     const highlightedSection = isRouteMainSection && routeSectionId !== "home" ? routeSectionId : activeSection
+    const isDesktopCompact = !isMobileViewport && isDesktopSidebarCollapsed
+    const initials = `${PROFILE.firstName.charAt(0)}${PROFILE.lastName.charAt(0)}`
+    const renderThemeSwitcher = (extraClassName?: string) => (
+        <div
+            className={extraClassName ? `${styles.themeSwitch} ${extraClassName}` : styles.themeSwitch}
+            data-mode={theme}
+            role="group"
+            aria-label="Theme switcher"
+        >
+            <button
+                type="button"
+                className={`${styles.themeCard} ${theme === "dark" ? styles.themeCardActive : ""}`}
+                data-tone="dark"
+                onClick={() => handleThemeSelect("dark")}
+                aria-pressed={theme === "dark"}
+                aria-label="Switch to dark theme"
+                title={isDesktopCompact ? "Dark theme" : undefined}
+            >
+                <span className={styles.themeCardIcon} aria-hidden="true">
+                    {renderIcon(THEME_ICON_PATHS.dark, styles.themeIconSvg)}
+                </span>
+                <span className={styles.themeCardTitle}>Dark</span>
+            </button>
+
+            <button
+                type="button"
+                className={`${styles.themeCard} ${theme === "light" ? styles.themeCardActive : ""}`}
+                data-tone="light"
+                onClick={() => handleThemeSelect("light")}
+                aria-pressed={theme === "light"}
+                aria-label="Switch to light theme"
+                title={isDesktopCompact ? "Light theme" : undefined}
+            >
+                <span className={styles.themeCardIcon} aria-hidden="true">
+                    {renderIcon(THEME_ICON_PATHS.light, styles.themeIconSvg)}
+                </span>
+                <span className={styles.themeCardTitle}>Light</span>
+            </button>
+        </div>
+    )
 
     return (
         <section
-            className={`portfolio-sidebar ${styles.sidebar} ${isSidebarVisible ? "portfolio-sidebar--visible" : `portfolio-sidebar--hidden ${styles.hidden}`} ${isMobileViewport ? styles.sidebarMobile : ""}`}
+            className={`portfolio-sidebar ${styles.sidebar} ${isDesktopCompact ? `portfolio-sidebar--compact ${styles.sidebarCompact}` : ""} ${isSidebarVisible ? "portfolio-sidebar--visible" : `portfolio-sidebar--hidden ${styles.hidden}`} ${isMobileViewport ? styles.sidebarMobile : ""}`}
         >
             <div className={`${styles.mobileBar} ${isMobileBarVisible ? styles.mobileBarVisible : styles.mobileBarHidden}`}>
                 <button
@@ -188,18 +277,22 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
                     <span className={styles.mobileLogoText}>VM Portfolio</span>
                 </button>
 
-                <button
-                    type="button"
-                    className={`${styles.mobileMenuButton} ${isMobileMenuOpen ? styles.mobileMenuButtonOpen : ""}`}
-                    aria-expanded={isMobileMenuOpen}
-                    aria-controls={mobileMenuId}
-                    aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-                    onClick={() => setIsMobileMenuOpen((currentState) => !currentState)}
-                >
-                    <span className={styles.mobileMenuLine}/>
-                    <span className={styles.mobileMenuLine}/>
-                    <span className={styles.mobileMenuLine}/>
-                </button>
+                <div className={styles.mobileBarActions}>
+                    {!isMobileMenuOpen ? renderThemeSwitcher(styles.mobileThemeSwitch) : null}
+
+                    <button
+                        type="button"
+                        className={`${styles.mobileMenuButton} ${isMobileMenuOpen ? styles.mobileMenuButtonOpen : ""}`}
+                        aria-expanded={isMobileMenuOpen}
+                        aria-controls={mobileMenuId}
+                        aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+                        onClick={() => setIsMobileMenuOpen((currentState) => !currentState)}
+                    >
+                        <span className={styles.mobileMenuLine}/>
+                        <span className={styles.mobileMenuLine}/>
+                        <span className={styles.mobileMenuLine}/>
+                    </button>
+                </div>
             </div>
 
             <button
@@ -210,6 +303,22 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
                 onClick={() => setIsMobileMenuOpen(false)}
             />
 
+            <button
+                type="button"
+                className={styles.desktopCollapseButton}
+                data-mode={isDesktopCompact ? "mini" : "full"}
+                onClick={handleDesktopSidebarToggle}
+                aria-pressed={isDesktopCompact}
+                aria-label={isDesktopCompact ? "Expand sidebar" : "Collapse sidebar"}
+                title={isDesktopCompact ? "Expand sidebar" : "Collapse sidebar"}
+            >
+                <span className={styles.desktopCollapseBurger} aria-hidden="true">
+                    <span className={styles.desktopCollapseLine}/>
+                    <span className={styles.desktopCollapseLine}/>
+                    <span className={styles.desktopCollapseLine}/>
+                </span>
+            </button>
+
             <div
                 id={mobileMenuId}
                 className={`${styles.sidebarPanel} ${isMobileMenuOpen ? styles.sidebarPanelOpen : ""}`}
@@ -217,23 +326,34 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
             >
                 <div className={styles.header}>
                     <div className={styles.profile}>
-                        <h1 className={styles.name}>
-                            <a
-                                href="/home"
-                                className={styles.logoLink}
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    handleScrollToSection("home")
-                                }}
-                                aria-label="Go to Home section"
-                            >
-                                &lt; {PROFILE.fullName}
-                                <span className={styles.color__blue}>
-                                    <span className={styles.logoSlash}>/</span>
-                                    <span>&gt;</span>
-                                </span>
-                            </a>
-                        </h1>
+                        <div className={styles.profileHeader}>
+                            <div className={styles.brandLockup}>
+                                <h1 className={styles.name}>
+                                    <a
+                                        href="/home"
+                                        className={styles.logoLink}
+                                        onClick={(e) => {
+                                            e.preventDefault()
+                                            handleScrollToSection("home")
+                                        }}
+                                        aria-label="Go to Home section"
+                                    >
+                                        <span className={styles.compactBrandMark} aria-hidden="true">
+                                            {Array.from(initials).map((letter, index) => (
+                                                <span className={styles.compactBrandLetter} key={`${letter}-${index}`}>{letter}</span>
+                                            ))}
+                                        </span>
+                                        <span className={styles.logoText}>
+                                            &lt; {PROFILE.fullName}
+                                            <span className={styles.color__blue}>
+                                                <span className={styles.logoSlash}>/</span>
+                                                <span>&gt;</span>
+                                            </span>
+                                        </span>
+                                    </a>
+                                </h1>
+                            </div>
+                        </div>
                         <h2 className={styles.role}>{PROFILE.role}</h2>
                     </div>
 
@@ -254,9 +374,14 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
                                                         ? `${styles.navItem} ${styles.active}`
                                                         : styles.navItem
                                                 }
+                                                aria-label={homeSection.label}
                                                 aria-current={highlightedSection === homeSection.id ? "location" : undefined}
+                                                title={isDesktopCompact ? homeSection.label : undefined}
                                             >
-                                                {homeSection.label}
+                                                <span className={styles.navItemIcon} aria-hidden="true">
+                                                    {renderIcon(SECTION_ICON_PATHS[homeSection.id], styles.navIconSvg)}
+                                                </span>
+                                                <span className={styles.navItemLabel}>{homeSection.label}</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -276,9 +401,14 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
                                                         ? `${styles.navItem} ${styles.active}`
                                                         : styles.navItem
                                                 }
+                                                aria-label={section.label}
                                                 aria-current={highlightedSection === section.id ? "location" : undefined}
+                                                title={isDesktopCompact ? section.label : undefined}
                                             >
-                                                {section.label}
+                                                <span className={styles.navItemIcon} aria-hidden="true">
+                                                    {renderIcon(SECTION_ICON_PATHS[section.id], styles.navIconSvg)}
+                                                </span>
+                                                <span className={styles.navItemLabel}>{section.label}</span>
                                             </a>
                                         </li>
                                     ))}
@@ -288,30 +418,7 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
 
                         <div className={styles.themeBlock}>
                             <span className={styles.themeLabel}>Theme</span>
-                            <div
-                                className={styles.themeSwitch}
-                                data-mode={theme}
-                                role="group"
-                                aria-label="Theme switcher"
-                            >
-                                <button
-                                    type="button"
-                                    className={`${styles.themeCard} ${styles.themeCardDark} ${theme === "dark" ? styles.themeCardActive : ""}`}
-                                    onClick={() => handleThemeSelect("dark")}
-                                    aria-pressed={theme === "dark"}
-                                >
-                                    <span className={styles.themeCardTitle}>Dark</span>
-                                </button>
-
-                                <button
-                                    type="button"
-                                    className={`${styles.themeCard} ${styles.themeCardLight} ${theme === "light" ? styles.themeCardActive : ""}`}
-                                    onClick={() => handleThemeSelect("light")}
-                                    aria-pressed={theme === "light"}
-                                >
-                                    <span className={styles.themeCardTitle}>Light</span>
-                                </button>
-                            </div>
+                            {renderThemeSwitcher()}
                         </div>
                     </div>
 
