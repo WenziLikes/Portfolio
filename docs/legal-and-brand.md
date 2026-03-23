@@ -24,6 +24,7 @@ The repository contains original first-party material such as:
 - layout and presentation design
 - project card arrangement and labeling
 - local preview graphics prepared specifically for the site
+- documentation screenshots in `docs/assets/`
 
 These should not be redistributed or reused as if they were open source or public-domain brand assets.
 
@@ -62,18 +63,29 @@ The site currently has a lightweight privacy surface:
 
 - no user accounts
 - no first-party contact forms
-- optional GA4 integration gated by `VITE_GA_MEASUREMENT_ID`
+- protected `mailto:` and `tel:` contact links
 - outbound links to GitHub and LinkedIn
+- optional GA4 integration gated by `VITE_GA_MEASUREMENT_ID`
 - Google Fonts requests during normal browsing
+
+If analytics is enabled, the app can emit:
+
+- `page_view`
+- `contact_click`
+- `resume_click`
+- `github_click`
+- `linkedin_click`
 
 If forms, analytics, cookies, embeds, or third-party scripts are added or enabled, the privacy notice must be reviewed before release.
 
 ## External Requests to Remember
 
-The current app makes external font-related requests through Google Fonts:
+The current app can make external requests to:
 
 - `fonts.googleapis.com`
 - `fonts.gstatic.com`
+- `www.googletagmanager.com` when GA4 is enabled
+- GitHub, LinkedIn, `mailto:`, and `tel:` targets after the user clicks an outbound link
 
 That matters for both privacy documentation and performance review.
 

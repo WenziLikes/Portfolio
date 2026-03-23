@@ -26,7 +26,7 @@ The final build includes:
 
 - `build/index.html`
 - hashed CSS and JS bundles
-- local image assets
+- local image and font assets
 - `build/robots.txt`
 - `build/sitemap.xml`
 - `build/manifest.json`
@@ -41,10 +41,13 @@ The final build includes:
 
 Because the app uses `BrowserRouter`, direct requests to routes such as:
 
+- `/home`
+- `/about`
+- `/experience`
+- `/projects`
 - `/resume`
 - `/privacy`
 - `/copyright`
-- `/projects`
 
 must resolve to `index.html` on the host.
 
@@ -66,6 +69,12 @@ npm install
 npm test
 npm run build
 npx playwright test
+```
+
+If UI visuals changed materially, also refresh the docs gallery:
+
+```bash
+npm run docs:screenshots
 ```
 
 Then verify locally:
@@ -138,6 +147,9 @@ After the site is live:
 2. open `/resume` directly
 3. open `/privacy` directly
 4. open `/copyright` directly
-5. verify favicon and social preview assets
-6. verify the first visit appears in the GA4 Realtime report
-7. submit or re-submit the sitemap in the relevant search console
+5. open `/about`, `/experience`, and `/projects` directly
+6. verify the home hero `Resume` button opens `/resume`
+7. verify the footer and `/resume` page download the current PDF
+8. verify favicon and social preview assets
+9. if analytics is enabled, verify the first visit appears in the GA4 Realtime report
+10. submit or re-submit the sitemap in the relevant search console

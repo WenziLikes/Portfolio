@@ -15,25 +15,25 @@ It captures the highest-value directions for improving the portfolio as a profes
 
 ## Near-Term Opportunities
 
-- remove unused source assets from the repository when they are no longer needed
+- reduce the transfer size of the large home background graphic without losing the visual mood
 - tighten image optimization for any remaining heavy PNG or icon assets
-- add a documented screenshot refresh workflow for future documentation updates
 - expand project case studies with clearer business outcomes and implementation details
 - review typography and spacing polish across light and dark themes
+- document accessibility review findings and track remediations
 
 ## Mid-Term Opportunities
 
 - add richer project detail pages if deeper case-study storytelling becomes necessary
 - add a changelog or public-facing release highlights section if the portfolio evolves frequently
 - improve structured data coverage for portfolio and resume surfaces
-- document accessibility review findings and track remediations
 - add host-specific deployment playbooks for Vercel and Netlify with exact steps
+- automate additional release checks if the site starts changing more frequently
 
 ## Long-Term Opportunities
 
 - introduce analytics only if there is a clear reporting goal and legal copy is updated first
 - add a lightweight CMS or content-editing workflow only if manual `src/content/` editing becomes a bottleneck
-- add image generation or asset automation scripts if the portfolio starts changing visuals often
+- add deeper asset automation if the portfolio starts changing visuals often
 - build a more formal design system section if the component library grows beyond the current site scope
 
 ## Decision Rules

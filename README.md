@@ -2,26 +2,27 @@
 
 Production portfolio website for Viacheslav Murakhin built with React, TypeScript, Vite, SCSS Modules, Vitest, and Playwright.
 
-This repository contains the public website, routed resume page, legal pages, responsive asset pipeline, and release documentation required to ship and maintain the project as a professional web property.
+This repository contains the scrolling portfolio shell, dedicated resume and legal routes, centralized content files, release documentation, and the visual assets used to ship the site as a maintained public product.
 
 ## Overview
 
 | Area | Details |
 | --- | --- |
 | Product type | Personal portfolio and hiring website |
-| Primary goal | Present experience, projects, resume, and contact paths in a polished, production-ready format |
-| Runtime model | Single-page React app with client-side routing and deep-link support |
+| Primary goal | Present experience, projects, resume access, and contact paths in a polished, production-ready format |
+| Runtime model | Single-page React app with `BrowserRouter`, deep-link support, and scroll-synced section routes |
 | Main audiences | Recruiters, hiring managers, collaborators, and clients |
-| Visual modes | Dark and light themes with persisted theme preference |
+| Visual modes | Dark and light themes with persisted preference |
 | Release target | Static hosting with SPA rewrites and a custom domain |
 
 ## Highlights
 
-- Centralized content model in `src/content/` to prevent copy drift between the homepage, footer, resume, and legal pages.
-- Responsive image pipeline for hero photography and project previews.
-- Route-aware metadata updates for titles, descriptions, canonical URLs, and social previews.
-- Dedicated resume export flow that generates `public/documents/viacheslav-murakhin-resume.pdf`.
-- Automated verification with Vitest and Playwright, including mobile route and navigation scenarios.
+- Centralized content model in `src/content/` to prevent copy drift between the homepage, footer, resume, metadata, and legal pages.
+- Dark and light themes with persisted `localStorage` state, a collapsible desktop sidebar, and a mobile top bar that appears after home-page scroll begins.
+- Project gallery with a featured-first layout and desktop drag-and-drop reordering persisted in `localStorage`.
+- Protected email links, a routed `/resume` page, and downloadable PDF access from the footer and resume toolbar.
+- Route-aware metadata, JSON-LD person data, and optional GA4 page, contact, resume, and social click tracking.
+- Automated verification with Vitest and Playwright, plus a reproducible documentation screenshot workflow via `npm run docs:screenshots`.
 
 ## Visual Preview
 
@@ -49,7 +50,7 @@ More screenshots:
 | Language | TypeScript |
 | Build | Vite 7 |
 | Styling | SCSS Modules, global SCSS tokens |
-| Unit testing | Vitest, Testing Library, JSDOM |
+| Unit testing | Vitest, Testing Library, happy-dom |
 | End-to-end testing | Playwright |
 | Static hosting support | Vercel rewrites, Netlify `_redirects`, sitemap, robots, manifest |
 
@@ -125,33 +126,36 @@ http://localhost:4173
 | `npm run test:e2e` | Run Playwright end-to-end tests |
 | `npm run test:e2e:install` | Install Chromium for Playwright |
 | `npm run export:resume` | Build the app and export the resume PDF to `public/documents/` |
+| `npm run docs:screenshots` | Refresh the documentation gallery screenshots in `docs/assets/` |
 
 ## Repository Map
 
 | Path | Responsibility |
 | --- | --- |
-| `src/content/` | Central source of truth for profile data, SEO, navigation, legal copy, and project metadata |
-| `src/components/` | Shared interface building blocks such as footer, sidebar, cards, and route metadata |
+| `src/content/` | Profile data, SEO, navigation labels, resume content, legal copy, and project metadata |
+| `src/components/` | Shared interface building blocks such as footer, sidebar, cards, protected email links, and route metadata |
 | `src/sections/` | Main one-page portfolio sections |
 | `src/pages/` | Routed pages such as resume, privacy, copyright, and not found |
-| `src/utils/` | Scroll helpers and shared utility logic |
-| `src/constants/` | Navigation and route constants |
+| `src/utils/` | Scroll helpers, analytics helpers, and protected contact constants |
+| `src/constants/` | Navigation and resume asset constants |
 | `src/assets/` | Local fonts and image assets used by the app |
 | `public/` | Static files copied directly into the production build |
-| `scripts/` | Operational scripts such as resume PDF export |
-| `docs/` | Project handbook for architecture, testing, mobile QA, deployment, and release operations |
+| `scripts/` | Operational scripts for PDF export and documentation screenshot refresh |
+| `docs/` | Project handbook for architecture, testing, mobile QA, deployment, release operations, and visual references |
 
 ## Runtime Behavior
 
-- The app uses `BrowserRouter`, so direct links such as `/resume`, `/privacy`, and `/copyright` require SPA rewrites in production.
-- Theme state is stored in `localStorage` and applied early in `index.html` to reduce flash during initial paint.
-- Route metadata is updated at runtime from centralized route definitions.
-- GA4 page views are sent on route changes only when `VITE_GA_MEASUREMENT_ID` is present.
-- Main one-page sections keep the URL in sync while scrolling.
+- The app uses `BrowserRouter`, so direct links such as `/home`, `/about`, `/experience`, `/projects`, `/resume`, `/privacy`, and `/copyright` require SPA rewrites in production.
+- Theme state and desktop sidebar collapse state are stored in `localStorage`.
+- The home hero `Resume` button opens `/resume`; the downloadable PDF is exposed from the footer CTA and the `/resume` toolbar.
+- Desktop project cards can be reordered with drag and drop, and a custom order is stored in `localStorage`.
+- Email links are rendered through `src/utils/contact.ts`; there is no first-party contact form.
+- GA4 page views and contact, resume, and social click events are sent only when `VITE_GA_MEASUREMENT_ID` is present.
+- The main one-page sections stay mounted together and keep the URL in sync while the user scrolls.
 
 ## Release Readiness
 
-The project is prepared for static hosting and includes:
+The project includes:
 
 - `public/_redirects` for Netlify-style routing
 - `vercel.json` for Vercel rewrites
@@ -159,6 +163,7 @@ The project is prepared for static hosting and includes:
 - `public/sitemap.xml`
 - `public/manifest.json`
 - `public/documents/viacheslav-murakhin-resume.pdf`
+- documentation screenshots in `docs/assets/`, refreshable with `npm run docs:screenshots`
 
 ## Documentation
 

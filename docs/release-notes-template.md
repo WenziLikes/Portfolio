@@ -36,7 +36,7 @@ Example prompts:
 
 - 
 
-### SEO, legal, or deployment
+### SEO, legal, deployment, or documentation
 
 - 
 
@@ -48,6 +48,12 @@ List the exact checks completed before release.
 npm test
 npm run build
 npx playwright test
+```
+
+If visuals changed, also note:
+
+```bash
+npm run docs:screenshots
 ```
 
 Manual checks:
@@ -76,4 +82,5 @@ If needed, describe the fastest safe rollback path.
 | Routes verified | |
 | Mobile checked | |
 | Metadata checked | |
+| Docs/screenshots refreshed | |
 | Published | |
