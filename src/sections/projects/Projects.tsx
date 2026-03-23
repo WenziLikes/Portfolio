@@ -7,6 +7,14 @@ import {PROJECTS_INFO, type CardInfo} from "../../content/projects"
 
 export const PROJECTS_STORAGE_KEY = "vm-projects-order"
 export const PROJECTS_CUSTOM_ORDER_STORAGE_KEY = "vm-projects-order-customized"
+const MOBILE_PROJECTS_LAYOUT_QUERY = "(max-width: 820px)"
+const PROJECTS_SUBTITLE = "Asymmetric editorial showcase for product work, frontend systems, and shipped interfaces."
+const PROJECTS_SUBTITLE_LINES = [
+    "Asymmetric editorial showcase",
+    "for product work, frontend systems,",
+    "and shipped interfaces.",
+]
+const PROJECTS_SUBTITLE_LINES_MOBILE = PROJECTS_SUBTITLE_LINES
 
 const DEFAULT_PROJECT_IDS = [4, 3, 1, 2]
 
@@ -147,7 +155,21 @@ const getProjectIdAtPoint = (clientX: number, clientY: number): number | null =>
     return Number.isNaN(cardId) ? null : cardId
 }
 
-const getProjectVariant = (cards: CardInfo[], cardId: number): "featured" | "compact" => (cards[0]?.id === cardId ? "featured" : "compact")
+const getIsMobileProjectsLayout = (): boolean => {
+    if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+        return false
+    }
+
+    return window.matchMedia(MOBILE_PROJECTS_LAYOUT_QUERY).matches
+}
+
+const getProjectVariant = (cards: CardInfo[], cardId: number, isMobileProjectsLayout: boolean): "featured" | "compact" => {
+    if (isMobileProjectsLayout) {
+        return "compact"
+    }
+
+    return cards[0]?.id === cardId ? "featured" : "compact"
+}
 
 const getProjectSequenceLabel = (index: number): string => String(index + 1).padStart(2, "0")
 
@@ -175,15 +197,49 @@ const Projects: React.FC = () => {
     const [hasCustomProjectOrder, setHasCustomProjectOrder] = useState(hasStoredCustomOrder)
     const [draggedCardId, setDraggedCardId] = useState<number | null>(null)
     const [dragPreview, setDragPreview] = useState<DragPreviewState | null>(null)
+    const [isMobileProjectsLayout, setIsMobileProjectsLayout] = useState(getIsMobileProjectsLayout)
     const [featuredProject, ...secondaryProjects] = projectCards
     const projectCountLabel = String(projectCards.length).padStart(2, "0")
+    const projectSubtitleLines = isMobileProjectsLayout ? PROJECTS_SUBTITLE_LINES_MOBILE : PROJECTS_SUBTITLE_LINES
     const railItemClassNames = [
         styles.projects__railItemFirst,
         styles.projects__railItemSecond,
         styles.projects__railItemThird,
     ]
+    const featuredProjectVariant = featuredProject ? getProjectVariant(projectCards, featuredProject.id, isMobileProjectsLayout) : "featured"
 
     useScrollProgress(projectsRef)
+
+    useEffect(() => {
+        if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+            return
+        }
+
+        const mediaQuery = window.matchMedia(MOBILE_PROJECTS_LAYOUT_QUERY)
+        const updateViewportState = (matches: boolean) => {
+            setIsMobileProjectsLayout(matches)
+        }
+
+        updateViewportState(mediaQuery.matches)
+
+        const handleChange = (event: MediaQueryListEvent) => {
+            updateViewportState(event.matches)
+        }
+
+        if (typeof mediaQuery.addEventListener === "function") {
+            mediaQuery.addEventListener("change", handleChange)
+
+            return () => {
+                mediaQuery.removeEventListener("change", handleChange)
+            }
+        }
+
+        mediaQuery.addListener(handleChange)
+
+        return () => {
+            mediaQuery.removeListener(handleChange)
+        }
+    }, [])
 
     useEffect(() => {
         if (typeof window === "undefined" || !hasCustomProjectOrder) {
@@ -252,7 +308,7 @@ const Projects: React.FC = () => {
             height: cardRect.height,
             pointerOffsetX: event.clientX - cardRect.left,
             pointerOffsetY: event.clientY - cardRect.top,
-            variant: getProjectVariant(projectCards, cardId),
+            variant: getProjectVariant(projectCards, cardId, isMobileProjectsLayout),
             width: cardRect.width,
             x: cardRect.left,
             y: cardRect.top,
@@ -423,7 +479,11 @@ const Projects: React.FC = () => {
                     </div>
 
                     <div className={styles.projects__introCopy}>
-                        <p className={styles.sub__title}>Asymmetric editorial showcase for product work, frontend systems, and shipped interfaces.</p>
+                        <p className={`${styles.sub__title} ${styles.projects__subtitle}`} aria-label={PROJECTS_SUBTITLE}>
+                            {projectSubtitleLines.map((line) => (
+                                <span className={styles.projects__subtitleLine} key={line}>{line}</span>
+                            ))}
+                        </p>
 
                         <div className={styles.projects__facts} aria-label="Projects section summary">
                             <span className={styles.projects__fact}>
@@ -444,7 +504,7 @@ const Projects: React.FC = () => {
                                 onReorderKeyDown={handleDragKeyDown(featuredProject.id)}
                                 onReorderPointerDown={handleDragPointerDown(featuredProject.id)}
                                 sequence={getProjectSequenceLabel(0)}
-                                variant="featured"
+                                variant={featuredProjectVariant}
                             />
                         </div>
                     )}

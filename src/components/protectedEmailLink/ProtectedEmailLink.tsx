@@ -1,7 +1,7 @@
 import React from "react"
 import styles from "./ProtectedEmailLink.module.scss"
 import {trackContactClick} from "../../utils/analytics"
-import {getObfuscatedEmailText, openEmailComposer} from "../../utils/contact"
+import {EMAIL_ADDRESS, EMAIL_HREF} from "../../utils/contact"
 
 interface ProtectedEmailLinkProps {
     ariaLabel?: string
@@ -12,7 +12,7 @@ interface ProtectedEmailLinkProps {
 }
 
 const ProtectedEmailLink: React.FC<ProtectedEmailLinkProps> = ({
-    ariaLabel = "Open email composer",
+    ariaLabel,
     children,
     className,
     eventSource,
@@ -20,19 +20,18 @@ const ProtectedEmailLink: React.FC<ProtectedEmailLinkProps> = ({
 }) => {
     const handleClick = () => {
         trackContactClick("email", eventSource)
-        openEmailComposer()
     }
 
     return (
-        <button
-            type="button"
+        <a
             aria-label={ariaLabel}
             className={className ? `${styles.button} ${className}` : styles.button}
+            href={EMAIL_HREF}
             onClick={handleClick}
             title={title}
         >
-            {children ?? getObfuscatedEmailText()}
-        </button>
+            {children ?? EMAIL_ADDRESS}
+        </a>
     )
 }
 

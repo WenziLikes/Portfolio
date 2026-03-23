@@ -13,6 +13,7 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "export:resume": "node scripts/export-resume.mjs",
+    "docs:screenshots": "playwright test --config playwright.docs.config.ts refresh-docs-screenshots.spec.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",

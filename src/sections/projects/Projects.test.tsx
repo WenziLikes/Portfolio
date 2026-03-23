@@ -1,12 +1,30 @@
 import {fireEvent, render, screen} from "@testing-library/react"
-import {beforeEach, describe, expect, test} from "vitest"
+import {beforeEach, describe, expect, test, vi} from "vitest"
 import Projects, {PROJECTS_CUSTOM_ORDER_STORAGE_KEY, PROJECTS_STORAGE_KEY} from "./Projects"
 
 const getProjectOrder = () => screen.getAllByRole("heading", {level: 3}).map((heading) => heading.textContent)
 
+const mockMatchMedia = (matches: boolean) => {
+    Object.defineProperty(window, "matchMedia", {
+        configurable: true,
+        writable: true,
+        value: vi.fn().mockImplementation((query: string) => ({
+            addEventListener: vi.fn(),
+            addListener: vi.fn(),
+            dispatchEvent: vi.fn(),
+            matches,
+            media: query,
+            onchange: null,
+            removeEventListener: vi.fn(),
+            removeListener: vi.fn(),
+        })),
+    })
+}
+
 describe("Projects reordering", () => {
     beforeEach(() => {
         window.localStorage.clear()
+        mockMatchMedia(false)
     })
 
     test("shows Flip Clock as the featured project by default", () => {
@@ -50,5 +68,14 @@ describe("Projects reordering", () => {
         expect(getProjectOrder()).toEqual(["Flip Clock", "E42 Store", "Portfolio", "CRM Dashboard"])
         expect(window.localStorage.getItem(PROJECTS_STORAGE_KEY)).toBe(JSON.stringify([4, 1, 3, 2]))
         expect(window.localStorage.getItem(PROJECTS_CUSTOM_ORDER_STORAGE_KEY)).toBe("true")
+    })
+
+    test("renders the first project card in compact mode on mobile", () => {
+        mockMatchMedia(true)
+
+        render(<Projects/>)
+
+        expect(screen.queryByRole("link", {name: /explore project/i})).toBeNull()
+        expect(screen.getAllByRole("link", {name: /view repo/i})).toHaveLength(4)
     })
 })

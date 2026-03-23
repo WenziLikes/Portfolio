@@ -1,4 +1,4 @@
-import React, {useRef} from "react"
+import React, {useEffect, useRef, useState} from "react"
 import {useNavigate} from "react-router-dom"
 import styles from "../sections.module.scss"
 import heroImage2 from "../../assets/img/home/image2.png"
@@ -14,8 +14,19 @@ const PORTFOLIO_BUTTON_LABEL = "Portfolio"
 const PORTFOLIO_BUTTON_HOVER_LABEL = "GO"
 const HERO_EYEBROW = "Premium Product Engineering"
 const HERO_HEADLINE = "Where thoughtful design meets dependable engineering."
+const HERO_HEADLINE_LINES = ["Where thoughtful design", "meets dependable engineering."]
 const HERO_PILLS = ["Clear UI", "Reliable systems", "Built to scale"]
 const HERO_STATEMENT_LINES = ["Clean", "UI", "Solid", "Code", "Ready", "To Ship"]
+const HERO_STATEMENT_LINES_MOBILE_LIGHT = ["CLEAN UI", "SOLID CODE", "READY TO SHIP"]
+const MOBILE_LIGHT_STATEMENT_QUERY = "(max-width: 760px)"
+
+const getIsMobileLightStatementLayout = (): boolean => {
+    if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+        return false
+    }
+
+    return window.matchMedia(MOBILE_LIGHT_STATEMENT_QUERY).matches
+}
 
 interface AnimatedButtonLabelProps {
     primaryLabel: string
@@ -39,8 +50,42 @@ const Home: React.FC<HomeProps> = ({theme}) => {
     const navigate = useNavigate()
     const homeRef = useRef<HTMLDivElement>(null)
     const isLightTheme = theme === "light"
+    const [isMobileLightStatementLayout, setIsMobileLightStatementLayout] = useState(getIsMobileLightStatementLayout)
+    const isLightMobileStatement = isLightTheme && isMobileLightStatementLayout
+    const heroStatementLines = isLightMobileStatement ? HERO_STATEMENT_LINES_MOBILE_LIGHT : HERO_STATEMENT_LINES
 
     useScrollProgress(homeRef, {mode: "hero", reducedMotionValue: 0, variableName: "--home-progress"})
+
+    useEffect(() => {
+        if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+            return
+        }
+
+        const mediaQuery = window.matchMedia(MOBILE_LIGHT_STATEMENT_QUERY)
+        const updateViewportState = (matches: boolean) => {
+            setIsMobileLightStatementLayout(matches)
+        }
+
+        updateViewportState(mediaQuery.matches)
+
+        const handleChange = (event: MediaQueryListEvent) => {
+            updateViewportState(event.matches)
+        }
+
+        if (typeof mediaQuery.addEventListener === "function") {
+            mediaQuery.addEventListener("change", handleChange)
+
+            return () => {
+                mediaQuery.removeEventListener("change", handleChange)
+            }
+        }
+
+        mediaQuery.addListener(handleChange)
+
+        return () => {
+            mediaQuery.removeListener(handleChange)
+        }
+    }, [])
 
     return (
         <div className={`${styles.home} ${isLightTheme ? styles.homeLight : ""}`} ref={homeRef}>
@@ -68,13 +113,30 @@ const Home: React.FC<HomeProps> = ({theme}) => {
                     <span className={styles["home__brandText"]}>VM Portfolio</span>
                 </div>
 
+                {isLightMobileStatement ? (
+                    <div className={styles["home__mobileVisual"]} aria-hidden="true">
+                        <div className={styles["home__statement"]}>
+                            {heroStatementLines.map((line) => (
+                                <span key={line} className={styles["home__statementLine"]}>{line}</span>
+                            ))}
+                        </div>
+                    </div>
+                ) : null}
+
                 <div className={styles["home__layout"]}>
                     <div className={styles["home__content"]}>
                         <span className={styles["home__eyebrow"]}>{HERO_EYEBROW}</span>
                         <p className={styles["home__nameTop"]}>{PROFILE.firstName}</p>
                         <h1 className={styles["home__nameBottom"]}>{PROFILE.lastName}</h1>
                         <p className={styles["home__role"]}>{PROFILE.role}</p>
-                        <p className={styles["home__headline"]}>{HERO_HEADLINE}</p>
+                        <p className={styles["home__headline"]} aria-label={HERO_HEADLINE}>
+                            {HERO_HEADLINE_LINES.map((line, index) => (
+                                <span className={styles["home__headlineLine"]} key={line}>
+                                    {line}
+                                    {index < HERO_HEADLINE_LINES.length - 1 ? " " : null}
+                                </span>
+                            ))}
+                        </p>
                         <p className={styles["home__description"]}>{PROFILE.summary}</p>
                         <div className={styles["home__pillRow"]} aria-label="Core strengths">
                             {HERO_PILLS.map((pill) => (
@@ -115,13 +177,15 @@ const Home: React.FC<HomeProps> = ({theme}) => {
                         </div>
                     </div>
 
-                    <div className={styles["home__visual"]} aria-hidden="true">
-                        <div className={styles["home__statement"]}>
-                            {HERO_STATEMENT_LINES.map((line) => (
-                                <span key={line} className={styles["home__statementLine"]}>{line}</span>
-                            ))}
+                    {!isLightMobileStatement ? (
+                        <div className={styles["home__visual"]} aria-hidden="true">
+                            <div className={styles["home__statement"]}>
+                                {heroStatementLines.map((line) => (
+                                    <span key={line} className={styles["home__statementLine"]}>{line}</span>
+                                ))}
+                            </div>
                         </div>
-                    </div>
+                    ) : null}
                 </div>
 
                 <SocialLinks

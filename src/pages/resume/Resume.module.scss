@@ -1,58 +1,33 @@
+@use "../../styles/documentPage" as documentPage;
+
 .resume {
-  min-height: 100vh;
-  padding: clamp(1.4rem, 2vw, 2.4rem);
-  background:
-    radial-gradient(circle at top, rgba(36, 75, 118, 0.08), transparent 34%),
-    #e9edf2;
-  color: #253347;
+  @include documentPage.pageRoot;
 }
 
 .toolbar {
-  width: min(100%, 86rem);
-  margin: 0 auto 1.6rem;
-  display: flex;
-  flex-wrap: wrap;
+  @include documentPage.toolbar;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.8rem;
 }
 
 .backLink,
 .downloadLink {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 3.8rem;
-  padding: 0 1.45rem;
-  border-radius: 999px;
-  text-decoration: none;
-  font-size: 1.25rem;
-  font-weight: 600;
-  transition:
-    border-color 0.2s ease,
-    color 0.2s ease,
-    background-color 0.2s ease;
+  @include documentPage.actionLinkBase;
 }
 
 .backLink {
-  border: 1px solid rgba(24, 58, 93, 0.16);
-  background: rgba(255, 255, 255, 0.72);
-  color: #173e6b;
+  @include documentPage.secondaryAction;
 }
 
 .backLink:hover {
-  border-color: rgba(24, 58, 93, 0.26);
-  color: #0f2f52;
+  @include documentPage.secondaryActionHover;
 }
 
 .downloadLink {
-  border: 1px solid rgba(21, 72, 123, 0.18);
-  background: #173e6b;
-  color: #ffffff;
+  @include documentPage.primaryAction;
 }
 
 .downloadLink:hover {
-  background: #0f2f52;
+  @include documentPage.primaryActionHover;
 }
 
 .paperStack {
@@ -61,14 +36,7 @@
 }
 
 .sheet {
-  width: min(100%, 86rem);
-  margin: 0 auto;
-  padding: clamp(2.4rem, 3vw, 4rem);
-  background: #ffffff;
-  border-radius: 0.6rem;
-  box-shadow:
-    0 1.2rem 3.2rem rgba(18, 31, 50, 0.08),
-    0 0.3rem 0.8rem rgba(18, 31, 50, 0.06);
+  @include documentPage.sheet(0.6rem);
 }
 
 .header {

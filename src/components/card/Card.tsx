@@ -70,7 +70,7 @@ const Card: React.FC<CardProps> = ({
         >
             {isPointerReorderable && <span className={styles.card__dragHint}>Drag & drop</span>}
 
-            <div className={styles.card__media}>
+            <div className={styles.card__media} data-project-card-media>
                 {isContainedImage ? (
                     <div className={styles.card__containedFrame} style={imageStyle}>
                         <img
@@ -104,7 +104,7 @@ const Card: React.FC<CardProps> = ({
                 )}
             </div>
 
-            <div className={styles.card__content}>
+            <div className={styles.card__content} data-project-card-content>
                 <div className={styles.card__header}>
                     <div className={styles.card__meta}>
                         <span className={styles.card__eyebrow}>{eyebrow}</span>

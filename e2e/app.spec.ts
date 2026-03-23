@@ -111,19 +111,28 @@ test("mobile home and projects stay inside the viewport", async ({page}, testInf
     expect(projectMetrics.scrollWidth).toBeLessThanOrEqual(projectMetrics.clientWidth + 1)
 
     const featuredCard = page.locator('[data-project-card-id="4"]').first()
-    const featuredImageBox = await featuredCard.locator("img").first().boundingBox()
-    const featuredTitleBox = await featuredCard.getByRole("heading", {name: /^Flip Clock$/i}).boundingBox()
+    const featuredMediaBox = await featuredCard.locator("[data-project-card-media]").boundingBox()
+    const featuredContentBox = await featuredCard.locator("[data-project-card-content]").boundingBox()
     const featuredCardBox = await featuredCard.boundingBox()
     const projectsViewport = page.viewportSize()
 
-    expect(featuredImageBox).not.toBeNull()
-    expect(featuredTitleBox).not.toBeNull()
+    expect(featuredMediaBox).not.toBeNull()
+    expect(featuredContentBox).not.toBeNull()
     expect(featuredCardBox).not.toBeNull()
     expect(projectsViewport).not.toBeNull()
     expect(featuredCardBox!.x).toBeGreaterThanOrEqual(0)
     expect(featuredCardBox!.x + featuredCardBox!.width).toBeLessThanOrEqual(projectsViewport!.width + 1)
-    expect(featuredTitleBox!.y).toBeGreaterThanOrEqual(featuredImageBox!.y + featuredImageBox!.height - 2)
+    expect(featuredContentBox!.y).toBeGreaterThanOrEqual(featuredMediaBox!.y + featuredMediaBox!.height - 24)
     expect(homeMetrics.scrollWidth).toBeLessThanOrEqual(homeMetrics.clientWidth + 1)
+})
+
+test("mobile hero keeps primary actions in the first viewport on modern phone widths", async ({page}, testInfo) => {
+    test.skip(!/^phone-/.test(testInfo.project.name) || testInfo.project.name === "phone-320")
+
+    await page.goto("/")
+
+    await expect(page.getByRole("button", {name: "Resume"})).toBeInViewport()
+    await expect(page.getByRole("button", {name: "Portfolio"})).toBeInViewport()
 })
 
 test("desktop sections and footer stay inside the viewport with the sidebar open", async ({page}, testInfo) => {

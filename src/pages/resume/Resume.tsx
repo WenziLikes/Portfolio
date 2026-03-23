@@ -59,7 +59,6 @@ const Resume: React.FC = () => {
 
                                 <div className={styles.contactLine}>
                                     <ProtectedEmailLink eventSource="resume_contact_block" title="Email Viacheslav"/>
-                                    <span className={styles.contactDivider} aria-hidden="true">|</span>
                                 </div>
 
                                 <div className={styles.contactLine}>

@@ -44,7 +44,7 @@ const SocialLinks: React.FC<SocialLinksProps> = ({
                 <li className={itemClassName} key={link.id}>
                     {link.id === "email" ? (
                         <ProtectedEmailLink
-                            ariaLabel="Open email composer"
+                            ariaLabel="Email Viacheslav"
                             className={linkClassName}
                             eventSource={eventSource}
                             title={link.label}
