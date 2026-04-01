@@ -192,6 +192,14 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
 
     const nextTheme = theme === "dark" ? "light" : "dark"
 
+    const handleThemeSelect = (nextSelectedTheme: "dark" | "light") => {
+        if (nextSelectedTheme === theme) {
+            return
+        }
+
+        setTheme(nextSelectedTheme)
+    }
+
     const handleThemeToggle = () => {
         setTheme(nextTheme)
     }
@@ -221,24 +229,64 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
     const highlightedSection = isRouteMainSection && routeSectionId !== "home" ? routeSectionId : activeSection
     const isDesktopCompact = !isMobileViewport && isDesktopSidebarCollapsed
     const initials = `${PROFILE.firstName.charAt(0)}${PROFILE.lastName.charAt(0)}`
+    const renderThemeSwitcher = (extraClassName?: string) => (
+        <div
+            className={extraClassName ? `${styles.themeSwitch} ${extraClassName}` : styles.themeSwitch}
+            data-mode={theme}
+            role="group"
+            aria-label="Theme switcher"
+        >
+            <button
+                type="button"
+                className={`${styles.themeCard} ${theme === "dark" ? styles.themeCardActive : ""}`}
+                data-tone="dark"
+                onClick={() => handleThemeSelect("dark")}
+                aria-pressed={theme === "dark"}
+                aria-label="Switch to dark theme"
+                title={isDesktopCompact ? "Dark theme" : undefined}
+            >
+                <span className={styles.themeCardIcon} aria-hidden="true">
+                    {renderIcon(THEME_ICON_PATHS.dark, styles.themeIconSvg)}
+                </span>
+                <span className={styles.themeCardTitle}>Dark</span>
+            </button>
+
+            <button
+                type="button"
+                className={`${styles.themeCard} ${theme === "light" ? styles.themeCardActive : ""}`}
+                data-tone="light"
+                onClick={() => handleThemeSelect("light")}
+                aria-pressed={theme === "light"}
+                aria-label="Switch to light theme"
+                title={isDesktopCompact ? "Light theme" : undefined}
+            >
+                <span className={styles.themeCardIcon} aria-hidden="true">
+                    {renderIcon(THEME_ICON_PATHS.light, styles.themeIconSvg)}
+                </span>
+                <span className={styles.themeCardTitle}>Light</span>
+            </button>
+        </div>
+    )
 
     return (
         <section
             className={`portfolio-sidebar ${styles.sidebar} ${isDesktopCompact ? `portfolio-sidebar--compact ${styles.sidebarCompact}` : ""} ${isSidebarVisible ? "portfolio-sidebar--visible" : `portfolio-sidebar--hidden ${styles.hidden}`} ${isMobileViewport ? styles.sidebarMobile : ""}`}
         >
-            <button
-                type="button"
-                className={styles.themeToggleFloating}
-                data-mode={theme}
-                onClick={handleThemeToggle}
-                aria-label={`Switch to ${nextTheme} theme`}
-                title={`Switch to ${nextTheme} theme`}
-            >
-                <span className={styles.themeToggleIconWrap} aria-hidden="true">
-                    {renderIcon(theme === "dark" ? THEME_ICON_PATHS.dark : THEME_ICON_PATHS.light, styles.themeToggleIcon)}
-                </span>
-                <span className={styles.themeToggleText}>{theme === "dark" ? "Dark" : "Light"}</span>
-            </button>
+            {!isMobileViewport ? (
+                <button
+                    type="button"
+                    className={styles.themeToggleFloating}
+                    data-mode={theme}
+                    onClick={handleThemeToggle}
+                    aria-label={`Switch to ${nextTheme} theme`}
+                    title={`Switch to ${nextTheme} theme`}
+                >
+                    <span className={styles.themeToggleIconWrap} aria-hidden="true">
+                        {renderIcon(theme === "dark" ? THEME_ICON_PATHS.dark : THEME_ICON_PATHS.light, styles.themeToggleIcon)}
+                    </span>
+                    <span className={styles.themeToggleText}>{theme === "dark" ? "Dark" : "Light"}</span>
+                </button>
+            ) : null}
 
             <div className={`${styles.mobileBar} ${isMobileBarVisible ? styles.mobileBarVisible : styles.mobileBarHidden}`}>
                 <button
@@ -256,6 +304,8 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
                 </button>
 
                 <div className={styles.mobileBarActions}>
+                    {!isMobileMenuOpen ? renderThemeSwitcher(styles.mobileThemeSwitch) : null}
+
                     <button
                         type="button"
                         className={`${styles.mobileMenuButton} ${isMobileMenuOpen ? styles.mobileMenuButtonOpen : ""}`}
@@ -412,6 +462,13 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
                                 </ul>
                             </div>
                         </nav>
+
+                        {isMobileViewport ? (
+                            <div className={styles.themeBlock}>
+                                <span className={styles.themeLabel}>Theme</span>
+                                {renderThemeSwitcher()}
+                            </div>
+                        ) : null}
                     </div>
 
                     <div className={styles.contacts}>

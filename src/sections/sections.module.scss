@@ -1551,7 +1551,7 @@
     --home-mobile-media-height: clamp(18.6rem, 56vw, 23.5rem);
     --home-mobile-card-offset: clamp(8.1rem, 24vw, 10.1rem);
     --home-mobile-light-statement-top: calc(var(--home-mobile-top-edge) + clamp(3.15rem, 9.2vw, 4.55rem) + 50px);
-    --home-mobile-light-statement-right: calc(0.7rem + 150px);
+    --home-mobile-light-statement-right: calc(0.7rem + 50px);
     --home-mobile-light-statement-width: min(82vw, 29rem);
   }
 
@@ -1974,7 +1974,7 @@
     --home-mobile-media-height: clamp(16.4rem, 60vw, 20.6rem);
     --home-mobile-card-offset: clamp(7.25rem, 23vw, 9.2rem);
     --home-mobile-light-statement-top: calc(var(--home-mobile-top-edge) + clamp(2.95rem, 8.8vw, 4.15rem) + 50px);
-    --home-mobile-light-statement-right: calc(0.56rem + 150px);
+    --home-mobile-light-statement-right: calc(0.56rem + 50px);
     --home-mobile-light-statement-width: min(80vw, 26rem);
   }
 
