@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;200;300;400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Varela+Round&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
 
 @font-face {
   font-family: "MurphyScript";
@@ -8,7 +8,7 @@
 }
 
 :root {
-  --font-family: "Varela Round", sans-serif;
+  --font-family: "Manrope", sans-serif;
   --font-family1: "Josefin Sans", sans-serif;
   --font-family2: "MurphyScript", cursive;
 
@@ -126,7 +126,7 @@ html {
 }
 
 body {
-  font-family: var(--font-family), serif;
+  font-family: var(--font-family), sans-serif;
   background: var(--page-bg);
   color: var(--text-color);
   transition: background-color 0.25s ease, color 0.25s ease;

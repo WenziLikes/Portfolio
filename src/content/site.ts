@@ -7,6 +7,14 @@ export interface MainSection {
 
 export type MainSectionId = MainSection["id"]
 
+export interface ExternalNavLink {
+    displayTitle: string
+    href: string
+    id: "vm-studio"
+    label: string
+    subtitle?: string
+}
+
 export interface SocialLink {
     id: "email" | "phone" | "github" | "linkedin"
     href?: string
@@ -87,6 +95,16 @@ export const MAIN_SECTIONS: MainSection[] = [
     {id: "about", label: "About"},
     {id: "experience", label: "Experience"},
     {id: "projects", label: "Projects"},
+]
+
+export const EXTERNAL_NAV_LINKS: ExternalNavLink[] = [
+    {
+        displayTitle: "VM STUDIO",
+        href: "https://vmstudio.dev",
+        id: "vm-studio",
+        label: "Vm Studio",
+        subtitle: "DIGITAL PRODUCT STUDIO",
+    },
 ]
 
 export const SOCIAL_LINKS: SocialLink[] = [

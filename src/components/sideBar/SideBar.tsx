@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
 import {useLocation, useNavigate} from "react-router-dom"
 import styles from "./SideBar.module.scss"
-import {MAIN_SECTIONS, PROFILE, type MainSectionId} from "../../content/site"
+import {EXTERNAL_NAV_LINKS, MAIN_SECTIONS, PROFILE, type MainSectionId} from "../../content/site"
 import {getSectionIdFromPath, getSectionPath} from "../../constants/navigation"
 import SocialLinks from "../socialLinks/SocialLinks"
 import {scrollToSectionId} from "../../utils/scroll"
@@ -19,6 +19,10 @@ const SECTION_ICON_PATHS: Record<MainSectionId, string> = {
     home: "M4.5 10.5 12 4l7.5 6.5v8a1 1 0 0 1-1 1h-4.25v-5.5h-4.5V19.5H5.5a1 1 0 0 1-1-1v-8Z",
     projects: "M4.5 6.75A1.75 1.75 0 0 1 6.25 5h3.1c.33 0 .65.13.88.37l1.15 1.13c.23.24.55.37.88.37h5.49a1.75 1.75 0 0 1 1.75 1.75v8.13a1.75 1.75 0 0 1-1.75 1.75H6.25A1.75 1.75 0 0 1 4.5 16.75v-10Z",
 }
+
+const EXTERNAL_NAV_ICON_PATHS = {
+    "vm-studio": "M8 5.75A2.25 2.25 0 0 1 10.25 3.5h8A2.25 2.25 0 0 1 20.5 5.75v8A2.25 2.25 0 0 1 18.25 16h-1.5a.75.75 0 0 1 0-1.5h1.5a.75.75 0 0 0 .75-.75v-8a.75.75 0 0 0-.75-.75h-8a.75.75 0 0 0-.75.75v1.5a.75.75 0 0 1-1.5 0v-1.5ZM13.47 9.47a.75.75 0 0 1 1.06 0l3 3a.75.75 0 0 1 0 1.06l-3 3a.75.75 0 1 1-1.06-1.06l1.72-1.72H4.75a.75.75 0 0 1 0-1.5h10.44l-1.72-1.72a.75.75 0 0 1 0-1.06Z",
+} as const
 
 const THEME_ICON_PATHS: Record<"dark" | "light", string> = {
     dark: "M14.8 3.2a.75.75 0 0 1 .86.96A7.25 7.25 0 1 0 19.84 13a.75.75 0 0 1 .96.86 8.75 8.75 0 1 1-6.96-10.66.75.75 0 0 1 .96 0Z",
@@ -186,11 +190,9 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
         setIsMobileMenuOpen(false)
     }, [isMobileViewport, location.pathname])
 
-    const handleThemeSelect = (nextTheme: "dark" | "light") => {
-        if (nextTheme === theme) {
-            return
-        }
+    const nextTheme = theme === "dark" ? "light" : "dark"
 
+    const handleThemeToggle = () => {
         setTheme(nextTheme)
     }
 
@@ -219,49 +221,25 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
     const highlightedSection = isRouteMainSection && routeSectionId !== "home" ? routeSectionId : activeSection
     const isDesktopCompact = !isMobileViewport && isDesktopSidebarCollapsed
     const initials = `${PROFILE.firstName.charAt(0)}${PROFILE.lastName.charAt(0)}`
-    const renderThemeSwitcher = (extraClassName?: string) => (
-        <div
-            className={extraClassName ? `${styles.themeSwitch} ${extraClassName}` : styles.themeSwitch}
-            data-mode={theme}
-            role="group"
-            aria-label="Theme switcher"
-        >
-            <button
-                type="button"
-                className={`${styles.themeCard} ${theme === "dark" ? styles.themeCardActive : ""}`}
-                data-tone="dark"
-                onClick={() => handleThemeSelect("dark")}
-                aria-pressed={theme === "dark"}
-                aria-label="Switch to dark theme"
-                title={isDesktopCompact ? "Dark theme" : undefined}
-            >
-                <span className={styles.themeCardIcon} aria-hidden="true">
-                    {renderIcon(THEME_ICON_PATHS.dark, styles.themeIconSvg)}
-                </span>
-                <span className={styles.themeCardTitle}>Dark</span>
-            </button>
-
-            <button
-                type="button"
-                className={`${styles.themeCard} ${theme === "light" ? styles.themeCardActive : ""}`}
-                data-tone="light"
-                onClick={() => handleThemeSelect("light")}
-                aria-pressed={theme === "light"}
-                aria-label="Switch to light theme"
-                title={isDesktopCompact ? "Light theme" : undefined}
-            >
-                <span className={styles.themeCardIcon} aria-hidden="true">
-                    {renderIcon(THEME_ICON_PATHS.light, styles.themeIconSvg)}
-                </span>
-                <span className={styles.themeCardTitle}>Light</span>
-            </button>
-        </div>
-    )
 
     return (
         <section
             className={`portfolio-sidebar ${styles.sidebar} ${isDesktopCompact ? `portfolio-sidebar--compact ${styles.sidebarCompact}` : ""} ${isSidebarVisible ? "portfolio-sidebar--visible" : `portfolio-sidebar--hidden ${styles.hidden}`} ${isMobileViewport ? styles.sidebarMobile : ""}`}
         >
+            <button
+                type="button"
+                className={styles.themeToggleFloating}
+                data-mode={theme}
+                onClick={handleThemeToggle}
+                aria-label={`Switch to ${nextTheme} theme`}
+                title={`Switch to ${nextTheme} theme`}
+            >
+                <span className={styles.themeToggleIconWrap} aria-hidden="true">
+                    {renderIcon(theme === "dark" ? THEME_ICON_PATHS.dark : THEME_ICON_PATHS.light, styles.themeToggleIcon)}
+                </span>
+                <span className={styles.themeToggleText}>{theme === "dark" ? "Dark" : "Light"}</span>
+            </button>
+
             <div className={`${styles.mobileBar} ${isMobileBarVisible ? styles.mobileBarVisible : styles.mobileBarHidden}`}>
                 <button
                     type="button"
@@ -278,8 +256,6 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
                 </button>
 
                 <div className={styles.mobileBarActions}>
-                    {!isMobileMenuOpen ? renderThemeSwitcher(styles.mobileThemeSwitch) : null}
-
                     <button
                         type="button"
                         className={`${styles.mobileMenuButton} ${isMobileMenuOpen ? styles.mobileMenuButtonOpen : ""}`}
@@ -412,14 +388,30 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
                                             </a>
                                         </li>
                                     ))}
+                                    {EXTERNAL_NAV_LINKS.map((link) => (
+                                        <li key={link.id} className={styles.navItemStudioGroup}>
+                                            <a
+                                                href={link.href}
+                                                target="_blank"
+                                                rel="noreferrer noopener"
+                                                className={styles.navItem}
+                                                aria-label={link.label}
+                                                title={isDesktopCompact ? link.label : undefined}
+                                                onClick={() => setIsMobileMenuOpen(false)}
+                                            >
+                                                <span className={styles.navItemIcon} aria-hidden="true">
+                                                    {renderIcon(EXTERNAL_NAV_ICON_PATHS[link.id], styles.navIconSvg)}
+                                                </span>
+                                                <span className={styles.navItemLabel}>{link.displayTitle}</span>
+                                            </a>
+                                            {link.subtitle ? (
+                                                <span className={styles.navItemStudioSubtitle}>{link.subtitle}</span>
+                                            ) : null}
+                                        </li>
+                                    ))}
                                 </ul>
                             </div>
                         </nav>
-
-                        <div className={styles.themeBlock}>
-                            <span className={styles.themeLabel}>Theme</span>
-                            {renderThemeSwitcher()}
-                        </div>
                     </div>
 
                     <div className={styles.contacts}>

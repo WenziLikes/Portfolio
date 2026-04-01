@@ -1550,6 +1550,9 @@
     --home-mobile-media-top: calc(var(--home-mobile-top-edge) + 2.5rem);
     --home-mobile-media-height: clamp(18.6rem, 56vw, 23.5rem);
     --home-mobile-card-offset: clamp(8.1rem, 24vw, 10.1rem);
+    --home-mobile-light-statement-top: calc(var(--home-mobile-top-edge) + clamp(3.15rem, 9.2vw, 4.55rem) + 50px);
+    --home-mobile-light-statement-right: calc(0.7rem + 150px);
+    --home-mobile-light-statement-width: min(82vw, 29rem);
   }
 
   .home__stage {
@@ -1597,38 +1600,38 @@
 
   .homeLight .home__mobileVisual {
     position: absolute;
-    top: calc(var(--home-mobile-top-edge) + clamp(5.8rem, 16vw, 7.2rem) + 165px);
-    right: 0.95rem;
-    width: max-content;
+    top: var(--home-mobile-light-statement-top);
+    right: var(--home-mobile-light-statement-right);
+    width: var(--home-mobile-light-statement-width);
     display: flex;
     align-items: flex-start;
     justify-content: flex-end;
     overflow: visible;
     pointer-events: none;
-    z-index: 1;
+    z-index: 0;
   }
 
   .homeLight .home__mobileVisual .home__statement {
     display: grid;
     justify-items: end;
-    width: max-content;
-    max-width: none;
+    width: 100%;
+    max-width: 100%;
     text-align: right;
-    gap: 0.12rem;
+    gap: 0.18rem;
     transform: none;
-    opacity: 0.9;
+    opacity: 0.96;
   }
 
   .homeLight .home__mobileVisual .home__statementLine {
     white-space: nowrap;
-    font-size: clamp(4.05rem, 10.8vw, 5.1rem);
+    font-size: clamp(4.1rem, 10.8vw, 5.05rem);
     line-height: 0.78;
-    color: rgba(127, 141, 155, 0.2);
-    -webkit-text-stroke: 0.42px rgba(255, 255, 255, 0.34);
+    color: rgba(114, 128, 142, 0.28);
+    -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.46);
     text-shadow:
-      -1px -1px 0 rgba(148, 160, 171, 0.16),
-      1px 1px 0 rgba(255, 255, 255, 0.68),
-      0 1.4rem 2.8rem rgba(166, 184, 197, 0.16);
+      -1px -1px 0 rgba(148, 160, 171, 0.14),
+      1px 1px 0 rgba(255, 255, 255, 0.78),
+      0 1.2rem 2.4rem rgba(166, 184, 197, 0.14);
   }
 
   .home__media {
@@ -1970,6 +1973,9 @@
     --home-mobile-media-top: calc(var(--home-mobile-top-edge) + 2.2rem);
     --home-mobile-media-height: clamp(16.4rem, 60vw, 20.6rem);
     --home-mobile-card-offset: clamp(7.25rem, 23vw, 9.2rem);
+    --home-mobile-light-statement-top: calc(var(--home-mobile-top-edge) + clamp(2.95rem, 8.8vw, 4.15rem) + 50px);
+    --home-mobile-light-statement-right: calc(0.56rem + 150px);
+    --home-mobile-light-statement-width: min(80vw, 26rem);
   }
 
   .home__stage {
@@ -2187,16 +2193,16 @@
   }
 
   .homeLight .home__mobileVisual {
-    top: calc(var(--home-mobile-top-edge) + clamp(5.25rem, 15vw, 6.5rem) + 165px);
-    right: 0.72rem;
+    top: var(--home-mobile-light-statement-top);
+    right: var(--home-mobile-light-statement-right);
   }
 
   .homeLight .home__mobileVisual .home__statement {
-    gap: 0.08rem;
+    gap: 0.12rem;
   }
 
   .homeLight .home__mobileVisual .home__statementLine {
-    font-size: clamp(3.5rem, 10vw, 4.2rem);
+    font-size: clamp(3.55rem, 10vw, 4.18rem);
   }
 
   .home__summary {
