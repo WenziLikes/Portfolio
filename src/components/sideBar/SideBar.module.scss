@@ -1224,11 +1224,36 @@
   padding-top: 1.2rem;
 }
 
+.contactsStudioListItem {
+  display: flex;
+  align-items: center;
+}
+
+.contactsStudioLink {
+  width: auto;
+  margin-top: 0;
+}
+
+.contactsStudioLink > .navItem {
+  padding-left: 0;
+  min-height: auto;
+}
+
+.contactsStudioLink > .navItem::before,
+.contactsStudioLink > .navItem:hover::before {
+  content: none;
+}
+
+.contactsStudioLink > .navItemStudioSubtitle {
+  padding-left: 0;
+}
+
 .contactsList {
   list-style: none;
   display: flex;
   align-items: center;
   gap: 1.2rem;
+  flex-wrap: wrap;
 }
 
 .contactLink {
@@ -1486,7 +1511,26 @@
   margin-top: auto;
   padding-top: 1.2rem;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  gap: 0.9rem;
+}
+
+.sidebarCompact .contactsStudioListItem {
+  width: auto;
+}
+
+.sidebarCompact .contactsStudioLink {
+  width: auto;
+}
+
+.sidebarCompact .contactsStudioLink > .navItem {
+  padding-left: 0;
+}
+
+.sidebarCompact .contactsStudioLink > .navItemStudioSubtitle {
+  display: none;
 }
 
 .sidebarCompact .contactsList {
@@ -1948,6 +1992,18 @@
     margin-top: 0.55rem;
     font-size: 0.72rem;
     letter-spacing: 0.18em;
+  }
+
+  .contactsStudioLink {
+    margin-top: 0;
+  }
+
+  .contactsStudioListItem {
+    width: 100%;
+  }
+
+  .contactsStudioLink > .navItemStudioSubtitle {
+    padding-left: 0;
   }
 
   .active {

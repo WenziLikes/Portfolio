@@ -12,6 +12,8 @@ const ICON_PATHS: Record<SocialLink["id"], string> = {
 
 interface SocialLinksProps {
     ariaLabel?: string
+    children?: React.ReactNode
+    childrenPosition?: "end" | "start"
     eventSource?: string
     iconClassName: string
     itemClassName?: string
@@ -21,6 +23,8 @@ interface SocialLinksProps {
 
 const SocialLinks: React.FC<SocialLinksProps> = ({
     ariaLabel = "Contact links",
+    children,
+    childrenPosition = "end",
     eventSource = "social_links",
     iconClassName,
     itemClassName,
@@ -40,6 +44,7 @@ const SocialLinks: React.FC<SocialLinksProps> = ({
 
     return (
         <ul className={listClassName} aria-label={ariaLabel}>
+            {childrenPosition === "start" ? children : null}
             {SOCIAL_LINKS.map((link) => (
                 <li className={itemClassName} key={link.id}>
                     {link.id === "email" ? (
@@ -70,6 +75,7 @@ const SocialLinks: React.FC<SocialLinksProps> = ({
                     )}
                 </li>
             ))}
+            {childrenPosition === "end" ? children : null}
         </ul>
     )
 }

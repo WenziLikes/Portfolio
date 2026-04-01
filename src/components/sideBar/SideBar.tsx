@@ -229,6 +229,30 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
     const highlightedSection = isRouteMainSection && routeSectionId !== "home" ? routeSectionId : activeSection
     const isDesktopCompact = !isMobileViewport && isDesktopSidebarCollapsed
     const initials = `${PROFILE.firstName.charAt(0)}${PROFILE.lastName.charAt(0)}`
+    const renderStudioLinkContent = (
+        link: (typeof EXTERNAL_NAV_LINKS)[number],
+        title?: string
+    ) => (
+        <>
+            <a
+                href={link.href}
+                target="_blank"
+                rel="noreferrer noopener"
+                className={styles.navItem}
+                aria-label={link.label}
+                title={title}
+                onClick={() => setIsMobileMenuOpen(false)}
+            >
+                <span className={styles.navItemIcon} aria-hidden="true">
+                    {renderIcon(EXTERNAL_NAV_ICON_PATHS[link.id], styles.navIconSvg)}
+                </span>
+                <span className={styles.navItemLabel}>{link.displayTitle}</span>
+            </a>
+            {link.subtitle ? (
+                <span className={styles.navItemStudioSubtitle}>{link.subtitle}</span>
+            ) : null}
+        </>
+    )
     const renderThemeSwitcher = (extraClassName?: string) => (
         <div
             className={extraClassName ? `${styles.themeSwitch} ${extraClassName}` : styles.themeSwitch}
@@ -272,7 +296,7 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
         <section
             className={`portfolio-sidebar ${styles.sidebar} ${isDesktopCompact ? `portfolio-sidebar--compact ${styles.sidebarCompact}` : ""} ${isSidebarVisible ? "portfolio-sidebar--visible" : `portfolio-sidebar--hidden ${styles.hidden}`} ${isMobileViewport ? styles.sidebarMobile : ""}`}
         >
-            {!isMobileViewport ? (
+            {!isMobileViewport && (!isSidebarVisible || isDesktopCompact) ? (
                 <button
                     type="button"
                     className={styles.themeToggleFloating}
@@ -438,32 +462,11 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
                                             </a>
                                         </li>
                                     ))}
-                                    {EXTERNAL_NAV_LINKS.map((link) => (
-                                        <li key={link.id} className={styles.navItemStudioGroup}>
-                                            <a
-                                                href={link.href}
-                                                target="_blank"
-                                                rel="noreferrer noopener"
-                                                className={styles.navItem}
-                                                aria-label={link.label}
-                                                title={isDesktopCompact ? link.label : undefined}
-                                                onClick={() => setIsMobileMenuOpen(false)}
-                                            >
-                                                <span className={styles.navItemIcon} aria-hidden="true">
-                                                    {renderIcon(EXTERNAL_NAV_ICON_PATHS[link.id], styles.navIconSvg)}
-                                                </span>
-                                                <span className={styles.navItemLabel}>{link.displayTitle}</span>
-                                            </a>
-                                            {link.subtitle ? (
-                                                <span className={styles.navItemStudioSubtitle}>{link.subtitle}</span>
-                                            ) : null}
-                                        </li>
-                                    ))}
                                 </ul>
                             </div>
                         </nav>
 
-                        {isMobileViewport ? (
+                        {isMobileViewport || (isSidebarVisible && !isDesktopCompact) ? (
                             <div className={styles.themeBlock}>
                                 <span className={styles.themeLabel}>Theme</span>
                                 {renderThemeSwitcher()}
@@ -473,12 +476,21 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
 
                     <div className={styles.contacts}>
                         <SocialLinks
+                            childrenPosition="start"
                             eventSource="sidebar_social_links"
                             iconClassName={styles.contactIcon}
                             itemClassName={undefined}
                             linkClassName={styles.contactLink}
                             listClassName={styles.contactsList}
-                        />
+                        >
+                            {EXTERNAL_NAV_LINKS.map((link) => (
+                                <li key={link.id} className={styles.contactsStudioListItem}>
+                                    <div className={`${styles.navItemStudioGroup} ${styles.contactsStudioLink}`}>
+                                        {renderStudioLinkContent(link, isDesktopCompact ? link.label : undefined)}
+                                    </div>
+                                </li>
+                            ))}
+                        </SocialLinks>
                     </div>
                 </div>
             </div>
