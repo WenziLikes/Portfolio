@@ -18,6 +18,13 @@ test("deep links and not found routes work", async ({page}) => {
     await expect(page).toHaveURL(/\/about$/)
     await expect(page.getByRole("heading", {name: /About Me/i})).toBeVisible()
 
+    await page.goto("/expertise")
+    await expect(page).toHaveURL(/\/expertise$/)
+    await expect(page.getByRole("heading", {name: /React, TypeScript, and full stack expertise/i})).toBeVisible()
+
+    await page.goto("/home")
+    await expect(page).toHaveURL(/\/$/)
+
     await page.goto("/missing")
 
     await expect(page.getByRole("heading", {name: /Page not found/i})).toBeVisible()
@@ -143,7 +150,7 @@ test("desktop sections and footer stay inside the viewport with the sidebar open
 
     expect(viewport).not.toBeNull()
 
-    for (const route of ["/home", "/about", "/experience", "/projects"]) {
+    for (const route of ["/", "/about", "/expertise", "/experience", "/projects"]) {
         await page.goto(route)
 
         const metrics = await content.evaluate((element) => ({
@@ -154,9 +161,9 @@ test("desktop sections and footer stay inside the viewport with the sidebar open
         expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.clientWidth + 1)
     }
 
-    await page.goto("/home")
+    await page.goto("/")
 
-    const homeHeadingBox = await page.getByRole("heading", {name: /^Murakhin$/i}).boundingBox()
+    const homeHeadingBox = await page.locator("section#home h1").boundingBox()
     expect(homeHeadingBox).not.toBeNull()
     expect(homeHeadingBox!.x).toBeGreaterThanOrEqual(0)
     expect(homeHeadingBox!.x + homeHeadingBox!.width).toBeLessThanOrEqual(viewport!.width + 1)
@@ -167,6 +174,13 @@ test("desktop sections and footer stay inside the viewport with the sidebar open
     expect(aboutTitleBox).not.toBeNull()
     expect(aboutTitleBox!.x).toBeGreaterThanOrEqual(0)
     expect(aboutTitleBox!.x + aboutTitleBox!.width).toBeLessThanOrEqual(viewport!.width + 1)
+
+    await page.goto("/expertise")
+
+    const expertiseTitleBox = await page.getByRole("heading", {name: /React, TypeScript, and full stack expertise/i}).boundingBox()
+    expect(expertiseTitleBox).not.toBeNull()
+    expect(expertiseTitleBox!.x).toBeGreaterThanOrEqual(0)
+    expect(expertiseTitleBox!.x + expertiseTitleBox!.width).toBeLessThanOrEqual(viewport!.width + 1)
 
     await page.goto("/experience")
 

@@ -7,6 +7,7 @@ The project is a static-hosted React portfolio that combines:
 - a one-page scrolling portfolio shell
 - deep-linked section routes for the main portfolio flow
 - dedicated routed pages for resume and legal content
+- build-time prerendering for crawlable route HTML
 - centralized content and contact helpers
 - persisted UI state for theme, sidebar layout, and project ordering
 - release-focused metadata, testing, and deployment support
@@ -15,7 +16,7 @@ The project is a static-hosted React portfolio that combines:
 
 ```mermaid
 flowchart TD
-    A["Browser request"] --> B["index.html"]
+    A["Browser request"] --> B["Pre-rendered route HTML"]
     B --> C["React + BrowserRouter"]
     C --> D["Portfolio shell routes"]
     C --> E["Standalone page routes"]
@@ -26,6 +27,9 @@ flowchart TD
     C --> I["RouteMeta"]
     F --> J["src/content/site.ts"]
     F --> K["src/content/projects.ts"]
+    I --> N["src/seo.ts"]
+    N --> J
+    N --> K
     G --> J
     H --> J
     E --> J
@@ -38,8 +42,9 @@ flowchart TD
 | Route | Role |
 | --- | --- |
 | `/` | Default portfolio landing route |
-| `/home` | Deep link to the home section |
+| `/home` | Legacy redirect to the canonical home route `/` |
 | `/about` | Deep link to the about section |
+| `/expertise` | Deep link to the expertise section |
 | `/experience` | Deep link to the experience section |
 | `/projects` | Deep link to the projects section |
 | `/resume` | Dedicated resume page |
@@ -49,7 +54,7 @@ flowchart TD
 
 ### Why this matters
 
-The app uses `BrowserRouter`, not hash routing. That keeps clean URLs, but it also means the production host must rewrite unknown paths back to `index.html`.
+The app uses `BrowserRouter`, but the release build also prerenders the public routes. That keeps clean URLs while serving crawlable HTML for the known pages and a real `404.html` for unknown routes.
 
 ## Core Runtime Pieces
 
@@ -62,7 +67,10 @@ The app uses `BrowserRouter`, not hash routing. That keeps clean URLs, but it al
 | `src/sections/projects/Projects.tsx` | Featured project layout, drag-and-drop ordering, and order persistence |
 | `src/components/footer/Footer.tsx` | Shared footer, resume download CTA, contact CTA, and legal links |
 | `src/components/protectedEmailLink/ProtectedEmailLink.tsx` | Email link rendering backed by protected contact constants |
-| `src/components/routeMeta/RouteMeta.tsx` | Runtime updates for title, description, canonical URL, and social metadata |
+| `src/components/routeMeta/RouteMeta.tsx` | Runtime updates for title, description, canonical URL, robots, schema, and social metadata |
+| `src/seo.ts` | Shared SEO metadata, schema.org generation, robots, and sitemap helpers |
+| `src/entry-server.tsx` | SSR entry used only for build-time prerendering |
+| `scripts/prerender.mjs` | Generates route HTML, `404.html`, `robots.txt`, and `sitemap.xml` after the client build |
 | `src/utils/analytics.ts` | Optional GA4 initialization and event tracking helpers |
 
 ## Content Architecture
@@ -90,8 +98,9 @@ The portfolio shell always mounts the following sequence:
 
 1. `Home`
 2. `About`
-3. `Experience`
-4. `Projects`
+3. `Expertise`
+4. `Experience`
+5. `Projects`
 
 Each section lives inside the same scroll container. `MainContent.tsx` uses `IntersectionObserver` so the URL updates as the user scrolls between sections.
 
@@ -156,6 +165,6 @@ The codebase includes release-facing operational workflows:
 
 - release documentation in `docs/`
 - automated tests with Vitest and Playwright
-- SPA rewrite configuration for multiple hosts
+- pre-rendered route HTML with static-host deployment support
 - PDF resume export
 - reproducible documentation screenshot refresh via `npm run docs:screenshots`

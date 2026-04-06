@@ -13,7 +13,7 @@ This repository contains the scrolling portfolio shell, dedicated resume and leg
 | Runtime model | Single-page React app with `BrowserRouter`, deep-link support, and scroll-synced section routes |
 | Main audiences | Recruiters, hiring managers, collaborators, and clients |
 | Visual modes | Dark and light themes with persisted preference |
-| Release target | Static hosting with SPA rewrites and a custom domain |
+| Release target | Static hosting with pre-rendered routes and a custom domain |
 
 ## Highlights
 
@@ -52,7 +52,7 @@ More screenshots:
 | Styling | SCSS Modules, global SCSS tokens |
 | Unit testing | Vitest, Testing Library, happy-dom |
 | End-to-end testing | Playwright |
-| Static hosting support | Vercel rewrites, Netlify `_redirects`, sitemap, robots, manifest |
+| Static hosting support | Pre-rendered route HTML, `404.html`, sitemap, robots, manifest |
 
 ## Quick Start
 
@@ -145,7 +145,7 @@ http://localhost:4173
 
 ## Runtime Behavior
 
-- The app uses `BrowserRouter`, so direct links such as `/home`, `/about`, `/experience`, `/projects`, `/resume`, `/privacy`, and `/copyright` require SPA rewrites in production.
+- The app uses `BrowserRouter`, and the production build prerenders the public routes into static HTML so direct links resolve without a catch-all SPA rewrite.
 - Theme state and desktop sidebar collapse state are stored in `localStorage`.
 - The home hero `Resume` button opens `/resume`; the downloadable PDF is exposed from the footer CTA and the `/resume` toolbar.
 - Desktop project cards can be reordered with drag and drop, and a custom order is stored in `localStorage`.
@@ -157,11 +157,10 @@ http://localhost:4173
 
 The project includes:
 
-- `public/_redirects` for Netlify-style routing
-- `vercel.json` for Vercel rewrites
 - `public/robots.txt`
 - `public/sitemap.xml`
 - `public/manifest.json`
+- `public/seo-preview.jpg`
 - `public/documents/viacheslav-murakhin-resume.pdf`
 - documentation screenshots in `docs/assets/`, refreshable with `npm run docs:screenshots`
 

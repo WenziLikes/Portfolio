@@ -22,10 +22,7 @@ const Footer: React.FC = () => {
                 <div className={styles.brand}>
                     <span className={styles.eyebrow}>{PROFILE.role}</span>
                     <h2 className={styles.title}>{PROFILE.fullName}</h2>
-                    <p className={styles.copy}>
-                        Full stack developer building responsive product experiences with clean frontend
-                        architecture and strong production{"\u00A0"}polish.
-                    </p>
+                    <p className={styles.copy}>{PROFILE.summary}</p>
                     <div className={styles.meta}>
                         <span className={styles.metaLine}>{PROFILE.location}</span>
                         <span className={styles.dot} aria-hidden="true">•</span>

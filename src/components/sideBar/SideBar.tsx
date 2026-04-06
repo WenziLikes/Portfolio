@@ -15,6 +15,7 @@ const DESKTOP_SIDEBAR_STORAGE_KEY = "portfolio-sidebar-collapsed"
 
 const SECTION_ICON_PATHS: Record<MainSectionId, string> = {
     about: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-6.4 8a6.4 6.4 0 0 1 12.8 0 .6.6 0 0 1-.6.6H6.2a.6.6 0 0 1-.6-.6Z",
+    expertise: "M6.75 5h10.5A1.75 1.75 0 0 1 19 6.75v10.5A1.75 1.75 0 0 1 17.25 19H6.75A1.75 1.75 0 0 1 5 17.25V6.75A1.75 1.75 0 0 1 6.75 5Zm.75 3.25a.75.75 0 0 0 0 1.5h4.25a.75.75 0 0 0 0-1.5H7.5Zm0 3.75a.75.75 0 0 0 0 1.5h9a.75.75 0 0 0 0-1.5h-9Zm0 3.75a.75.75 0 0 0 0 1.5h6.25a.75.75 0 0 0 0-1.5H7.5Z",
     experience: "M9.25 4.5a1.25 1.25 0 0 1 1.25-1.25h3a1.25 1.25 0 0 1 1.25 1.25V6h3a1.75 1.75 0 0 1 1.75 1.75v8.5A1.75 1.75 0 0 1 17.75 18h-11A1.75 1.75 0 0 1 5 16.25v-8.5A1.75 1.75 0 0 1 6.75 6h2.5Zm1.25 0V6h3V4.5h-3Zm-3.75 3a.25.25 0 0 0-.25.25V10h4v-.75a.75.75 0 0 1 1.5 0V10h4v-.75a.75.75 0 0 1 1.5 0V10h1.25V7.75a.25.25 0 0 0-.25-.25h-11Zm11 4h-1.25v.75a.75.75 0 0 1-1.5 0v-.75h-4v.75a.75.75 0 0 1-1.5 0v-.75h-4v4.75c0 .14.11.25.25.25h11c.14 0 .25-.11.25-.25V11.5Z",
     home: "M4.5 10.5 12 4l7.5 6.5v8a1 1 0 0 1-1 1h-4.25v-5.5h-4.5V19.5H5.5a1 1 0 0 1-1-1v-8Z",
     projects: "M4.5 6.75A1.75 1.75 0 0 1 6.25 5h3.1c.33 0 .65.13.88.37l1.15 1.13c.23.24.55.37.88.37h5.49a1.75 1.75 0 0 1 1.75 1.75v8.13a1.75 1.75 0 0 1-1.75 1.75H6.25A1.75 1.75 0 0 1 4.5 16.75v-10Z",
@@ -206,7 +207,7 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
 
     const handleScrollToSection = (sectionId: string) => {
         setActiveSection(sectionId)
-        navigate(getSectionPath(sectionId as "home" | "about" | "experience" | "projects"), {replace: true})
+        navigate(getSectionPath(sectionId as MainSectionId), {replace: true})
         scrollToSectionId(sectionId, isMobileViewport ? "auto" : "smooth")
         setIsMobileMenuOpen(false)
     }
@@ -380,7 +381,7 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
                             <div className={styles.brandLockup}>
                                 <h1 className={styles.name}>
                                     <a
-                                        href="/home"
+                                        href={getSectionPath("home")}
                                         className={styles.logoLink}
                                         onClick={(e) => {
                                             e.preventDefault()
@@ -414,7 +415,7 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
                                     <ul className={styles.navTop}>
                                         <li key={homeSection.id}>
                                             <a
-                                                href={`/${homeSection.id}`}
+                                                href={getSectionPath(homeSection.id)}
                                                 onClick={(e) => {
                                                     e.preventDefault()
                                                     handleScrollToSection(homeSection.id)

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import {BrowserRouter as Router, Route, Routes, useLocation} from "react-router-dom"
+import {BrowserRouter, Navigate, Route, Routes, useLocation} from "react-router-dom"
 import {Footer, RouteMeta, ScrollToSection, SideBar} from "./components"
 import {MAIN_SECTIONS} from "./content/site"
 import {CopyrightPage, MainContent, NotFound, PrivacyPage, Resume} from "./pages"
@@ -19,7 +19,7 @@ const THEME_CHROME: Record<Theme, {themeColor: string; backgroundColor: string; 
     },
 }
 
-const getInitialTheme = (): Theme => {
+const getStoredTheme = (): Theme => {
     try {
         return localStorage.getItem("theme") === "light" ? "light" : "dark"
     } catch {
@@ -76,8 +76,12 @@ const PageShell: React.FC<PageShellProps> = ({children}) => {
     )
 }
 
-const App: React.FC = () => {
-    const [theme, setTheme] = useState<Theme>(getInitialTheme)
+interface AppContentProps {
+    initialTheme?: Theme
+}
+
+export const AppContent: React.FC<AppContentProps> = ({initialTheme = "dark"}) => {
+    const [theme, setTheme] = useState<Theme>(initialTheme)
 
     useEffect(() => {
         applyBrowserTheme(theme)
@@ -88,51 +92,60 @@ const App: React.FC = () => {
         }
     }, [theme])
 
-    const portfolioPaths = ["/", ...MAIN_SECTIONS.map((section) => `/${section.id}`)]
+    const portfolioPaths = ["/", ...MAIN_SECTIONS
+        .filter((section) => section.id !== "home")
+        .map((section) => `/${section.id}`)]
 
     return (
-        <Router future={{v7_relativeSplatPath: true, v7_startTransition: true}}>
-            <div className="App">
-                <RouteMeta/>
-                <Routes>
-                    {portfolioPaths.map((path) => (
-                        <Route key={path} path={path} element={<PortfolioLayout setTheme={setTheme} theme={theme}/>}/>
-                    ))}
-                    <Route
-                        path="/resume"
-                        element={(
-                            <PageShell>
-                                <Resume/>
-                            </PageShell>
-                        )}
-                    />
-                    <Route
-                        path="/privacy"
-                        element={(
-                            <PageShell>
-                                <PrivacyPage/>
-                            </PageShell>
-                        )}
-                    />
-                    <Route
-                        path="/copyright"
-                        element={(
-                            <PageShell>
-                                <CopyrightPage/>
-                            </PageShell>
-                        )}
-                    />
-                    <Route
-                        path="*"
-                        element={(
-                            <PageShell>
-                                <NotFound/>
-                            </PageShell>
-                        )}
-                    />
-                </Routes>
-            </div>
-        </Router>
+        <div className="App">
+            <RouteMeta/>
+            <Routes>
+                {portfolioPaths.map((path) => (
+                    <Route key={path} path={path} element={<PortfolioLayout setTheme={setTheme} theme={theme}/>}/>
+                ))}
+                <Route path="/home" element={<Navigate replace to="/"/>}/>
+                <Route
+                    path="/resume"
+                    element={(
+                        <PageShell>
+                            <Resume/>
+                        </PageShell>
+                    )}
+                />
+                <Route
+                    path="/privacy"
+                    element={(
+                        <PageShell>
+                            <PrivacyPage/>
+                        </PageShell>
+                    )}
+                />
+                <Route
+                    path="/copyright"
+                    element={(
+                        <PageShell>
+                            <CopyrightPage/>
+                        </PageShell>
+                    )}
+                />
+                <Route
+                    path="*"
+                    element={(
+                        <PageShell>
+                            <NotFound/>
+                        </PageShell>
+                    )}
+                />
+            </Routes>
+        </div>
+    )
+}
+
+const App: React.FC = () => {
+    return (
+        <BrowserRouter future={{v7_relativeSplatPath: true, v7_startTransition: true}}>
+            <AppContent initialTheme={getStoredTheme()}/>
+        </BrowserRouter>
     )
 }
 

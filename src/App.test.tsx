@@ -32,6 +32,7 @@ describe("App routing", () => {
         expect(screen.getByRole("button", {name: "Resume"})).toBeInTheDocument()
         expect(screen.getByRole("button", {name: "Portfolio"})).toBeInTheDocument()
         expect(screen.getByRole("link", {name: "About"})).toHaveAttribute("href", "/about")
+        expect(screen.getByRole("link", {name: "Expertise"})).toHaveAttribute("href", "/expertise")
         expect(screen.queryByText(/hello@viacheslavmurakhin\.com/i)).not.toBeInTheDocument()
         expect(document.querySelectorAll('a[href="mailto:hello@viacheslavmurakhin.com"]').length).toBeGreaterThan(0)
     })

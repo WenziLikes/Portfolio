@@ -2,10 +2,11 @@
 
 ## Deployment Model
 
-The site is built as a static React SPA and can be deployed to any host that supports:
+The site is built as a static React app with pre-rendered route HTML and can be deployed to any host that supports:
 
 - static file serving
-- SPA rewrites for client-side routes
+- directory index resolution for route folders
+- custom `404.html` handling
 - HTTPS on the final domain
 
 ## Build Command
@@ -25,6 +26,15 @@ build/
 The final build includes:
 
 - `build/index.html`
+- `build/about/index.html`
+- `build/expertise/index.html`
+- `build/experience/index.html`
+- `build/projects/index.html`
+- `build/resume/index.html`
+- `build/privacy/index.html`
+- `build/copyright/index.html`
+- `build/home/index.html`
+- `build/404.html`
 - hashed CSS and JS bundles
 - local image and font assets
 - `build/robots.txt`
@@ -34,31 +44,22 @@ The final build includes:
 - `build/favicon.ico`
 - `build/logo192.png`
 - `build/logo512.png`
+- `build/seo-preview.jpg`
 - `build/documents/viacheslav-murakhin-resume.pdf`
-- `build/_redirects`
 
 ## Routing Requirement
 
-Because the app uses `BrowserRouter`, direct requests to routes such as:
+Because the app now ships pre-rendered HTML for the public routes, direct requests to routes such as:
 
-- `/home`
 - `/about`
+- `/expertise`
 - `/experience`
 - `/projects`
 - `/resume`
 - `/privacy`
 - `/copyright`
 
-must resolve to `index.html` on the host.
-
-If the host does not rewrite those paths, the site will work during in-app navigation but fail on hard refresh or direct link entry.
-
-## Included Host Helpers
-
-| File | Purpose |
-| --- | --- |
-| `public/_redirects` | Netlify-compatible SPA route rewriting |
-| `vercel.json` | Vercel rewrite configuration |
+should resolve to their own generated HTML files without a catch-all SPA rewrite. Unknown routes should fall through to `404.html`.
 
 ## Local Release Validation
 
@@ -125,19 +126,18 @@ Before publishing to the live domain:
 
 ### Vercel
 
-- `vercel.json` is already included
+- no extra routing config is required when publishing the generated `build/` output
 - verify that the production domain is `viacheslavmurakhin.com`
 
 ### Netlify
 
-- `public/_redirects` is already included
 - ensure the published directory is `build`
 
 ### Generic static host
 
 - upload the contents of `build/`
-- configure a catch-all rewrite to `index.html`
-- preserve static file serving for assets and documents
+- preserve directory index resolution and static file serving for assets and documents
+- let unknown routes return `404.html`
 
 ## Post-Deploy Validation
 
@@ -148,8 +148,9 @@ After the site is live:
 3. open `/privacy` directly
 4. open `/copyright` directly
 5. open `/about`, `/experience`, and `/projects` directly
-6. verify the home hero `Resume` button opens `/resume`
-7. verify the footer and `/resume` page download the current PDF
-8. verify favicon and social preview assets
-9. if analytics is enabled, verify the first visit appears in the GA4 Realtime report
-10. submit or re-submit the sitemap in the relevant search console
+6. open `/expertise` directly
+7. verify the home hero `Resume` button opens `/resume`
+8. verify the footer and `/resume` page download the current PDF
+9. verify favicon and social preview assets
+10. if analytics is enabled, verify the first visit appears in the GA4 Realtime report
+11. submit or re-submit the sitemap in the relevant search console

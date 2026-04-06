@@ -1,7 +1,7 @@
 import React, {useEffect} from "react"
 import {useLocation} from "react-router-dom"
-import {ROUTE_META, SITE_META} from "../../content/site"
 import {trackPageView} from "../../utils/analytics"
+import {getRouteMeta, getStructuredDataJson} from "../../seo"
 
 const setMetaContent = (selector: string, content: string) => {
     const element = document.querySelector(selector)
@@ -19,21 +19,37 @@ const setLinkHref = (selector: string, href: string) => {
     }
 }
 
+const setStructuredData = (selector: string, content: string) => {
+    const element = document.querySelector(selector)
+
+    if (element instanceof HTMLScriptElement) {
+        element.textContent = content
+    }
+}
+
 const RouteMeta: React.FC = () => {
     const {pathname} = useLocation()
 
     useEffect(() => {
-        const meta = ROUTE_META[pathname] ?? ROUTE_META["/"]
-        const canonicalUrl = `${SITE_META.url}${meta.path}`
+        const meta = getRouteMeta(pathname)
 
         document.title = meta.title
         setMetaContent('meta[name="description"]', meta.description)
+        setMetaContent('meta[name="robots"]', meta.robots)
         setMetaContent('meta[property="og:title"]', meta.title)
         setMetaContent('meta[property="og:description"]', meta.description)
-        setMetaContent('meta[property="og:url"]', canonicalUrl)
+        setMetaContent('meta[property="og:type"]', meta.ogType)
+        setMetaContent('meta[property="og:url"]', meta.canonicalUrl)
+        setMetaContent('meta[property="og:image"]', meta.ogImageUrl)
+        setMetaContent('meta[property="og:image:alt"]', meta.ogImageAlt)
+        setMetaContent('meta[property="og:image:width"]', String(meta.ogImageWidth))
+        setMetaContent('meta[property="og:image:height"]', String(meta.ogImageHeight))
         setMetaContent('meta[name="twitter:title"]', meta.title)
         setMetaContent('meta[name="twitter:description"]', meta.description)
-        setLinkHref('link[rel="canonical"]', canonicalUrl)
+        setMetaContent('meta[name="twitter:image"]', meta.ogImageUrl)
+        setMetaContent('meta[name="twitter:image:alt"]', meta.ogImageAlt)
+        setLinkHref('link[rel="canonical"]', meta.canonicalUrl)
+        setStructuredData('script[data-route-structured-data="true"]', getStructuredDataJson(pathname))
         trackPageView({
             location: window.location.href,
             path: pathname,

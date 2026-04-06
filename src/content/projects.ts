@@ -50,7 +50,7 @@ export const PROJECTS_INFO: CardInfo[] = [
                 label: "View repo",
             },
         ],
-        description: "Commerce platform with auth, catalog, cart, and checkout flows built as a full-stack product from scratch.",
+        description: "React, TypeScript, Java, and Spring Boot ecommerce platform with auth, catalog, cart, and checkout flows built as a full-stack product from scratch.",
         eyebrow: "Featured case study",
         id: 1,
         image: {
@@ -75,7 +75,7 @@ export const PROJECTS_INFO: CardInfo[] = [
                 label: "View repo",
             },
         ],
-        description: "Admin workspace for user operations, exports, reporting, and product support workflows across an internal dashboard.",
+        description: "React and TypeScript admin workspace for user operations, exports, reporting, and product support workflows across an internal dashboard.",
         eyebrow: "Admin platform",
         id: 2,
         image: {
@@ -99,7 +99,7 @@ export const PROJECTS_INFO: CardInfo[] = [
                 label: "View repo",
             },
         ],
-        description: "Personal portfolio with responsive sections, routed resume page, reusable UI components, legal pages, and automated test coverage.",
+        description: "Personal TypeScript portfolio site with responsive sections, routed resume page, reusable UI components, legal pages, and automated test coverage.",
         eyebrow: "Personal brand",
         id: 3,
         image: {
@@ -127,7 +127,7 @@ export const PROJECTS_INFO: CardInfo[] = [
                 label: "View repo",
             },
         ],
-        description: "macOS flip-clock screensaver built with a deterministic Canvas 2D engine, floating settings panel, multi-display support, night dimming, audio feedback, and Tauri packaging prepared for App Store distribution.",
+        description: "React and TypeScript macOS flip-clock screensaver built with a deterministic Canvas 2D engine, floating settings panel, multi-display support, night dimming, audio feedback, and Tauri packaging prepared for App Store distribution.",
         eyebrow: "App Store-ready screensaver",
         featuredActionLabel: "Explore project",
         featuredDescription: "Polished macOS flip-clock screensaver with a deterministic Canvas rendering engine, floating controls, multi-display support, night dimming, and packaging prepared for App Store release.",

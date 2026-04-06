@@ -10,7 +10,7 @@
   "scripts": {
     "start": "vite",
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc --noEmit && vite build && vite build --ssr src/entry-server.tsx --outDir build/server && node scripts/prerender.mjs",
     "preview": "vite preview",
     "export:resume": "node scripts/export-resume.mjs",
     "docs:screenshots": "playwright test --config playwright.docs.config.ts refresh-docs-screenshots.spec.ts",

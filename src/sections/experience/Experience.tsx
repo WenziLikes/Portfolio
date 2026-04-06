@@ -11,7 +11,7 @@ const Experience: React.FC = memo(() => {
     return (
         <div className={styles.experience} ref={experienceRef}>
             <h2 className={styles["experience__title"]}>Experience</h2>
-            <p className={styles["sub__title"]}>Selected roles across product, frontend, and backend work.</p>
+            <p className={styles["sub__title"]}>Selected React, TypeScript, frontend, and full stack work across product delivery.</p>
             <div className={styles["experience__timeline"]}>
                 {EXPERIENCE_TIMELINE.map((item, index) => (
                     <article

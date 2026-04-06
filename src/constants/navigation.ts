@@ -1,6 +1,11 @@
 import {MAIN_SECTIONS, type MainSectionId} from "../content/site"
 
-export const MAIN_PATHS = new Set<string>(["/", ...MAIN_SECTIONS.map((section) => `/${section.id}`)])
+export const MAIN_PATHS = new Set<string>([
+    "/",
+    ...MAIN_SECTIONS
+        .filter((section) => section.id !== "home")
+        .map((section) => `/${section.id}`),
+])
 
 export const getSectionIdFromPath = (pathname: string): MainSectionId | null => {
     const sectionId = pathname === "/" ? "home" : pathname.replace(/^\/+/, "")
@@ -11,5 +16,5 @@ export const getSectionIdFromPath = (pathname: string): MainSectionId | null => 
 }
 
 export const getSectionPath = (sectionId: MainSectionId): string => (
-    sectionId === "home" ? "/home" : `/${sectionId}`
+    sectionId === "home" ? "/" : `/${sectionId}`
 )

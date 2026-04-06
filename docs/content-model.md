@@ -21,6 +21,7 @@ This project keeps marketing, hiring, legal, and resume copy in structured TypeS
 | `MAIN_SECTIONS` | One-page navigation model |
 | `SOCIAL_LINKS` | Shared contact and external destinations for hero, footer, and resume surfaces |
 | `ABOUT_COPY`, `ABOUT_PRINCIPLES`, `ABOUT_STACK` | Homepage about section copy and capability framing |
+| `EXPERTISE_COPY`, `EXPERTISE_ITEMS`, `EXPERTISE_SIGNALS` | Homepage expertise section and content SEO cluster framing |
 | `EXPERIENCE_TIMELINE` | Homepage experience section |
 | `RESUME_PROFILE`, `RESUME_SKILLS`, `RESUME_EXPERIENCE`, `RESUME_CERTIFICATIONS`, `RESUME_ADDITIONAL_INFO` | Resume page and exported resume content |
 | `PRIVACY_CONTENT`, `COPYRIGHT_CONTENT` | Legal page copy |

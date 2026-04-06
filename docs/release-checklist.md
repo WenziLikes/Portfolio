@@ -67,8 +67,9 @@ Confirm:
 Open these routes directly in a production-like environment:
 
 - `/`
-- `/home`
+- `/home` and confirm it redirects to `/`
 - `/about`
+- `/expertise`
 - `/experience`
 - `/projects`
 - `/resume`
@@ -78,8 +79,8 @@ Open these routes directly in a production-like environment:
 
 ## 8. Hosting Readiness
 
-- confirm the host rewrites unknown routes to `index.html`
 - confirm the published directory is `build/`
+- confirm the host serves generated route HTML and returns `404.html` for unknown routes
 - confirm HTTPS is active
 - confirm the custom domain is attached correctly
 
