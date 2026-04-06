@@ -389,7 +389,7 @@ export const PRIVACY_CONTENT: LegalSection[] = [
     {
         paragraphs: [
             isAnalyticsEnabled
-                ? "This portfolio does not require an account and does not ask visitors to submit personal information directly on the site, but it does use Google Analytics 4 to measure page visits and navigation patterns."
+                ? "This portfolio does not require an account and does not ask visitors to submit personal information directly on the site, but it can use Google Analytics 4 to measure page visits and navigation patterns after you explicitly allow analytics on your device."
                 : "This portfolio does not require an account and does not ask visitors to submit personal information directly on the site.",
         ],
         title: "What This Site Collects",
@@ -399,8 +399,9 @@ export const PRIVACY_CONTENT: LegalSection[] = [
             "Your hosting provider may log basic technical request data such as IP address, browser, device, and access time as part of standard web server operations.",
             ...(isAnalyticsEnabled
                 ? [
-                    "Google Analytics 4 may process page views, approximate location, browser, device, referral information, and selected interaction events such as resume, social, and contact link clicks to help understand how the site is used.",
-                    "Google Analytics can use cookies or similar browser storage to distinguish returning visitors and session activity.",
+                    "Google Analytics 4 loads only after you allow analytics on this device.",
+                    "Once enabled, Google Analytics 4 may process page views, approximate location, browser, device, referral information, and selected interaction events such as resume, social, and contact link clicks to help understand how the site is used.",
+                    "If you allow analytics, Google Analytics can use cookies or similar browser storage to distinguish returning visitors and session activity.",
                 ]
                 : []),
             "The site includes external links to email, phone, GitHub, and LinkedIn. Those services apply their own privacy policies after you leave this site.",

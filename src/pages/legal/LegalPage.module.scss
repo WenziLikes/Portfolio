@@ -57,6 +57,15 @@
   line-height: 1.7;
 }
 
+.preferenceCard {
+  margin-top: 2.2rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(21, 72, 123, 0.12);
+  border-radius: 1.2rem;
+  background:
+    linear-gradient(180deg, rgba(239, 246, 252, 0.84) 0%, rgba(250, 252, 255, 0.96) 100%);
+}
+
 .section + .section {
   margin-top: 2.2rem;
 }
@@ -84,6 +93,43 @@
   color: #303d4f;
 }
 
+.preferenceStatus {
+  margin: 0;
+  color: #153f6c;
+  font-size: 1.24rem;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.preferenceActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+}
+
+.primaryButton,
+.secondaryButton {
+  @include documentPage.actionLinkBase;
+
+  cursor: pointer;
+}
+
+.primaryButton {
+  @include documentPage.primaryAction;
+}
+
+.secondaryButton {
+  @include documentPage.secondaryAction;
+}
+
+.primaryButton:hover {
+  @include documentPage.primaryActionHover;
+}
+
+.secondaryButton:hover {
+  @include documentPage.secondaryActionHover;
+}
+
 .list {
   padding-left: 1.55rem;
 }
@@ -103,7 +149,9 @@
   }
 
   .backLink,
-  .resumeLink {
+  .resumeLink,
+  .primaryButton,
+  .secondaryButton {
     width: 100%;
   }
 }

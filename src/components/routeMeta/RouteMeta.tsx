@@ -1,6 +1,6 @@
 import React, {useEffect} from "react"
 import {useLocation} from "react-router-dom"
-import {trackPageView} from "../../utils/analytics"
+import {getAnalyticsPageLocation, trackPageView} from "../../utils/analytics"
 import {getRouteMeta, getStructuredDataJson} from "../../seo"
 
 const setMetaContent = (selector: string, content: string) => {
@@ -27,7 +27,11 @@ const setStructuredData = (selector: string, content: string) => {
     }
 }
 
-const RouteMeta: React.FC = () => {
+interface RouteMetaProps {
+    shouldTrackAnalytics?: boolean
+}
+
+const RouteMeta: React.FC<RouteMetaProps> = ({shouldTrackAnalytics = false}) => {
     const {pathname} = useLocation()
 
     useEffect(() => {
@@ -50,12 +54,15 @@ const RouteMeta: React.FC = () => {
         setMetaContent('meta[name="twitter:image:alt"]', meta.ogImageAlt)
         setLinkHref('link[rel="canonical"]', meta.canonicalUrl)
         setStructuredData('script[data-route-structured-data="true"]', getStructuredDataJson(pathname))
-        trackPageView({
-            location: window.location.href,
-            path: pathname,
-            title: meta.title,
-        })
-    }, [pathname])
+
+        if (shouldTrackAnalytics) {
+            trackPageView({
+                location: getAnalyticsPageLocation(pathname),
+                path: pathname,
+                title: meta.title,
+            })
+        }
+    }, [pathname, shouldTrackAnalytics])
 
     return null
 }

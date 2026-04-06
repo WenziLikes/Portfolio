@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from "react"
 import {BrowserRouter, Navigate, Route, Routes, useLocation} from "react-router-dom"
-import {Footer, RouteMeta, ScrollToSection, SideBar} from "./components"
+import {AnalyticsConsentBanner, Footer, RouteMeta, ScrollToSection, SideBar} from "./components"
 import {MAIN_SECTIONS} from "./content/site"
 import {CopyrightPage, MainContent, NotFound, PrivacyPage, Resume} from "./pages"
+import {disableAnalytics, getStoredAnalyticsConsent, initializeAnalytics, type AnalyticsConsentStatus, persistAnalyticsConsent} from "./utils/analytics"
 
 type Theme = "dark" | "light"
 
@@ -81,6 +82,7 @@ interface AppContentProps {
 }
 
 export const AppContent: React.FC<AppContentProps> = ({initialTheme = "dark"}) => {
+    const [analyticsConsent, setAnalyticsConsent] = useState<AnalyticsConsentStatus>(() => getStoredAnalyticsConsent())
     const [theme, setTheme] = useState<Theme>(initialTheme)
 
     useEffect(() => {
@@ -92,13 +94,25 @@ export const AppContent: React.FC<AppContentProps> = ({initialTheme = "dark"}) =
         }
     }, [theme])
 
+    const updateAnalyticsConsent = (nextConsent: Exclude<AnalyticsConsentStatus, "unset">) => {
+        persistAnalyticsConsent(nextConsent)
+
+        if (nextConsent === "granted") {
+            initializeAnalytics()
+        } else {
+            disableAnalytics()
+        }
+
+        setAnalyticsConsent(nextConsent)
+    }
+
     const portfolioPaths = ["/", ...MAIN_SECTIONS
         .filter((section) => section.id !== "home")
         .map((section) => `/${section.id}`)]
 
     return (
         <div className="App">
-            <RouteMeta/>
+            <RouteMeta shouldTrackAnalytics={analyticsConsent === "granted"}/>
             <Routes>
                 {portfolioPaths.map((path) => (
                     <Route key={path} path={path} element={<PortfolioLayout setTheme={setTheme} theme={theme}/>}/>
@@ -116,7 +130,7 @@ export const AppContent: React.FC<AppContentProps> = ({initialTheme = "dark"}) =
                     path="/privacy"
                     element={(
                         <PageShell>
-                            <PrivacyPage/>
+                            <PrivacyPage analyticsConsent={analyticsConsent} onAnalyticsConsentChange={updateAnalyticsConsent}/>
                         </PageShell>
                     )}
                 />
@@ -137,6 +151,7 @@ export const AppContent: React.FC<AppContentProps> = ({initialTheme = "dark"}) =
                     )}
                 />
             </Routes>
+            <AnalyticsConsentBanner consent={analyticsConsent} onConsentChange={updateAnalyticsConsent}/>
         </div>
     )
 }
