@@ -8,11 +8,11 @@ import {PROJECTS_INFO, type CardInfo} from "../../content/projects"
 export const PROJECTS_STORAGE_KEY = "vm-projects-order"
 export const PROJECTS_CUSTOM_ORDER_STORAGE_KEY = "vm-projects-order-customized"
 const MOBILE_PROJECTS_LAYOUT_QUERY = "(max-width: 820px)"
-const PROJECTS_SUBTITLE = "Asymmetric editorial showcase for product work, frontend systems, and shipped interfaces."
+const PROJECTS_SUBTITLE = "Selected React, TypeScript, frontend, and full-stack product work from a developer portfolio."
 const PROJECTS_SUBTITLE_LINES = [
-    "Asymmetric editorial showcase",
-    "for product work, frontend systems,",
-    "and shipped interfaces.",
+    "Selected React, TypeScript,",
+    "frontend, and full-stack",
+    "product work for the web.",
 ]
 const PROJECTS_SUBTITLE_LINES_MOBILE = PROJECTS_SUBTITLE_LINES
 

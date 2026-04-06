@@ -1,7 +1,7 @@
 import {isAnalyticsEnabled} from "../utils/analytics"
 
 export interface MainSection {
-    id: "home" | "about" | "experience" | "projects"
+    id: "home" | "about" | "expertise" | "experience" | "projects"
     label: string
 }
 
@@ -35,6 +35,13 @@ export interface ExperienceTimelineItem {
     role: string
 }
 
+export interface ExpertiseItem {
+    eyebrow: string
+    keywords: string[]
+    text: string
+    title: string
+}
+
 export interface ResumeSkill {
     label: string
     value: string
@@ -59,17 +66,23 @@ export interface LegalSection {
 
 export interface RouteMetaEntry {
     description: string
+    ogType?: "profile" | "website"
     path: string
+    robots?: string
     title: string
 }
 
 export const SITE_META = {
     author: "Viacheslav Murakhin",
-    description: "Portfolio of Viacheslav Murakhin, a full stack developer building responsive product interfaces, maintainable frontend systems, and production-ready web experiences.",
+    description: "Full stack developer portfolio of Viacheslav Murakhin. React, TypeScript, Java, and Spring Boot work for remote product teams, startups, web applications, and frontend systems.",
+    language: "en",
     name: "Viacheslav Murakhin",
-    ogImagePath: "/logo512.png",
+    ogImageAlt: "Portfolio preview for Viacheslav Murakhin",
+    ogImageHeight: 842,
+    ogImagePath: "/seo-preview.jpg",
+    ogImageWidth: 1200,
     shortName: "VM Portfolio",
-    title: "Viacheslav Murakhin | Full Stack Developer",
+    title: "Viacheslav Murakhin | Full Stack Developer Portfolio",
     url: "https://viacheslavmurakhin.com",
 } as const
 
@@ -77,22 +90,23 @@ export const COPYRIGHT_YEAR = "2026"
 export const COPYRIGHT_NOTICE = `© ${COPYRIGHT_YEAR} ${SITE_META.name}. All rights reserved.`
 
 export const PROFILE = {
-    availability: "Open to full-time roles, freelance projects, and product collaborations.",
+    availability: "Open to full-time and contract roles with remote product teams, startups, and software companies.",
     firstName: "Viacheslav",
     fullName: "Viacheslav Murakhin",
     lastName: "Murakhin",
-    location: "Niagara-on-the-Lake, ON, Canada",
+    location: "Remote-first | Product teams | Startups",
     phone: "+1 (437) 557-9029",
     phoneHref: "tel:+14375579029",
     primaryDomain: SITE_META.url,
     role: "Full Stack Developer",
     roleLine: "React | TypeScript | Java | Spring Boot",
-    summary: "I build responsive web products with clean interfaces, reliable frontend architecture, and strong production polish.",
+    summary: "Full stack developer building React and TypeScript frontends, Java and Spring Boot backends, and scalable web applications for remote product teams and startups.",
 } as const
 
 export const MAIN_SECTIONS: MainSection[] = [
     {id: "home", label: "Home"},
     {id: "about", label: "About"},
+    {id: "expertise", label: "Expertise"},
     {id: "experience", label: "Experience"},
     {id: "projects", label: "Projects"},
 ]
@@ -154,24 +168,61 @@ export const ABOUT_STACK = ["React", "TypeScript", "Java", "Spring Boot", "SCSS 
 
 export const ABOUT_COPY = {
     eyebrow: "About",
-    intro: "I build web products that are clear for users, reliable in code, and ready to grow.",
-    quote: "I aim to deliver products that look polished, work reliably, and stay easy to improve.",
+    intro: "I am a full stack developer building React and TypeScript products that are clear for users, reliable in code, and ready to scale.",
+    quote: "I build React and TypeScript products that feel polished for users and stay maintainable for teams.",
     paragraphs: [
-        "My work sits at the intersection of interface, logic, and product thinking. I focus on turning ideas into web experiences that feel intuitive, perform well, and solve real problems.",
-        "What matters most to me is long-term value: thoughtful UI, solid architecture, and code that remains maintainable as a product evolves and a team builds on top of it.",
+        "My work connects interface, logic, and product thinking. I design and build full stack web applications with React, TypeScript, Java, and Spring Boot, focusing on experiences that load fast, feel intuitive, and support real business goals.",
+        "I work with product teams on frontend architecture, reusable UI systems, and production-ready delivery. I care about long-term maintainability, accessibility, performance, and code that stays easy to extend.",
     ],
 } as const
+
+export const EXPERTISE_COPY = {
+    eyebrow: "Expertise",
+    lead: "Product delivery for modern teams, startups, and software products.",
+    summary: "I help teams build clear user-facing experiences, strengthen TypeScript codebases, and ship full-stack features that hold up in production.",
+    title: "React, TypeScript, and full stack expertise",
+} as const
+
+export const EXPERTISE_SIGNALS = [
+    "React developer",
+    "TypeScript developer",
+    "Full stack developer",
+    "Frontend architecture",
+    "Java & Spring Boot",
+    "Product teams",
+] as const
+
+export const EXPERTISE_ITEMS = [
+    {
+        eyebrow: "React Developer",
+        keywords: ["React developer", "Product teams"],
+        text: "I build responsive React interfaces for product teams that care about UX, maintainability, and release quality. That includes reusable components, routed flows, responsive layouts, and details that improve real-world usability.",
+        title: "React product interfaces that feel polished",
+    },
+    {
+        eyebrow: "TypeScript Systems",
+        keywords: ["TypeScript developer", "Frontend architecture"],
+        text: "I use TypeScript to keep frontend systems easier to scale, refactor, and maintain. My focus is clean component structure, predictable state, and architecture that stays understandable as features grow.",
+        title: "TypeScript frontend systems that stay maintainable",
+    },
+    {
+        eyebrow: "Full Stack Delivery",
+        keywords: ["Full stack developer", "Java & Spring Boot"],
+        text: "I work across frontend and backend delivery, connecting React and TypeScript clients with Java and Spring Boot services, business logic, and relational data flows so features ship end to end.",
+        title: "Full stack execution from UI to backend logic",
+    },
+] satisfies ExpertiseItem[]
 
 export const EXPERIENCE_TIMELINE: ExperienceTimelineItem[] = [
     {
         company: "Independent Product Work",
-        description: "Building and iterating on full-stack products, portfolio systems, and admin tooling with React, TypeScript, Java, Spring Boot, and modern testing workflows.",
+        description: "Building and iterating on full-stack products, React and TypeScript frontends, portfolio systems, and admin tooling with Java, Spring Boot, and modern testing workflows.",
         period: "2024 - Present",
         role: "Full Stack Developer",
     },
     {
         company: "Freelance & Client Projects",
-        description: "Delivered client-facing websites and internal dashboards with focus on responsiveness, reporting, maintainability, and release quality.",
+        description: "Delivered client-facing websites and internal dashboards as a frontend and full stack developer, with focus on responsive UI, reporting, maintainability, and release quality.",
         period: "2020 - 2024",
         role: "Frontend / Full Stack Developer",
     },
@@ -183,7 +234,7 @@ export const EXPERIENCE_TIMELINE: ExperienceTimelineItem[] = [
     },
 ]
 
-export const RESUME_PROFILE = "Full Stack Developer with 4+ years of experience building responsive web applications and product features from concept to deployment. Strong hands-on background in React, TypeScript, Java, and Spring Boot, with practical experience designing clean UI, implementing business logic, and maintaining scalable codebases. Focused on performance, usability, and clear architecture, with experience using Vite, React Router, Vitest, and Playwright to deliver reliable, production-ready products."
+export const RESUME_PROFILE = "Full Stack Developer with 4+ years of experience building responsive web applications and product features from concept to deployment. Strong hands-on background in React, TypeScript, Java, and Spring Boot, with practical experience building ecommerce flows, admin dashboards, portfolio systems, and maintainable frontend architecture. Focused on performance, usability, and clear delivery for remote product teams and startups, with experience using Vite, React Router, Vitest, and Playwright to ship reliable production-ready products."
 
 export const RESUME_SKILLS: ResumeSkill[] = [
     {
@@ -299,8 +350,8 @@ export const RESUME_CERTIFICATIONS = [
 ]
 
 export const RESUME_ADDITIONAL_INFO = [
-    "Authorized to work in Canada",
-    "Valid Ontario Driver's License (G)",
+    "Open to remote and international collaboration",
+    "Experienced with product teams, startups, and modern web delivery",
     "Focused on accessible, responsive, and maintainable product delivery",
     "Comfortable collaborating across product, frontend, and backend work",
 ]
@@ -370,42 +421,66 @@ export const PRIVACY_CONTENT: LegalSection[] = [
 export const ROUTE_META: Record<string, RouteMetaEntry> = {
     "/": {
         description: SITE_META.description,
+        ogType: "profile",
         path: "/",
         title: SITE_META.title,
     },
     "/about": {
-        description: "About Viacheslav Murakhin, a full stack developer focused on responsive UI, product quality, and maintainable frontend architecture.",
+        description: "About Viacheslav Murakhin, a React and full stack developer focused on responsive UI, TypeScript architecture, and reliable product delivery.",
+        ogType: "profile",
         path: "/about",
         title: "About | Viacheslav Murakhin",
     },
     "/copyright": {
         description: "Copyright and usage notice for the Viacheslav Murakhin portfolio website.",
+        ogType: "website",
         path: "/copyright",
+        robots: "noindex,follow",
         title: "Copyright | Viacheslav Murakhin",
     },
     "/experience": {
-        description: "Selected product, frontend, and full stack experience from Viacheslav Murakhin.",
+        description: "Selected React, TypeScript, frontend, and full stack experience from Viacheslav Murakhin across shipped web apps, internal tools, and client work.",
+        ogType: "profile",
         path: "/experience",
         title: "Experience | Viacheslav Murakhin",
     },
+    "/expertise": {
+        description: "React, TypeScript, frontend architecture, and full stack expertise from Viacheslav Murakhin for product teams and startups.",
+        ogType: "profile",
+        path: "/expertise",
+        title: "Expertise | Viacheslav Murakhin",
+    },
     "/home": {
         description: SITE_META.description,
+        ogType: "profile",
         path: "/",
+        robots: "noindex,follow",
         title: SITE_META.title,
     },
     "/privacy": {
         description: "Privacy notice for visitors of the Viacheslav Murakhin portfolio website.",
+        ogType: "website",
         path: "/privacy",
+        robots: "noindex,follow",
         title: "Privacy | Viacheslav Murakhin",
     },
     "/projects": {
-        description: "Featured portfolio projects by Viacheslav Murakhin, including commerce, dashboards, and frontend product work.",
+        description: "Featured React and TypeScript portfolio projects by Viacheslav Murakhin, including ecommerce, admin dashboards, portfolio engineering, and a macOS screensaver.",
+        ogType: "website",
         path: "/projects",
         title: "Projects | Viacheslav Murakhin",
     },
     "/resume": {
-        description: "Resume of Viacheslav Murakhin with full stack experience, technical skills, and project history.",
+        description: "Resume of Viacheslav Murakhin, a full stack developer with React, TypeScript, Java, and Spring Boot experience.",
+        ogType: "profile",
         path: "/resume",
         title: "Resume | Viacheslav Murakhin",
+    },
+    "/404": {
+        description: "The page you requested could not be found on the Viacheslav Murakhin portfolio website.",
+        ogType: "website",
+        path: "/404",
+        robots: "noindex,follow",
+        title: "Page Not Found | Viacheslav Murakhin",
     },
 }

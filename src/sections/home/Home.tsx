@@ -12,10 +12,10 @@ const RESUME_BUTTON_LABEL = "Resume"
 const RESUME_BUTTON_HOVER_LABEL = "Download"
 const PORTFOLIO_BUTTON_LABEL = "Portfolio"
 const PORTFOLIO_BUTTON_HOVER_LABEL = "GO"
-const HERO_EYEBROW = "Premium Product Engineering"
-const HERO_HEADLINE = "Where thoughtful design meets dependable engineering."
-const HERO_HEADLINE_LINES = ["Where thoughtful design", "meets dependable engineering."]
-const HERO_PILLS = ["Clear UI", "Reliable systems", "Built to scale"]
+const HERO_EYEBROW = "Full Stack Developer"
+const HERO_HEADLINE = "React, TypeScript, and dependable product engineering."
+const HERO_HEADLINE_LINES = ["React, TypeScript,", "and dependable product engineering."]
+const HERO_PILLS = ["React & TypeScript", "Frontend systems", "Production-ready builds"]
 const HERO_STATEMENT_LINES = ["Clean", "UI", "Solid", "Code", "Ready", "To Ship"]
 const HERO_STATEMENT_LINES_MOBILE_LIGHT = ["CLEAN UI", "SOLID CODE", "READY TO SHIP"]
 const MOBILE_LIGHT_STATEMENT_QUERY = "(max-width: 760px)"
@@ -126,8 +126,10 @@ const Home: React.FC<HomeProps> = ({theme}) => {
                 <div className={styles["home__layout"]}>
                     <div className={styles["home__content"]}>
                         <span className={styles["home__eyebrow"]}>{HERO_EYEBROW}</span>
-                        <p className={styles["home__nameTop"]}>{PROFILE.firstName}</p>
-                        <h1 className={styles["home__nameBottom"]}>{PROFILE.lastName}</h1>
+                        <h1 className={styles["home__name"]}>
+                            <span className={styles["home__nameTop"]}>{PROFILE.firstName}</span>
+                            <span className={styles["home__nameBottom"]}>{PROFILE.lastName}</span>
+                        </h1>
                         <p className={styles["home__role"]}>{PROFILE.role}</p>
                         <p className={styles["home__headline"]} aria-label={HERO_HEADLINE}>
                             {HERO_HEADLINE_LINES.map((line, index) => (
