@@ -3,6 +3,7 @@ import {useLocation, useNavigate} from "react-router-dom"
 import styles from "./SideBar.module.scss"
 import {EXTERNAL_NAV_LINKS, MAIN_SECTIONS, PROFILE, type MainSectionId} from "../../content/site"
 import {getSectionIdFromPath, getSectionPath} from "../../constants/navigation"
+import useMediaQuery from "../../hooks/useMediaQuery"
 import SocialLinks from "../socialLinks/SocialLinks"
 import {scrollToSectionId} from "../../utils/scroll"
 
@@ -12,6 +13,7 @@ interface SideBarProps {
 }
 
 const DESKTOP_SIDEBAR_STORAGE_KEY = "portfolio-sidebar-collapsed"
+const MOBILE_VIEWPORT_QUERY = "(max-width: 1080px)"
 
 const SECTION_ICON_PATHS: Record<MainSectionId, string> = {
     about: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-6.4 8a6.4 6.4 0 0 1 12.8 0 .6.6 0 0 1-.6.6H6.2a.6.6 0 0 1-.6-.6Z",
@@ -49,45 +51,20 @@ const getInitialDesktopSidebarCollapsed = () => {
 }
 
 const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
-    const [activeSection, setActiveSection] = useState<string>("home")
+    const [activeSection, setActiveSection] = useState<MainSectionId>("home")
     const [isSidebarVisible, setIsSidebarVisible] = useState<boolean>(true)
     const [isDesktopSidebarCollapsed, setIsDesktopSidebarCollapsed] = useState<boolean>(getInitialDesktopSidebarCollapsed)
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false)
-    const [isMobileViewport, setIsMobileViewport] = useState<boolean>(false)
     const [mobileContentScrollTop, setMobileContentScrollTop] = useState<number>(0)
     const location = useLocation()
     const navigate = useNavigate()
+    const isMobileViewport = useMediaQuery(MOBILE_VIEWPORT_QUERY)
 
     useEffect(() => {
-        const mediaQuery = window.matchMedia("(max-width: 1080px)")
-
-        const updateViewportState = (matches: boolean) => {
-            setIsMobileViewport(matches)
-            if (!matches) {
-                setIsMobileMenuOpen(false)
-            }
+        if (!isMobileViewport) {
+            setIsMobileMenuOpen(false)
         }
-
-        updateViewportState(mediaQuery.matches)
-
-        const handleChange = (event: MediaQueryListEvent) => {
-            updateViewportState(event.matches)
-        }
-
-        if (typeof mediaQuery.addEventListener === "function") {
-            mediaQuery.addEventListener("change", handleChange)
-
-            return () => {
-                mediaQuery.removeEventListener("change", handleChange)
-            }
-        }
-
-        mediaQuery.addListener(handleChange)
-
-        return () => {
-            mediaQuery.removeListener(handleChange)
-        }
-    }, [])
+    }, [isMobileViewport])
 
     useEffect(() => {
         try {
@@ -124,7 +101,7 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
         const updateScrollState = () => {
             const nextScrollTop = content.scrollTop
             const activationLine = nextScrollTop + content.clientHeight * 0.28
-            let nextActiveSection = "home"
+            let nextActiveSection: MainSectionId = "home"
 
             MAIN_SECTIONS.forEach((section) => {
                 const sectionElement = document.getElementById(section.id)
@@ -205,9 +182,9 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
         setTheme(nextTheme)
     }
 
-    const handleScrollToSection = (sectionId: string) => {
+    const handleScrollToSection = (sectionId: MainSectionId) => {
         setActiveSection(sectionId)
-        navigate(getSectionPath(sectionId as MainSectionId), {replace: true})
+        navigate(getSectionPath(sectionId), {replace: true})
         scrollToSectionId(sectionId, isMobileViewport ? "auto" : "smooth")
         setIsMobileMenuOpen(false)
     }
@@ -230,6 +207,30 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
     const highlightedSection = isRouteMainSection && routeSectionId !== "home" ? routeSectionId : activeSection
     const isDesktopCompact = !isMobileViewport && isDesktopSidebarCollapsed
     const initials = `${PROFILE.firstName.charAt(0)}${PROFILE.lastName.charAt(0)}`
+    const renderSectionNavItem = (section: (typeof MAIN_SECTIONS)[number]) => {
+        const isActive = highlightedSection === section.id
+
+        return (
+            <li key={section.id}>
+                <a
+                    href={getSectionPath(section.id)}
+                    onClick={(e) => {
+                        e.preventDefault()
+                        handleScrollToSection(section.id)
+                    }}
+                    className={isActive ? `${styles.navItem} ${styles.active}` : styles.navItem}
+                    aria-label={section.label}
+                    aria-current={isActive ? "location" : undefined}
+                    title={isDesktopCompact ? section.label : undefined}
+                >
+                    <span className={styles.navItemIcon} aria-hidden="true">
+                        {renderIcon(SECTION_ICON_PATHS[section.id], styles.navIconSvg)}
+                    </span>
+                    <span className={styles.navItemLabel}>{section.label}</span>
+                </a>
+            </li>
+        )
+    }
     const renderStudioLinkContent = (
         link: (typeof EXTERNAL_NAV_LINKS)[number],
         title?: string
@@ -247,7 +248,7 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
                 <span className={styles.navItemIcon} aria-hidden="true">
                     {renderIcon(EXTERNAL_NAV_ICON_PATHS[link.id], styles.navIconSvg)}
                 </span>
-                <span className={styles.navItemLabel}>{link.displayTitle}</span>
+                <span className={`${styles.navItemLabel} ${styles.navItemStudioTitle}`}>{link.displayTitle}</span>
             </a>
             {link.subtitle ? (
                 <span className={styles.navItemStudioSubtitle}>{link.subtitle}</span>
@@ -297,204 +298,159 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
         <section
             className={`portfolio-sidebar ${styles.sidebar} ${isDesktopCompact ? `portfolio-sidebar--compact ${styles.sidebarCompact}` : ""} ${isSidebarVisible ? "portfolio-sidebar--visible" : `portfolio-sidebar--hidden ${styles.hidden}`} ${isMobileViewport ? styles.sidebarMobile : ""}`}
         >
-            {!isMobileViewport && (!isSidebarVisible || isDesktopCompact) ? (
-                <button
-                    type="button"
-                    className={styles.themeToggleFloating}
-                    data-mode={theme}
-                    onClick={handleThemeToggle}
-                    aria-label={`Switch to ${nextTheme} theme`}
-                    title={`Switch to ${nextTheme} theme`}
-                >
-                    <span className={styles.themeToggleIconWrap} aria-hidden="true">
-                        {renderIcon(theme === "dark" ? THEME_ICON_PATHS.dark : THEME_ICON_PATHS.light, styles.themeToggleIcon)}
-                    </span>
-                    <span className={styles.themeToggleText}>{theme === "dark" ? "Dark" : "Light"}</span>
-                </button>
-            ) : null}
-
-            <div className={`${styles.mobileBar} ${isMobileBarVisible ? styles.mobileBarVisible : styles.mobileBarHidden}`}>
-                <button
-                    type="button"
-                    className={styles.mobileLogo}
-                    onClick={() => handleScrollToSection("home")}
-                    aria-label="Go to Home section"
-                >
-                    <span className={styles.mobileLogoMark}>
-                        <span>&lt;</span>
-                        <span className={styles.logoSlash}>/</span>
-                        <span>&gt;</span>
-                    </span>
-                    <span className={styles.mobileLogoText}>VM Portfolio</span>
-                </button>
-
-                <div className={styles.mobileBarActions}>
-                    {!isMobileMenuOpen ? renderThemeSwitcher(styles.mobileThemeSwitch) : null}
-
+                {!isMobileViewport && (!isSidebarVisible || isDesktopCompact) ? (
                     <button
                         type="button"
-                        className={`${styles.mobileMenuButton} ${isMobileMenuOpen ? styles.mobileMenuButtonOpen : ""}`}
-                        aria-expanded={isMobileMenuOpen}
-                        aria-controls={mobileMenuId}
-                        aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-                        onClick={() => setIsMobileMenuOpen((currentState) => !currentState)}
+                        className={styles.themeToggleFloating}
+                        data-mode={theme}
+                        onClick={handleThemeToggle}
+                        aria-label={`Switch to ${nextTheme} theme`}
+                        title={`Switch to ${nextTheme} theme`}
                     >
-                        <span className={styles.mobileMenuLine}/>
-                        <span className={styles.mobileMenuLine}/>
-                        <span className={styles.mobileMenuLine}/>
+                        <span className={styles.themeToggleIconWrap} aria-hidden="true">
+                            {renderIcon(theme === "dark" ? THEME_ICON_PATHS.dark : THEME_ICON_PATHS.light, styles.themeToggleIcon)}
+                        </span>
+                        <span className={styles.themeToggleText}>{theme === "dark" ? "Dark" : "Light"}</span>
                     </button>
-                </div>
-            </div>
+                ) : null}
 
-            <button
-                type="button"
-                className={`${styles.mobileBackdrop} ${isMobileMenuOpen ? styles.mobileBackdropVisible : ""}`}
-                aria-hidden={!isMobileViewport || !isMobileMenuOpen}
-                tabIndex={isMobileViewport && isMobileMenuOpen ? 0 : -1}
-                onClick={() => setIsMobileMenuOpen(false)}
-            />
+                <div className={`${styles.mobileBar} ${isMobileBarVisible ? styles.mobileBarVisible : styles.mobileBarHidden}`}>
+                    <button
+                        type="button"
+                        className={styles.mobileLogo}
+                        onClick={() => handleScrollToSection("home")}
+                        aria-label="Go to Home section"
+                    >
+                        <span className={styles.mobileLogoMark}>
+                            <span>&lt;</span>
+                            <span className={styles.logoSlash}>/</span>
+                            <span>&gt;</span>
+                        </span>
+                        <span className={styles.mobileLogoText}>VM Portfolio</span>
+                    </button>
 
-            <button
-                type="button"
-                className={styles.desktopCollapseButton}
-                data-mode={isDesktopCompact ? "mini" : "full"}
-                onClick={handleDesktopSidebarToggle}
-                aria-pressed={isDesktopCompact}
-                aria-label={isDesktopCompact ? "Expand sidebar" : "Collapse sidebar"}
-                title={isDesktopCompact ? "Expand sidebar" : "Collapse sidebar"}
-            >
-                <span className={styles.desktopCollapseBurger} aria-hidden="true">
-                    <span className={styles.desktopCollapseLine}/>
-                    <span className={styles.desktopCollapseLine}/>
-                    <span className={styles.desktopCollapseLine}/>
-                </span>
-            </button>
+                    <div className={styles.mobileBarActions}>
+                        {!isMobileMenuOpen ? renderThemeSwitcher(styles.mobileThemeSwitch) : null}
 
-            <div
-                id={mobileMenuId}
-                className={`${styles.sidebarPanel} ${isMobileMenuOpen ? styles.sidebarPanelOpen : ""}`}
-                aria-hidden={isMobileViewport ? !isMobileMenuOpen : undefined}
-            >
-                <div className={styles.header}>
-                    <div className={styles.profile}>
-                        <div className={styles.profileHeader}>
-                            <div className={styles.brandLockup}>
-                                <h1 className={styles.name}>
-                                    <a
-                                        href={getSectionPath("home")}
-                                        className={styles.logoLink}
-                                        onClick={(e) => {
-                                            e.preventDefault()
-                                            handleScrollToSection("home")
-                                        }}
-                                        aria-label="Go to Home section"
-                                    >
-                                        <span className={styles.compactBrandMark} aria-hidden="true">
-                                            {Array.from(initials).map((letter, index) => (
-                                                <span className={styles.compactBrandLetter} key={`${letter}-${index}`}>{letter}</span>
-                                            ))}
-                                        </span>
-                                        <span className={styles.logoText}>
-                                            &lt; {PROFILE.fullName}
-                                            <span className={styles.color__blue}>
-                                                <span className={styles.logoSlash}>/</span>
-                                                <span>&gt;</span>
-                                            </span>
-                                        </span>
-                                    </a>
-                                </h1>
-                            </div>
-                        </div>
-                        <h2 className={styles.role}>{PROFILE.role}</h2>
-                    </div>
-
-                    <div className={styles.navBlock}>
-                        <nav className={styles.nav} aria-label="Section navigation">
-                            <div className={styles.navLayout}>
-                                {homeSection && (
-                                    <ul className={styles.navTop}>
-                                        <li key={homeSection.id}>
-                                            <a
-                                                href={getSectionPath(homeSection.id)}
-                                                onClick={(e) => {
-                                                    e.preventDefault()
-                                                    handleScrollToSection(homeSection.id)
-                                                }}
-                                                className={
-                                                    highlightedSection === homeSection.id
-                                                        ? `${styles.navItem} ${styles.active}`
-                                                        : styles.navItem
-                                                }
-                                                aria-label={homeSection.label}
-                                                aria-current={highlightedSection === homeSection.id ? "location" : undefined}
-                                                title={isDesktopCompact ? homeSection.label : undefined}
-                                            >
-                                                <span className={styles.navItemIcon} aria-hidden="true">
-                                                    {renderIcon(SECTION_ICON_PATHS[homeSection.id], styles.navIconSvg)}
-                                                </span>
-                                                <span className={styles.navItemLabel}>{homeSection.label}</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                )}
-
-                                <ul className={styles.navBottom}>
-                                    {secondarySections.map((section) => (
-                                        <li key={section.id}>
-                                            <a
-                                                href={`/${section.id}`}
-                                                onClick={(e) => {
-                                                    e.preventDefault()
-                                                    handleScrollToSection(section.id)
-                                                }}
-                                                className={
-                                                    highlightedSection === section.id
-                                                        ? `${styles.navItem} ${styles.active}`
-                                                        : styles.navItem
-                                                }
-                                                aria-label={section.label}
-                                                aria-current={highlightedSection === section.id ? "location" : undefined}
-                                                title={isDesktopCompact ? section.label : undefined}
-                                            >
-                                                <span className={styles.navItemIcon} aria-hidden="true">
-                                                    {renderIcon(SECTION_ICON_PATHS[section.id], styles.navIconSvg)}
-                                                </span>
-                                                <span className={styles.navItemLabel}>{section.label}</span>
-                                            </a>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </nav>
-
-                        {isMobileViewport || (isSidebarVisible && !isDesktopCompact) ? (
-                            <div className={styles.themeBlock}>
-                                <span className={styles.themeLabel}>Theme</span>
-                                {renderThemeSwitcher()}
-                            </div>
-                        ) : null}
-                    </div>
-
-                    <div className={styles.contacts}>
-                        <SocialLinks
-                            childrenPosition="start"
-                            eventSource="sidebar_social_links"
-                            iconClassName={styles.contactIcon}
-                            itemClassName={undefined}
-                            linkClassName={styles.contactLink}
-                            listClassName={styles.contactsList}
+                        <button
+                            type="button"
+                            className={`${styles.mobileMenuButton} ${isMobileMenuOpen ? styles.mobileMenuButtonOpen : ""}`}
+                            aria-expanded={isMobileMenuOpen}
+                            aria-controls={mobileMenuId}
+                            aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+                            onClick={() => setIsMobileMenuOpen((currentState) => !currentState)}
                         >
-                            {EXTERNAL_NAV_LINKS.map((link) => (
-                                <li key={link.id} className={styles.contactsStudioListItem}>
-                                    <div className={`${styles.navItemStudioGroup} ${styles.contactsStudioLink}`}>
-                                        {renderStudioLinkContent(link, isDesktopCompact ? link.label : undefined)}
-                                    </div>
-                                </li>
-                            ))}
-                        </SocialLinks>
+                            <span className={styles.mobileMenuLine}/>
+                            <span className={styles.mobileMenuLine}/>
+                            <span className={styles.mobileMenuLine}/>
+                        </button>
                     </div>
                 </div>
-            </div>
+
+                <button
+                    type="button"
+                    className={`${styles.mobileBackdrop} ${isMobileMenuOpen ? styles.mobileBackdropVisible : ""}`}
+                    aria-hidden={!isMobileViewport || !isMobileMenuOpen}
+                    tabIndex={isMobileViewport && isMobileMenuOpen ? 0 : -1}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                />
+
+                <button
+                    type="button"
+                    className={styles.desktopCollapseButton}
+                    data-mode={isDesktopCompact ? "mini" : "full"}
+                    onClick={handleDesktopSidebarToggle}
+                    aria-pressed={isDesktopCompact}
+                    aria-label={isDesktopCompact ? "Expand sidebar" : "Collapse sidebar"}
+                    title={isDesktopCompact ? "Expand sidebar" : "Collapse sidebar"}
+                >
+                    <span className={styles.desktopCollapseIcon} aria-hidden="true">
+                        <span className={`${styles.desktopCollapseStroke} ${styles.desktopCollapseArrowTop}`}/>
+                        <span className={`${styles.desktopCollapseStroke} ${styles.desktopCollapseArrowBottom}`}/>
+                    </span>
+                </button>
+
+                <div
+                    id={mobileMenuId}
+                    className={`${styles.sidebarPanel} ${isMobileMenuOpen ? styles.sidebarPanelOpen : ""}`}
+                    aria-hidden={isMobileViewport ? !isMobileMenuOpen : undefined}
+                >
+                    <div className={styles.header}>
+                        <div className={styles.profile}>
+                            <div className={styles.profileHeader}>
+                                <div className={styles.brandLockup}>
+                                    <h1 className={styles.name}>
+                                        <a
+                                            href={getSectionPath("home")}
+                                            className={styles.logoLink}
+                                            onClick={(e) => {
+                                                e.preventDefault()
+                                                handleScrollToSection("home")
+                                            }}
+                                            aria-label="Go to Home section"
+                                        >
+                                            <span className={styles.compactBrandMark} aria-hidden="true">
+                                                {Array.from(initials).map((letter, index) => (
+                                                    <span className={styles.compactBrandLetter} key={`${letter}-${index}`}>{letter}</span>
+                                                ))}
+                                            </span>
+                                            <span className={styles.logoText}>
+                                                &lt; {PROFILE.fullName}
+                                                <span className={styles.color__blue}>
+                                                    <span className={styles.logoSlash}>/</span>
+                                                    <span>&gt;</span>
+                                                </span>
+                                            </span>
+                                        </a>
+                                    </h1>
+                                </div>
+                            </div>
+                            <h2 className={styles.role}>{PROFILE.role}</h2>
+                        </div>
+
+                        <div className={styles.navBlock}>
+                            <nav className={styles.nav} aria-label="Section navigation">
+                                <div className={styles.navLayout}>
+                                    {homeSection && (
+                                        <ul className={styles.navTop}>
+                                            {renderSectionNavItem(homeSection)}
+                                        </ul>
+                                    )}
+
+                                    <ul className={styles.navBottom}>
+                                        {secondarySections.map(renderSectionNavItem)}
+                                    </ul>
+                                </div>
+                            </nav>
+
+                            {isMobileViewport || !isDesktopCompact ? (
+                                <div className={styles.themeBlock}>
+                                    <span className={styles.themeLabel}>Theme</span>
+                                    {renderThemeSwitcher()}
+                                </div>
+                            ) : null}
+                        </div>
+
+                        <div className={styles.contacts}>
+                            <SocialLinks
+                                childrenPosition="start"
+                                eventSource="sidebar_social_links"
+                                iconClassName={styles.contactIcon}
+                                itemClassName={undefined}
+                                linkClassName={styles.contactLink}
+                                listClassName={styles.contactsList}
+                            >
+                                {EXTERNAL_NAV_LINKS.map((link) => (
+                                    <li key={link.id} className={styles.contactsStudioListItem}>
+                                        <div className={`${styles.navItemStudioGroup} ${styles.contactsStudioLink}`}>
+                                            {renderStudioLinkContent(link, isDesktopCompact ? link.label : undefined)}
+                                        </div>
+                                    </li>
+                                ))}
+                            </SocialLinks>
+                        </div>
+                    </div>
+                </div>
         </section>
     )
 }

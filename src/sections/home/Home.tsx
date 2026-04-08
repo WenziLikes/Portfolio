@@ -1,9 +1,11 @@
-import React, {useEffect, useRef, useState} from "react"
-import {useNavigate} from "react-router-dom"
+import React, {useRef} from "react"
+import {Link, useNavigate} from "react-router-dom"
 import styles from "../sections.module.scss"
 import heroImage2 from "../../assets/img/home/image2.png"
-import {PROFILE} from "../../content/site"
+import {MARKET_PAGES} from "../../content/marketPages"
+import {EXTERNAL_NAV_LINKS, PROFILE} from "../../content/site"
 import SocialLinks from "../../components/socialLinks/SocialLinks"
+import useMediaQuery from "../../hooks/useMediaQuery"
 import useScrollProgress from "../../hooks/useScrollProgress"
 import {trackResumeClick} from "../../utils/analytics"
 import {scrollToSectionId} from "../../utils/scroll"
@@ -19,14 +21,6 @@ const HERO_PILLS = ["React & TypeScript", "Frontend systems", "Production-ready 
 const HERO_STATEMENT_LINES = ["Clean", "UI", "Solid", "Code", "Ready", "To Ship"]
 const HERO_STATEMENT_LINES_MOBILE_LIGHT = ["CLEAN UI", "SOLID CODE", "READY TO SHIP"]
 const MOBILE_LIGHT_STATEMENT_QUERY = "(max-width: 760px)"
-
-const getIsMobileLightStatementLayout = (): boolean => {
-    if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
-        return false
-    }
-
-    return window.matchMedia(MOBILE_LIGHT_STATEMENT_QUERY).matches
-}
 
 interface AnimatedButtonLabelProps {
     primaryLabel: string
@@ -49,43 +43,13 @@ interface HomeProps {
 const Home: React.FC<HomeProps> = ({theme}) => {
     const navigate = useNavigate()
     const homeRef = useRef<HTMLDivElement>(null)
+    const studioLink = EXTERNAL_NAV_LINKS[0]
     const isLightTheme = theme === "light"
-    const [isMobileLightStatementLayout, setIsMobileLightStatementLayout] = useState(getIsMobileLightStatementLayout)
+    const isMobileLightStatementLayout = useMediaQuery(MOBILE_LIGHT_STATEMENT_QUERY)
     const isLightMobileStatement = isLightTheme && isMobileLightStatementLayout
     const heroStatementLines = isLightMobileStatement ? HERO_STATEMENT_LINES_MOBILE_LIGHT : HERO_STATEMENT_LINES
 
     useScrollProgress(homeRef, {mode: "hero", reducedMotionValue: 0, variableName: "--home-progress"})
-
-    useEffect(() => {
-        if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
-            return
-        }
-
-        const mediaQuery = window.matchMedia(MOBILE_LIGHT_STATEMENT_QUERY)
-        const updateViewportState = (matches: boolean) => {
-            setIsMobileLightStatementLayout(matches)
-        }
-
-        updateViewportState(mediaQuery.matches)
-
-        const handleChange = (event: MediaQueryListEvent) => {
-            updateViewportState(event.matches)
-        }
-
-        if (typeof mediaQuery.addEventListener === "function") {
-            mediaQuery.addEventListener("change", handleChange)
-
-            return () => {
-                mediaQuery.removeEventListener("change", handleChange)
-            }
-        }
-
-        mediaQuery.addListener(handleChange)
-
-        return () => {
-            mediaQuery.removeListener(handleChange)
-        }
-    }, [])
 
     return (
         <div className={`${styles.home} ${isLightTheme ? styles.homeLight : ""}`} ref={homeRef}>
@@ -145,6 +109,22 @@ const Home: React.FC<HomeProps> = ({theme}) => {
                                 <span className={styles["home__pill"]} key={pill}>{pill}</span>
                             ))}
                         </div>
+                        <div className={styles["home__marketCluster"]}>
+                            <p className={styles["home__marketIntro"]}>
+                                Market-specific hiring pages for North America and Europe.
+                            </p>
+                            <nav className={styles["home__marketLinks"]} aria-label="Regional hiring pages">
+                                {MARKET_PAGES.map((marketPage) => (
+                                    <Link
+                                        key={marketPage.path}
+                                        className={styles["home__marketLink"]}
+                                        to={marketPage.path}
+                                    >
+                                        <span className={styles["home__marketLabel"]}>{marketPage.marketLabel}</span>
+                                    </Link>
+                                ))}
+                            </nav>
+                        </div>
                         <p className={styles["home__summary"]}>
                             <span className={styles["home__summaryDot"]} aria-hidden="true"/>
                             {PROFILE.availability}
@@ -153,7 +133,7 @@ const Home: React.FC<HomeProps> = ({theme}) => {
                         <div className={styles["home__actions"]}>
                             <button
                                 type="button"
-                                className={`${styles["home__button"]} ${styles["home__buttonGhost"]} ${styles["home__buttonSwap"]}`}
+                                className={`${styles["home__button"]} ${styles["home__buttonPrimary"]} ${styles["home__buttonSwap"]}`}
                                 onClick={() => {
                                     trackResumeClick("open_route", "home_hero")
                                     navigate("/resume")
@@ -191,11 +171,27 @@ const Home: React.FC<HomeProps> = ({theme}) => {
                 </div>
 
                 <SocialLinks
+                    childrenPosition="start"
                     eventSource="home_social_links"
                     iconClassName={styles["home__socialIcon"]}
                     linkClassName={styles["home__socialLink"]}
                     listClassName={styles["home__socials"]}
-                />
+                >
+                    <li className={styles["home__studioItem"]}>
+                        <a
+                            className={styles["home__studioLink"]}
+                            href={studioLink.href}
+                            rel="noreferrer noopener"
+                            target="_blank"
+                            title={studioLink.label}
+                        >
+                            <span className={styles["home__studioTitle"]}>{studioLink.displayTitle}</span>
+                            {studioLink.subtitle ? (
+                                <span className={styles["home__studioSubtitle"]}>{studioLink.subtitle}</span>
+                            ) : null}
+                        </a>
+                    </li>
+                </SocialLinks>
 
                 <button type="button" className={styles["home__scroll"]} onClick={() => scrollToSectionId("about")}>
                     Scroll

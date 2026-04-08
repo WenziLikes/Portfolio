@@ -1,6 +1,9 @@
 import React, {memo, useEffect, useRef, useState} from "react"
 import {createPortal} from "react-dom"
+import {Link} from "react-router-dom"
 import styles from "../sections.module.scss"
+import {MARKET_PAGES} from "../../content/marketPages"
+import useMediaQuery from "../../hooks/useMediaQuery"
 import useScrollProgress from "../../hooks/useScrollProgress"
 import {Card} from "../../components"
 import {PROJECTS_INFO, type CardInfo} from "../../content/projects"
@@ -8,15 +11,15 @@ import {PROJECTS_INFO, type CardInfo} from "../../content/projects"
 export const PROJECTS_STORAGE_KEY = "vm-projects-order"
 export const PROJECTS_CUSTOM_ORDER_STORAGE_KEY = "vm-projects-order-customized"
 const MOBILE_PROJECTS_LAYOUT_QUERY = "(max-width: 820px)"
-const PROJECTS_SUBTITLE = "Selected React, TypeScript, frontend, and full-stack product work from a developer portfolio."
+const PROJECTS_SUBTITLE = "Product-focused builds across desktop apps, internal CRM tools, commerce flows, and modern frontend systems."
 const PROJECTS_SUBTITLE_LINES = [
-    "Selected React, TypeScript,",
-    "frontend, and full-stack",
-    "product work for the web.",
+    "Product-focused builds",
+    "across desktop, CRM,",
+    "commerce, and frontend.",
 ]
 const PROJECTS_SUBTITLE_LINES_MOBILE = PROJECTS_SUBTITLE_LINES
 
-const DEFAULT_PROJECT_IDS = [4, 3, 1, 2]
+const DEFAULT_PROJECT_IDS = [4, 2, 1, 3]
 
 const getDefaultProjects = (): CardInfo[] => {
     const projectsById = new Map(PROJECTS_INFO.map((card) => [card.id, card]))
@@ -155,14 +158,6 @@ const getProjectIdAtPoint = (clientX: number, clientY: number): number | null =>
     return Number.isNaN(cardId) ? null : cardId
 }
 
-const getIsMobileProjectsLayout = (): boolean => {
-    if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
-        return false
-    }
-
-    return window.matchMedia(MOBILE_PROJECTS_LAYOUT_QUERY).matches
-}
-
 const getProjectVariant = (cards: CardInfo[], cardId: number, isMobileProjectsLayout: boolean): "featured" | "compact" => {
     if (isMobileProjectsLayout) {
         return "compact"
@@ -197,7 +192,7 @@ const Projects: React.FC = () => {
     const [hasCustomProjectOrder, setHasCustomProjectOrder] = useState(hasStoredCustomOrder)
     const [draggedCardId, setDraggedCardId] = useState<number | null>(null)
     const [dragPreview, setDragPreview] = useState<DragPreviewState | null>(null)
-    const [isMobileProjectsLayout, setIsMobileProjectsLayout] = useState(getIsMobileProjectsLayout)
+    const isMobileProjectsLayout = useMediaQuery(MOBILE_PROJECTS_LAYOUT_QUERY)
     const [featuredProject, ...secondaryProjects] = projectCards
     const projectCountLabel = String(projectCards.length).padStart(2, "0")
     const projectSubtitleLines = isMobileProjectsLayout ? PROJECTS_SUBTITLE_LINES_MOBILE : PROJECTS_SUBTITLE_LINES
@@ -209,37 +204,6 @@ const Projects: React.FC = () => {
     const featuredProjectVariant = featuredProject ? getProjectVariant(projectCards, featuredProject.id, isMobileProjectsLayout) : "featured"
 
     useScrollProgress(projectsRef)
-
-    useEffect(() => {
-        if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
-            return
-        }
-
-        const mediaQuery = window.matchMedia(MOBILE_PROJECTS_LAYOUT_QUERY)
-        const updateViewportState = (matches: boolean) => {
-            setIsMobileProjectsLayout(matches)
-        }
-
-        updateViewportState(mediaQuery.matches)
-
-        const handleChange = (event: MediaQueryListEvent) => {
-            updateViewportState(event.matches)
-        }
-
-        if (typeof mediaQuery.addEventListener === "function") {
-            mediaQuery.addEventListener("change", handleChange)
-
-            return () => {
-                mediaQuery.removeEventListener("change", handleChange)
-            }
-        }
-
-        mediaQuery.addListener(handleChange)
-
-        return () => {
-            mediaQuery.removeListener(handleChange)
-        }
-    }, [])
 
     useEffect(() => {
         if (typeof window === "undefined" || !hasCustomProjectOrder) {
@@ -474,7 +438,7 @@ const Projects: React.FC = () => {
             <div className={styles.projects} ref={projectsRef}>
                 <div className={styles.projects__intro}>
                     <div className={styles.projects__introLead}>
-                        <span className={styles.projects__eyebrow}>Curated portfolio selection</span>
+                        <span className={styles.projects__eyebrow}>Selected work</span>
                         <h2 className={styles["projects__title"]}>Projects</h2>
                     </div>
 
@@ -486,11 +450,30 @@ const Projects: React.FC = () => {
                         </p>
 
                         <div className={styles.projects__facts} aria-label="Projects section summary">
-                            <span className={styles.projects__fact}>
-                                <strong>{projectCountLabel}</strong> shipped builds
+                            <span className={styles.projects__fact} style={{"--motion-index": 0} as React.CSSProperties}>
+                                <strong>{projectCountLabel}</strong> selected builds
                             </span>
-                            <span className={styles.projects__fact}>Featured case study first</span>
-                            <span className={styles.projects__fact}>Drag to curate the order</span>
+                            <span className={styles.projects__fact} style={{"--motion-index": 1} as React.CSSProperties}>
+                                Desktop, CRM, and commerce work
+                            </span>
+                            <span className={styles.projects__fact} style={{"--motion-index": 2} as React.CSSProperties}>
+                                React, TypeScript, and full-stack delivery
+                            </span>
+                        </div>
+
+                        <div className={styles.projects__marketLinks}>
+                            {MARKET_PAGES.map((marketPage, index) => (
+                                <Link
+                                    key={marketPage.path}
+                                    className={styles.projects__marketLink}
+                                    style={{"--motion-index": index} as React.CSSProperties}
+                                    to={marketPage.path}
+                                >
+                                    <span className={styles.projects__marketLinkLabel}>{marketPage.marketLabel}</span>
+                                    <span className={styles.projects__marketLinkTitle}>{marketPage.title}</span>
+                                    <span className={styles.projects__marketLinkCopy}>{marketPage.projectsTeaser}</span>
+                                </Link>
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -511,7 +494,11 @@ const Projects: React.FC = () => {
 
                     <div className={styles.projects__rail}>
                         {secondaryProjects.map((card, index) => (
-                            <div className={`${styles.projects__railItem} ${railItemClassNames[index] ?? ""}`} key={card.id}>
+                            <div
+                                className={`${styles.projects__railItem} ${railItemClassNames[index] ?? ""}`}
+                                key={card.id}
+                                style={{"--motion-index": index} as React.CSSProperties}
+                            >
                                 <Card
                                     card={card}
                                     isPlaceholder={draggedCardId === card.id}

@@ -20,8 +20,12 @@ const Expertise: React.FC = memo(() => {
                 <div className={styles["expertise__aside"]}>
                     <p className={styles["expertise__summary"]}>{EXPERTISE_COPY.summary}</p>
                     <ul className={styles["expertise__signals"]} aria-label="Core expertise themes">
-                        {EXPERTISE_SIGNALS.map((signal) => (
-                            <li key={signal} className={styles["expertise__signal"]}>
+                        {EXPERTISE_SIGNALS.map((signal, index) => (
+                            <li
+                                key={signal}
+                                className={styles["expertise__signal"]}
+                                style={{"--motion-index": index} as React.CSSProperties}
+                            >
                                 {signal}
                             </li>
                         ))}
@@ -30,8 +34,12 @@ const Expertise: React.FC = memo(() => {
             </div>
 
             <div className={styles["expertise__grid"]}>
-                {EXPERTISE_ITEMS.map((item) => (
-                    <article key={item.title} className={styles["expertise__card"]}>
+                {EXPERTISE_ITEMS.map((item, index) => (
+                    <article
+                        key={item.title}
+                        className={styles["expertise__card"]}
+                        style={{"--motion-index": index} as React.CSSProperties}
+                    >
                         <span className={styles["expertise__cardEyebrow"]}>{item.eyebrow}</span>
                         <h3 className={styles["expertise__cardTitle"]}>{item.title}</h3>
                         <p className={styles["expertise__cardText"]}>{item.text}</p>

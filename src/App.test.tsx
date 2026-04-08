@@ -1,5 +1,5 @@
 import {describe, expect, test, vi} from "vitest"
-import {fireEvent, render, screen} from "@testing-library/react"
+import {fireEvent, render, screen, within} from "@testing-library/react"
 import App from "./App"
 import {RESUME_DOWNLOAD_NAME, RESUME_FILE_URL} from "./constants/resume"
 
@@ -33,6 +33,10 @@ describe("App routing", () => {
         expect(screen.getByRole("button", {name: "Portfolio"})).toBeInTheDocument()
         expect(screen.getByRole("link", {name: "About"})).toHaveAttribute("href", "/about")
         expect(screen.getByRole("link", {name: "Expertise"})).toHaveAttribute("href", "/expertise")
+        const regionalNav = screen.getByRole("navigation", {name: /regional hiring pages/i})
+        expect(within(regionalNav).getByRole("link", {name: /canada/i})).toHaveAttribute("href", "/canada")
+        expect(within(regionalNav).getByRole("link", {name: /usa/i})).toHaveAttribute("href", "/usa")
+        expect(within(regionalNav).getByRole("link", {name: /europe/i})).toHaveAttribute("href", "/europe")
         expect(screen.queryByText(/hello@viacheslavmurakhin\.com/i)).not.toBeInTheDocument()
         expect(document.querySelectorAll('a[href="mailto:hello@viacheslavmurakhin.com"]').length).toBeGreaterThan(0)
     })
@@ -62,6 +66,15 @@ describe("App routing", () => {
         expect(screen.getByRole("heading", {name: /privacy/i})).toBeInTheDocument()
         expect(screen.getByRole("link", {name: /back to portfolio/i})).toHaveAttribute("href", "/")
         expect(screen.getByRole("link", {name: /copyright/i})).toHaveAttribute("href", "/copyright")
+    })
+
+    test("renders the canada landing page on /canada", () => {
+        renderAt("/canada")
+
+        expect(screen.getByRole("heading", {name: /full stack developer for canadian product teams/i})).toBeInTheDocument()
+        expect(screen.getByRole("link", {name: /open resume/i})).toHaveAttribute("href", "/resume")
+        expect(screen.getByRole("link", {name: /view projects/i})).toHaveAttribute("href", "/projects")
+        expect(screen.getByText(/toronto timezone overlap/i)).toBeInTheDocument()
     })
 
     test("collapses the desktop sidebar into icon mode", () => {

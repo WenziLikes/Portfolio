@@ -19,15 +19,19 @@ const About: React.FC = memo(() => {
                         <h2 className={styles["about__title"]}>About Me</h2>
                         <p className={styles["about__lead"]}>{ABOUT_COPY.intro}</p>
                         <div className={styles["about__content"]}>
-                            {ABOUT_COPY.paragraphs.map((paragraph) => (
-                                <p key={paragraph}>{paragraph}</p>
+                            {ABOUT_COPY.paragraphs.map((paragraph, index) => (
+                                <p key={paragraph} style={{"--motion-index": index} as React.CSSProperties}>{paragraph}</p>
                             ))}
                         </div>
                     </div>
 
                     <div className={styles["about__principles"]}>
-                        {ABOUT_PRINCIPLES.map((item) => (
-                            <div className={styles["about__principle"]} key={item.title}>
+                        {ABOUT_PRINCIPLES.map((item, index) => (
+                            <div
+                                className={styles["about__principle"]}
+                                key={item.title}
+                                style={{"--motion-index": index} as React.CSSProperties}
+                            >
                                 <span className={styles["about__principleTitle"]}>{item.title}</span>
                                 <p className={styles["about__principleText"]}>{item.text}</p>
                             </div>
@@ -36,12 +40,12 @@ const About: React.FC = memo(() => {
                 </div>
 
                 <div className={styles["about__rail"]}>
-                    <div className={styles["about__note"]}>
+                    <div className={styles["about__note"]} style={{"--motion-index": 0} as React.CSSProperties}>
                         <span className={styles["about__noteLabel"]}>Core stack</span>
                         <p className={styles["about__noteText"]}>{ABOUT_STACK.join(" / ")}</p>
                     </div>
 
-                    <div className={styles["about__quote"]}>
+                    <div className={styles["about__quote"]} style={{"--motion-index": 1} as React.CSSProperties}>
                         <span className={styles["about__quoteLabel"]}>Approach</span>
                         <p>{ABOUT_COPY.quote}</p>
                     </div>

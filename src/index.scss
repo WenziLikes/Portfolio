@@ -13,27 +13,27 @@
   --font-family2: "MurphyScript", cursive;
 
   --dark-blue: #0b0d10;
-  --light-blue: #27d3f6;
+  --light-blue: #5ab0ff;
   --color-white: #f8fbff;
   --color-dark: #14171b;
   --color-dark-gray: #6f7680;
   --color-gray: #eef3f7;
   --color-asphalt: #1f2329;
-  --line: rgba(39, 211, 246, 0.34);
+  --line: rgba(90, 176, 255, 0.34);
 
-  --box-shadow-dark: 0 28px 52px rgba(0, 0, 0, 0.54), 0 0 42px rgba(39, 211, 246, 0.1);
+  --box-shadow-dark: 0 28px 52px rgba(0, 0, 0, 0.54), 0 0 42px rgba(90, 176, 255, 0.1);
   --box-shadow-light: 0 0 0 1px rgba(255, 255, 255, 0.08);
   --surface-elevated: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
-  --surface-stroke: rgba(39, 211, 246, 0.16);
+  --surface-stroke: rgba(90, 176, 255, 0.16);
   --surface-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
   --card-bg: #070d18;
   --card-overlay: linear-gradient(180deg, rgba(2, 8, 19, 0) 0%, rgba(2, 8, 19, 0.84) 40%, rgba(2, 8, 19, 0.95) 100%);
   --card-title: #f2f6ff;
   --card-copy: #bfcae0;
-  --card-button-border: rgba(31, 147, 255, 0.65);
-  --card-button-bg: rgba(31, 147, 255, 0.12);
+  --card-button-border: rgba(90, 176, 255, 0.65);
+  --card-button-bg: rgba(90, 176, 255, 0.12);
   --card-button-text: #edf4ff;
-  --card-button-hover: rgba(31, 147, 255, 0.22);
+  --card-button-hover: rgba(90, 176, 255, 0.22);
   --content-base: #080b10;
 
   --sidebar-width: clamp(36rem, 29vw, 52rem);
@@ -57,24 +57,24 @@
   --surface: linear-gradient(170deg, rgba(35, 39, 46, 0.95) 0%, rgba(19, 22, 27, 0.98) 100%);
   --surface-soft: rgba(26, 29, 34, 0.86);
   --surface-elevated: linear-gradient(180deg, rgba(28, 33, 40, 0.86) 0%, rgba(16, 20, 25, 0.92) 100%);
-  --surface-stroke: rgba(39, 211, 246, 0.16);
-  --surface-shadow: 0 20px 42px rgba(0, 0, 0, 0.3), 0 0 28px rgba(39, 211, 246, 0.06);
+  --surface-stroke: rgba(90, 176, 255, 0.16);
+  --surface-shadow: 0 20px 42px rgba(0, 0, 0, 0.3), 0 0 28px rgba(90, 176, 255, 0.06);
   --text-color: #f2f6fb;
   --muted-text: #a6afbc;
-  --line: rgba(39, 211, 246, 0.34);
+  --line: rgba(90, 176, 255, 0.34);
   --card-bg: #070d18;
   --card-overlay: linear-gradient(180deg, rgba(2, 8, 19, 0) 0%, rgba(2, 8, 19, 0.84) 40%, rgba(2, 8, 19, 0.95) 100%);
   --card-title: #f2f6ff;
   --card-copy: #bfcae0;
-  --card-button-border: rgba(31, 147, 255, 0.65);
-  --card-button-bg: rgba(31, 147, 255, 0.12);
+  --card-button-border: rgba(90, 176, 255, 0.65);
+  --card-button-bg: rgba(90, 176, 255, 0.12);
   --card-button-text: #edf4ff;
-  --card-button-hover: rgba(31, 147, 255, 0.22);
+  --card-button-hover: rgba(90, 176, 255, 0.22);
   --content-base: #080b10;
 }
 
 [data-theme="light"] {
-  --light-blue: #1496ba;
+  --light-blue: #3f83d6;
   --page-bg:
     radial-gradient(44rem 28rem at 84% 24%, rgba(103, 219, 244, 0.18), transparent 72%),
     radial-gradient(38rem 24rem at 22% 76%, rgba(122, 217, 239, 0.12), transparent 76%),
@@ -88,19 +88,19 @@
   --surface: linear-gradient(180deg, rgba(250, 253, 255, 0.9) 0%, rgba(234, 242, 248, 0.96) 100%);
   --surface-soft: rgba(246, 250, 253, 0.72);
   --surface-elevated: linear-gradient(180deg, rgba(252, 254, 255, 0.74) 0%, rgba(239, 246, 251, 0.8) 100%);
-  --surface-stroke: rgba(88, 176, 206, 0.18);
-  --surface-shadow: 0 18px 40px rgba(103, 124, 144, 0.12), 0 0 24px rgba(96, 214, 238, 0.08);
+  --surface-stroke: rgba(63, 131, 214, 0.18);
+  --surface-shadow: 0 18px 40px rgba(103, 124, 144, 0.12), 0 0 24px rgba(90, 176, 255, 0.08);
   --text-color: #1c2936;
   --muted-text: #607486;
-  --line: rgba(70, 175, 205, 0.18);
+  --line: rgba(63, 131, 214, 0.18);
   --card-bg: #dce7ef;
   --card-overlay: linear-gradient(180deg, rgba(241, 247, 252, 0) 0%, rgba(235, 242, 247, 0.76) 40%, rgba(226, 235, 242, 0.96) 100%);
   --card-title: #182433;
   --card-copy: #586d7f;
-  --card-button-border: rgba(71, 180, 209, 0.34);
-  --card-button-bg: rgba(103, 216, 242, 0.14);
+  --card-button-border: rgba(63, 131, 214, 0.34);
+  --card-button-bg: rgba(90, 176, 255, 0.14);
   --card-button-text: #19384b;
-  --card-button-hover: rgba(103, 216, 242, 0.24);
+  --card-button-hover: rgba(90, 176, 255, 0.24);
   --content-base: #d4dde5;
 }
 
@@ -223,7 +223,10 @@ main.content {
   scroll-behavior: smooth;
   scroll-padding-top: 1rem;
   background: var(--project-bg);
-  transition: margin-left 0.35s ease, width 0.35s ease;
+  transition:
+    margin-left 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+    max-width 0.38s cubic-bezier(0.22, 1, 0.36, 1);
   -ms-overflow-style: none;
   scrollbar-width: none;
   overflow-x: clip;
