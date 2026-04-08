@@ -54,6 +54,50 @@
   background: #0f2f52;
 }
 
+@mixin sectionTitle($font-size: 1.45rem, $color: #15406d) {
+  margin: 0;
+  font-size: $font-size;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: $color;
+  text-transform: uppercase;
+}
+
+@mixin bodyText($font-size: 1.26rem, $line-height: 1.7, $color: #303d4f) {
+  margin: 0;
+  font-size: $font-size;
+  line-height: $line-height;
+  color: $color;
+}
+
+@mixin listBlock($padding-left: 1.55rem, $margin-top: 0, $gap: 0.8rem) {
+  margin: $margin-top 0 0;
+  padding-left: $padding-left;
+  display: grid;
+  gap: $gap;
+}
+
+@mixin textLink($color: #2572c8) {
+  color: $color;
+  text-decoration: none;
+}
+
+@mixin textLinkHover($color: #174f8d) {
+  color: $color;
+}
+
+@mixin surfaceCard(
+  $padding: 1.4rem,
+  $radius: 1rem,
+  $border-color: rgba(24, 58, 93, 0.1),
+  $background: linear-gradient(180deg, rgba(246, 250, 253, 0.94) 0%, rgba(255, 255, 255, 1) 100%)
+) {
+  padding: $padding;
+  border: 1px solid $border-color;
+  border-radius: $radius;
+  background: $background;
+}
+
 @mixin sheet($radius: 1rem) {
   width: min(100%, 86rem);
   margin: 0 auto;

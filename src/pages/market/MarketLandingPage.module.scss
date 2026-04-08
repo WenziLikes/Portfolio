@@ -1,0 +1,261 @@
+@use "../../styles/documentPage" as documentPage;
+
+.marketPage {
+  @include documentPage.pageRoot;
+}
+
+.toolbar {
+  @include documentPage.toolbar;
+  align-items: center;
+}
+
+.backLink,
+.projectsLink,
+.resumeLink,
+.downloadLink,
+.secondaryAction {
+  @include documentPage.actionLinkBase;
+}
+
+.backLink,
+.projectsLink,
+.secondaryAction {
+  @include documentPage.secondaryAction;
+}
+
+.backLink:hover,
+.projectsLink:hover,
+.secondaryAction:hover {
+  @include documentPage.secondaryActionHover;
+}
+
+.resumeLink,
+.downloadLink {
+  @include documentPage.primaryAction;
+}
+
+.resumeLink:hover,
+.downloadLink:hover {
+  @include documentPage.primaryActionHover;
+}
+
+.sheet {
+  @include documentPage.sheet(1rem);
+  display: grid;
+  gap: 2rem;
+}
+
+.hero {
+  display: grid;
+  gap: 1rem;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #1f6cb3;
+  font-size: 0.98rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(2.2rem, 3vw, 3.35rem);
+  line-height: 1.02;
+  color: #173e6b;
+  text-wrap: balance;
+}
+
+.lead {
+  @include documentPage.bodyText(1.38rem, 1.62, #304055);
+  max-width: 56ch;
+}
+
+.pillRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.4rem;
+  padding: 0 0.9rem;
+  border-radius: 999px;
+  background: rgba(24, 90, 147, 0.08);
+  color: #1b5b96;
+  font-size: 0.98rem;
+  font-weight: 700;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(20rem, 0.92fr);
+  gap: 1.2rem;
+}
+
+.summaryCard,
+.ctaCard,
+.section,
+.related {
+  @include documentPage.surfaceCard;
+}
+
+.cardTitle,
+.sectionTitle,
+.relatedTitle {
+  @include documentPage.sectionTitle(1.22rem);
+}
+
+.summaryCopy,
+.sectionCopy,
+.contactLine,
+.relatedCopy {
+  @include documentPage.bodyText(1.2rem, 1.66, #324052);
+}
+
+.summaryCopy {
+  margin-top: 0.8rem;
+}
+
+.ctaCard {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.contactList,
+.bulletList {
+  @include documentPage.listBlock(1.25rem, 0.2rem, 0.6rem);
+}
+
+.contactList li,
+.bulletList li {
+  @include documentPage.bodyText(1.14rem, 1.58, #324052);
+}
+
+.contactList {
+  margin-top: 0;
+}
+
+.contactLine {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: #1d62a3;
+}
+
+.contactLine:hover {
+  color: #154977;
+}
+
+.ctaActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.sections {
+  display: grid;
+  gap: 1rem;
+}
+
+.section {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.sectionBody {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.related {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.relatedCopy {
+  margin: 0;
+}
+
+.relatedNav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.relatedLink,
+.relatedCurrent {
+  display: inline-flex;
+  min-height: 2.9rem;
+  align-items: center;
+  padding: 0 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(24, 58, 93, 0.14);
+  text-decoration: none;
+  font-size: 1.04rem;
+  font-weight: 700;
+}
+
+.relatedLink {
+  color: #1b5b96;
+  background: #ffffff;
+}
+
+.relatedLink:hover {
+  border-color: rgba(24, 58, 93, 0.24);
+  color: #134674;
+}
+
+.relatedCurrent {
+  color: #ffffff;
+  background: #173e6b;
+}
+
+@media (max-width: 820px) {
+  .summaryGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .marketPage {
+    padding: 1rem;
+  }
+
+  .toolbar,
+  .sheet {
+    width: 100%;
+  }
+
+  .sheet {
+    padding: 1.6rem 1.25rem;
+    gap: 1.4rem;
+  }
+
+  .backLink,
+  .projectsLink,
+  .resumeLink {
+    width: 100%;
+  }
+
+  .ctaActions {
+    flex-direction: column;
+  }
+
+  .downloadLink,
+  .secondaryAction {
+    width: 100%;
+  }
+
+  .title {
+    font-size: clamp(2rem, 8vw, 2.8rem);
+  }
+
+  .lead {
+    font-size: 1.2rem;
+  }
+}

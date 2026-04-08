@@ -1,6 +1,7 @@
 import React from "react"
 import {Link} from "react-router-dom"
 import styles from "./Footer.module.scss"
+import {MARKET_PAGES} from "../../content/marketPages"
 import {COPYRIGHT_NOTICE, PROFILE, SITE_META, SOCIAL_LINKS} from "../../content/site"
 import {RESUME_DOWNLOAD_NAME, RESUME_FILE_URL} from "../../constants/resume"
 import {trackContactClick, trackResumeClick, trackSocialClick} from "../../utils/analytics"
@@ -9,6 +10,7 @@ import ProtectedEmailLink from "../protectedEmailLink/ProtectedEmailLink"
 const footerLinks = [
     {label: "Portfolio", to: "/"},
     {label: "Resume", to: "/resume"},
+    ...MARKET_PAGES.map((page) => ({label: page.marketLabel, to: page.path})),
     {label: "Privacy", to: "/privacy"},
     {label: "Copyright", to: "/copyright"},
 ]

@@ -41,6 +41,31 @@ test("legal routes render", async ({page}) => {
     await expect(page.getByRole("heading", {name: /Copyright/i})).toBeVisible()
 })
 
+test("regional landing pages render directly", async ({page}) => {
+    const regionalPages = [
+        {
+            heading: /full stack developer for canadian product teams/i,
+            path: "/canada",
+        },
+        {
+            heading: /full stack developer for us product teams/i,
+            path: "/usa",
+        },
+        {
+            heading: /full stack developer for european product teams/i,
+            path: "/europe",
+        },
+    ]
+
+    for (const regionalPage of regionalPages) {
+        await page.goto(regionalPage.path)
+
+        await expect(page.getByRole("heading", {name: regionalPage.heading})).toBeVisible()
+        await expect(page.getByRole("link", {name: "View projects"})).toHaveAttribute("href", "/projects")
+        await expect(page.getByRole("link", {name: "Open resume"})).toHaveAttribute("href", "/resume")
+    }
+})
+
 test("mobile header on Home appears only after scroll starts", async ({page}, testInfo) => {
     test.skip(!/^(phone|tablet)-/.test(testInfo.project.name))
 

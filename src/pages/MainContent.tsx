@@ -2,7 +2,8 @@ import React, {useEffect, useRef} from "react"
 import {About, Experience, Expertise, Home, Projects} from "../sections"
 import {useLocation, useNavigate} from "react-router-dom"
 import {getSectionIdFromPath, getSectionPath} from "../constants/navigation"
-import {type MainSectionId} from "../content/site"
+import {MAIN_SECTIONS, type MainSectionId} from "../content/site"
+import useMediaQuery from "../hooks/useMediaQuery"
 import {getMainContentElement} from "../utils/scroll"
 
 interface MainContentProps {
@@ -10,14 +11,32 @@ interface MainContentProps {
 }
 
 const ROUTE_SYNC_SETTLE_MS = 350
+const COMPACT_ROUTE_SYNC_QUERY = "(max-width: 760px)"
+
+const renderSectionContent = (sectionId: MainSectionId, theme: "dark" | "light") => {
+    switch (sectionId) {
+        case "home":
+            return <Home theme={theme}/>
+        case "about":
+            return <About/>
+        case "expertise":
+            return <Expertise/>
+        case "experience":
+            return <Experience/>
+        case "projects":
+            return <Projects/>
+        default:
+            return null
+    }
+}
 
 const MainContent: React.FC<MainContentProps> = ({theme}) => {
     const navigate = useNavigate()
     const location = useLocation()
     const sections = useRef<(HTMLElement | null)[]>([])
+    const isCompactViewport = useMediaQuery(COMPACT_ROUTE_SYNC_QUERY)
 
     useEffect(() => {
-        const isCompactViewport = window.matchMedia("(max-width: 760px)").matches
         const contentRoot = getMainContentElement()
         const observerActivationTime = window.performance.now() + ROUTE_SYNC_SETTLE_MS
 
@@ -35,9 +54,9 @@ const MainContent: React.FC<MainContentProps> = ({theme}) => {
                     return
                 }
 
-                const nextSectionId = visibleSection.target.id
+                const nextSectionId = visibleSection.target.id as MainSectionId
                 const currentSectionId = getSectionIdFromPath(location.pathname)
-                const sectionPath = getSectionPath(nextSectionId as MainSectionId)
+                const sectionPath = getSectionPath(nextSectionId)
 
                 if (currentSectionId !== nextSectionId) {
                     navigate(sectionPath, {replace: true})
@@ -64,25 +83,15 @@ const MainContent: React.FC<MainContentProps> = ({theme}) => {
                 }
             })
         }
-    }, [location.pathname, navigate])
+    }, [isCompactViewport, location.pathname, navigate])
 
     return (
         <>
-            <section id="home" ref={(el) => (sections.current[0] = el)}>
-                <Home theme={theme}/>
-            </section>
-            <section id="about" ref={(el) => (sections.current[1] = el)}>
-                <About/>
-            </section>
-            <section id="expertise" ref={(el) => (sections.current[2] = el)}>
-                <Expertise/>
-            </section>
-            <section id="experience" ref={(el) => (sections.current[3] = el)}>
-                <Experience/>
-            </section>
-            <section id="projects" ref={(el) => (sections.current[4] = el)}>
-                <Projects/>
-            </section>
+            {MAIN_SECTIONS.map((section, index) => (
+                <section key={section.id} id={section.id} ref={(el) => (sections.current[index] = el)}>
+                    {renderSectionContent(section.id, theme)}
+                </section>
+            ))}
         </>
     )
 }

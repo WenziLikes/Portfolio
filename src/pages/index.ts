@@ -1,4 +1,5 @@
 export {default as MainContent} from "./MainContent"
+export {default as MarketLandingPage} from "./market/MarketLandingPage"
 export {default as NotFound} from "./NotFound"
 export {default as Resume} from "./resume/Resume"
 export {default as CopyrightPage} from "./legal/CopyrightPage"

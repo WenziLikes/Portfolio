@@ -27,6 +27,22 @@ const setStructuredData = (selector: string, content: string) => {
     }
 }
 
+const setAlternateLinks = (alternates: ReadonlyArray<{href: string; hrefLang: string}>) => {
+    document.querySelectorAll('link[rel="alternate"][data-route-alternate="true"]').forEach((element) => {
+        element.parentNode?.removeChild(element)
+    })
+
+    alternates.forEach((alternate) => {
+        const element = document.createElement("link")
+
+        element.rel = "alternate"
+        element.href = alternate.href
+        element.hreflang = alternate.hrefLang
+        element.setAttribute("data-route-alternate", "true")
+        document.head.appendChild(element)
+    })
+}
+
 interface RouteMetaProps {
     shouldTrackAnalytics?: boolean
 }
@@ -39,12 +55,16 @@ const RouteMeta: React.FC<RouteMetaProps> = ({shouldTrackAnalytics = false}) => 
 
         document.title = meta.title
         setMetaContent('meta[name="description"]', meta.description)
+        setMetaContent('meta[name="keywords"]', meta.keywords.join(", "))
         setMetaContent('meta[name="robots"]', meta.robots)
+        setMetaContent('meta[name="googlebot"]', meta.robots)
         setMetaContent('meta[property="og:title"]', meta.title)
         setMetaContent('meta[property="og:description"]', meta.description)
+        setMetaContent('meta[property="og:locale"]', meta.ogLocale)
         setMetaContent('meta[property="og:type"]', meta.ogType)
         setMetaContent('meta[property="og:url"]', meta.canonicalUrl)
         setMetaContent('meta[property="og:image"]', meta.ogImageUrl)
+        setMetaContent('meta[property="og:image:secure_url"]', meta.ogImageUrl)
         setMetaContent('meta[property="og:image:alt"]', meta.ogImageAlt)
         setMetaContent('meta[property="og:image:width"]', String(meta.ogImageWidth))
         setMetaContent('meta[property="og:image:height"]', String(meta.ogImageHeight))
@@ -53,6 +73,7 @@ const RouteMeta: React.FC<RouteMetaProps> = ({shouldTrackAnalytics = false}) => 
         setMetaContent('meta[name="twitter:image"]', meta.ogImageUrl)
         setMetaContent('meta[name="twitter:image:alt"]', meta.ogImageAlt)
         setLinkHref('link[rel="canonical"]', meta.canonicalUrl)
+        setAlternateLinks(meta.alternates)
         setStructuredData('script[data-route-structured-data="true"]', getStructuredDataJson(pathname))
 
         if (shouldTrackAnalytics) {

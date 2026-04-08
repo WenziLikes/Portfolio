@@ -35,6 +35,21 @@ const replaceStructuredData = (html, content) => html.replace(
     `<script type="application/ld+json" data-route-structured-data="true">${escapeScriptJson(content)}</script>`
 )
 
+const injectAlternateLinks = (html, alternates) => {
+    const routeAlternatePattern = /\s*<link rel="alternate" hreflang="[^"]+" href="[^"]+" data-route-alternate="true"\s*\/?>/gi
+    const sanitizedHtml = html.replace(routeAlternatePattern, "")
+
+    if (!alternates.length) {
+        return sanitizedHtml
+    }
+
+    const links = alternates
+        .map((alternate) => `    <link rel="alternate" hreflang="${escapeHtml(alternate.hrefLang)}" href="${escapeHtml(alternate.href)}" data-route-alternate="true" />`)
+        .join("\n")
+
+    return sanitizedHtml.replace(/<\/head>/i, `${links}\n  </head>`)
+}
+
 const injectAppHtml = (html, appHtml) => html.replace(
     /<div id="root">\s*<\/div>/i,
     `<div id="root">${appHtml}</div>`
@@ -76,12 +91,16 @@ const buildHtmlDocument = ({
     html = injectAppHtml(html, appHtml)
     html = replaceTitle(html, meta.title)
     html = replaceMetaContent(html, "name", "description", meta.description)
+    html = replaceMetaContent(html, "name", "keywords", meta.keywords.join(", "))
     html = replaceMetaContent(html, "name", "robots", meta.robots)
+    html = replaceMetaContent(html, "name", "googlebot", meta.robots)
     html = replaceMetaContent(html, "property", "og:title", meta.title)
     html = replaceMetaContent(html, "property", "og:description", meta.description)
+    html = replaceMetaContent(html, "property", "og:locale", meta.ogLocale)
     html = replaceMetaContent(html, "property", "og:type", meta.ogType)
     html = replaceMetaContent(html, "property", "og:url", meta.canonicalUrl)
     html = replaceMetaContent(html, "property", "og:image", meta.ogImageUrl)
+    html = replaceMetaContent(html, "property", "og:image:secure_url", meta.ogImageUrl)
     html = replaceMetaContent(html, "property", "og:image:alt", meta.ogImageAlt)
     html = replaceMetaContent(html, "property", "og:image:width", String(meta.ogImageWidth))
     html = replaceMetaContent(html, "property", "og:image:height", String(meta.ogImageHeight))
@@ -90,6 +109,7 @@ const buildHtmlDocument = ({
     html = replaceMetaContent(html, "name", "twitter:image", meta.ogImageUrl)
     html = replaceMetaContent(html, "name", "twitter:image:alt", meta.ogImageAlt)
     html = replaceLinkHref(html, "canonical", meta.canonicalUrl)
+    html = injectAlternateLinks(html, meta.alternates)
     html = replaceStructuredData(html, getStructuredDataJson(pathname))
 
     return html
@@ -102,7 +122,9 @@ const buildLegacyHomeRedirectHtml = ({canonicalUrl, template}) => {
     html = injectAppHtml(html, redirectBody.replace(/^<div id="root">|<\/div>$/g, ""))
     html = replaceTitle(html, "Redirecting | Viacheslav Murakhin")
     html = replaceMetaContent(html, "name", "description", "Legacy home route redirecting to the canonical portfolio home page.")
+    html = replaceMetaContent(html, "name", "keywords", "legacy home redirect, portfolio redirect")
     html = replaceMetaContent(html, "name", "robots", "noindex,follow")
+    html = replaceMetaContent(html, "name", "googlebot", "noindex,follow")
     html = replaceMetaContent(html, "property", "og:title", "Redirecting | Viacheslav Murakhin")
     html = replaceMetaContent(html, "property", "og:description", "Legacy home route redirecting to the canonical portfolio home page.")
     html = replaceMetaContent(html, "property", "og:type", "website")
@@ -110,6 +132,7 @@ const buildLegacyHomeRedirectHtml = ({canonicalUrl, template}) => {
     html = replaceMetaContent(html, "name", "twitter:title", "Redirecting | Viacheslav Murakhin")
     html = replaceMetaContent(html, "name", "twitter:description", "Legacy home route redirecting to the canonical portfolio home page.")
     html = replaceLinkHref(html, "canonical", canonicalUrl)
+    html = injectAlternateLinks(html, [])
     html = replaceStructuredData(html, "[]")
     html = html.replace(/<\/head>/i, `    <meta http-equiv="refresh" content="0; url=/" />\n  </head>`)
 

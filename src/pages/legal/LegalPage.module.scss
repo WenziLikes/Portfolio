@@ -59,11 +59,12 @@
 
 .preferenceCard {
   margin-top: 2.2rem;
-  padding: 1.5rem;
-  border: 1px solid rgba(21, 72, 123, 0.12);
-  border-radius: 1.2rem;
-  background:
-    linear-gradient(180deg, rgba(239, 246, 252, 0.84) 0%, rgba(250, 252, 255, 0.96) 100%);
+  @include documentPage.surfaceCard(
+    1.5rem,
+    1.2rem,
+    rgba(21, 72, 123, 0.12),
+    linear-gradient(180deg, rgba(239, 246, 252, 0.84) 0%, rgba(250, 252, 255, 0.96) 100%)
+  );
 }
 
 .section + .section {
@@ -71,12 +72,7 @@
 }
 
 .sectionTitle {
-  margin: 0;
-  font-size: 1.45rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  color: #15406d;
-  text-transform: uppercase;
+  @include documentPage.sectionTitle;
 }
 
 .sectionBody {
@@ -87,10 +83,7 @@
 
 .copy,
 .list {
-  margin: 0;
-  font-size: 1.26rem;
-  line-height: 1.7;
-  color: #303d4f;
+  @include documentPage.bodyText;
 }
 
 .preferenceStatus {
@@ -131,7 +124,7 @@
 }
 
 .list {
-  padding-left: 1.55rem;
+  @include documentPage.listBlock(1.55rem, 0, 0.8rem);
 }
 
 @media (max-width: 760px) {

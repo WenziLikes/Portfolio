@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from "react"
 import {BrowserRouter, Navigate, Route, Routes, useLocation} from "react-router-dom"
 import {AnalyticsConsentBanner, Footer, RouteMeta, ScrollToSection, SideBar} from "./components"
+import {MARKET_PAGE_PATHS} from "./content/marketPages"
 import {MAIN_SECTIONS} from "./content/site"
-import {CopyrightPage, MainContent, NotFound, PrivacyPage, Resume} from "./pages"
+import {CopyrightPage, MainContent, MarketLandingPage, NotFound, PrivacyPage, Resume} from "./pages"
 import {disableAnalytics, getStoredAnalyticsConsent, initializeAnalytics, type AnalyticsConsentStatus, persistAnalyticsConsent} from "./utils/analytics"
 
 type Theme = "dark" | "light"
@@ -77,6 +78,10 @@ const PageShell: React.FC<PageShellProps> = ({children}) => {
     )
 }
 
+const PORTFOLIO_ROUTE_PATHS = ["/", ...MAIN_SECTIONS
+    .filter((section) => section.id !== "home")
+    .map((section) => `/${section.id}`)]
+
 interface AppContentProps {
     initialTheme?: Theme
 }
@@ -106,50 +111,48 @@ export const AppContent: React.FC<AppContentProps> = ({initialTheme = "dark"}) =
         setAnalyticsConsent(nextConsent)
     }
 
-    const portfolioPaths = ["/", ...MAIN_SECTIONS
-        .filter((section) => section.id !== "home")
-        .map((section) => `/${section.id}`)]
+    const standalonePageRoutes = [
+        {
+            element: <Resume/>,
+            path: "/resume",
+        },
+        {
+            element: <PrivacyPage analyticsConsent={analyticsConsent} onAnalyticsConsentChange={updateAnalyticsConsent}/>,
+            path: "/privacy",
+        },
+        {
+            element: <CopyrightPage/>,
+            path: "/copyright",
+        },
+        ...MARKET_PAGE_PATHS.map((path) => ({
+            element: <MarketLandingPage path={path}/>,
+            path,
+        })),
+        {
+            element: <NotFound/>,
+            path: "*",
+        },
+    ]
 
     return (
         <div className="App">
             <RouteMeta shouldTrackAnalytics={analyticsConsent === "granted"}/>
             <Routes>
-                {portfolioPaths.map((path) => (
+                {PORTFOLIO_ROUTE_PATHS.map((path) => (
                     <Route key={path} path={path} element={<PortfolioLayout setTheme={setTheme} theme={theme}/>}/>
                 ))}
                 <Route path="/home" element={<Navigate replace to="/"/>}/>
-                <Route
-                    path="/resume"
-                    element={(
-                        <PageShell>
-                            <Resume/>
-                        </PageShell>
-                    )}
-                />
-                <Route
-                    path="/privacy"
-                    element={(
-                        <PageShell>
-                            <PrivacyPage analyticsConsent={analyticsConsent} onAnalyticsConsentChange={updateAnalyticsConsent}/>
-                        </PageShell>
-                    )}
-                />
-                <Route
-                    path="/copyright"
-                    element={(
-                        <PageShell>
-                            <CopyrightPage/>
-                        </PageShell>
-                    )}
-                />
-                <Route
-                    path="*"
-                    element={(
-                        <PageShell>
-                            <NotFound/>
-                        </PageShell>
-                    )}
-                />
+                {standalonePageRoutes.map(({element, path}) => (
+                    <Route
+                        key={path}
+                        path={path}
+                        element={(
+                            <PageShell>
+                                {element}
+                            </PageShell>
+                        )}
+                    />
+                ))}
             </Routes>
             <AnalyticsConsentBanner consent={analyticsConsent} onConsentChange={updateAnalyticsConsent}/>
         </div>
