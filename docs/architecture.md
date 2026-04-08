@@ -7,42 +7,41 @@ The project is a static-hosted React portfolio that combines:
 - a one-page scrolling portfolio shell
 - deep-linked section routes for the main portfolio flow
 - dedicated routed pages for resume and legal content
+- regional hiring landing pages for Canada, USA, and Europe
 - build-time prerendering for crawlable route HTML
-- centralized content and contact helpers
-- persisted UI state for theme, sidebar layout, and project ordering
-- release-focused metadata, testing, and deployment support
+- centralized content and SEO inputs
+- persisted browser-only UI state
+- automated validation for layout, routing, metadata, and release behavior
 
 ## System View
 
 ```mermaid
 flowchart TD
-    A["Browser request"] --> B["Pre-rendered route HTML"]
-    B --> C["React + BrowserRouter"]
+    A["Browser request"] --> B["Pre-rendered route HTML in build/"]
+    B --> C["React app with BrowserRouter"]
     C --> D["Portfolio shell routes"]
-    C --> E["Standalone page routes"]
-    D --> F["MainContent sections"]
-    D --> G["SideBar"]
-    D --> H["Footer"]
-    E --> H
-    C --> I["RouteMeta"]
-    F --> J["src/content/site.ts"]
-    F --> K["src/content/projects.ts"]
-    I --> N["src/seo.ts"]
-    N --> J
-    N --> K
-    G --> J
-    H --> J
-    E --> J
-    H --> L["ProtectedEmailLink + contact.ts"]
-    I --> M["analytics.ts"]
+    C --> E["Standalone pages"]
+    C --> F["Regional landing pages"]
+    D --> G["MainContent sections"]
+    D --> H["SideBar"]
+    D --> I["Footer"]
+    E --> I
+    F --> I
+    C --> J["RouteMeta"]
+    G --> K["src/content/site.ts"]
+    G --> L["src/content/projects.ts"]
+    F --> M["src/content/marketPages.ts"]
+    J --> N["src/seo.ts"]
+    H --> O["useMediaQuery + scroll helpers"]
+    C --> P["analytics.ts"]
 ```
 
 ## Route Model
 
 | Route | Role |
 | --- | --- |
-| `/` | Default portfolio landing route |
-| `/home` | Legacy redirect to the canonical home route `/` |
+| `/` | Canonical landing route for the scrolling portfolio shell |
+| `/home` | Legacy route that redirects to `/` |
 | `/about` | Deep link to the about section |
 | `/expertise` | Deep link to the expertise section |
 | `/experience` | Deep link to the experience section |
@@ -50,51 +49,36 @@ flowchart TD
 | `/resume` | Dedicated resume page |
 | `/privacy` | Privacy notice |
 | `/copyright` | Copyright notice |
-| `*` | Not found page |
+| `/canada` | Regional hiring page for Canadian teams |
+| `/usa` | Regional hiring page for US teams |
+| `/europe` | Regional hiring page for Europe and default English `hreflang` targeting |
+| `*` | Not-found route rendered through the shared page shell |
 
 ### Why this matters
 
-The app uses `BrowserRouter`, but the release build also prerenders the public routes. That keeps clean URLs while serving crawlable HTML for the known pages and a real `404.html` for unknown routes.
+The app uses `BrowserRouter`, but production does not rely on a generic SPA catch-all rewrite. The build pipeline prerenders all known public routes into static HTML and also writes a real `404.html`, which keeps direct links, SEO, and static-hosting compatibility aligned.
 
 ## Core Runtime Pieces
 
 | File | Responsibility |
 | --- | --- |
-| `src/App.tsx` | Router setup, theme state, shell selection, and footer composition |
-| `src/pages/MainContent.tsx` | One-page section assembly and section-to-route synchronization |
-| `src/components/scrollToSection/ScrollToSection.tsx` | Scroll restoration and deep-link entry into the correct section |
-| `src/components/sideBar/SideBar.tsx` | Desktop navigation, theme controls, sidebar collapse, and mobile navigation |
-| `src/sections/projects/Projects.tsx` | Featured project layout, drag-and-drop ordering, and order persistence |
-| `src/components/footer/Footer.tsx` | Shared footer, resume download CTA, contact CTA, and legal links |
-| `src/components/protectedEmailLink/ProtectedEmailLink.tsx` | Email link rendering backed by protected contact constants |
-| `src/components/routeMeta/RouteMeta.tsx` | Runtime updates for title, description, canonical URL, robots, schema, and social metadata |
-| `src/seo.ts` | Shared SEO metadata, schema.org generation, robots, and sitemap helpers |
-| `src/entry-server.tsx` | SSR entry used only for build-time prerendering |
-| `scripts/prerender.mjs` | Generates route HTML, `404.html`, `robots.txt`, and `sitemap.xml` after the client build |
-| `src/utils/analytics.ts` | Optional GA4 initialization and event tracking helpers |
+| `src/App.tsx` | Router setup, theme state, analytics consent state, shell selection, and shared page-shell composition |
+| `src/pages/MainContent.tsx` | Mounts the homepage sections, keeps them in one scroll container, and syncs the URL with scroll position |
+| `src/components/scrollToSection/ScrollToSection.tsx` | Scroll restoration and deep-link entry into the correct homepage section |
+| `src/components/sideBar/SideBar.tsx` | Desktop navigation, mobile navigation, theme controls, sidebar collapse behavior, and section highlighting |
+| `src/pages/market/MarketLandingPage.tsx` | Regional landing page UI for Canada, USA, and Europe |
+| `src/pages/resume/Resume.tsx` | Resume page, contact block, and PDF download entry point |
+| `src/pages/legal/LegalDocumentPage.tsx` | Shared legal-page layout used by privacy and copyright routes |
+| `src/components/footer/Footer.tsx` | Shared footer, resume CTA, legal links, regional links, and contact entry points |
+| `src/components/routeMeta/RouteMeta.tsx` | Runtime updates for title, description, canonical URL, robots, structured data, and alternate links |
+| `src/seo.ts` | Shared SEO metadata, structured data generation, robots, sitemap, and route-indexability helpers |
+| `src/entry-server.tsx` | SSR entry used only during build-time prerendering |
+| `scripts/prerender.mjs` | Generates route HTML, `/home` redirect HTML, `404.html`, `robots.txt`, and `sitemap.xml` after the build |
+| `scripts/export-resume.mjs` | Builds the app, serves `build/` locally, and exports the `/resume` route as PDF using Playwright |
 
-## Content Architecture
+## Homepage Shell Composition
 
-The project intentionally keeps human-facing content out of scattered UI files.
-
-| Source file | Owns |
-| --- | --- |
-| `src/content/site.ts` | Profile identity, navigation labels, about copy, experience, resume content, legal copy, route metadata, and footer information |
-| `src/content/projects.ts` | Project order, titles, descriptions, actions, stack labels, and image metadata |
-| `src/utils/contact.ts` | Public email constants used by protected email links |
-
-This prevents copy drift between:
-
-- homepage sections
-- sidebar
-- footer
-- resume page
-- legal pages
-- metadata
-
-## Section Composition
-
-The portfolio shell always mounts the following sequence:
+The portfolio shell always mounts the following sequence inside the same scroll container:
 
 1. `Home`
 2. `About`
@@ -102,69 +86,77 @@ The portfolio shell always mounts the following sequence:
 4. `Experience`
 5. `Projects`
 
-Each section lives inside the same scroll container. `MainContent.tsx` uses `IntersectionObserver` so the URL updates as the user scrolls between sections.
+`MainContent.tsx` uses `IntersectionObserver` to determine which section is currently dominant in view and replaces the URL with the matching route. This keeps the homepage feeling like one continuous product surface while preserving section-level deep links.
 
-The `Projects` section has two live behaviors worth documenting:
+## Content Architecture
 
-- the first card is treated as the featured project on desktop
-- desktop drag-and-drop can reorder cards and persist a custom order locally
+The project intentionally keeps human-facing copy out of scattered UI files.
 
-## Persisted UI State
+| Source file | Owns |
+| --- | --- |
+| `src/content/site.ts` | Identity, navigation labels, target markets, about copy, expertise copy, experience timeline, resume content, legal copy, and route metadata |
+| `src/content/projects.ts` | Project order, titles, descriptions, proof points, stack labels, actions, and responsive image metadata |
+| `src/content/marketPages.ts` | Regional landing-page content, market-specific claims, `hreflang` alternates, and regional route metadata |
+| `src/utils/contact.ts` | Public email constants used by protected email link rendering |
+
+This structure prevents copy drift across:
+
+- homepage sections
+- sidebar and footer
+- routed resume page
+- legal pages
+- regional landing pages
+- SEO metadata and structured data
+
+## Persisted Browser State
 
 | State | Storage | Owner |
 | --- | --- | --- |
 | Active theme (`dark` / `light`) | `localStorage["theme"]` | `src/App.tsx` |
 | Desktop sidebar collapsed state | `localStorage["portfolio-sidebar-collapsed"]` | `src/components/sideBar/SideBar.tsx` |
 | Custom project order | `localStorage["vm-projects-order"]` and `localStorage["vm-projects-order-customized"]` | `src/sections/projects/Projects.tsx` |
+| Analytics consent | `localStorage["vm-analytics-consent"]` | `src/App.tsx` and `src/utils/analytics.ts` |
 
-These states are intentionally local-only. No server-side session or account storage exists.
+These states are deliberately browser-local. There is no account system and no remote persistence layer.
 
 ## Styling Strategy
 
 | Scope | Location |
 | --- | --- |
-| Global tokens, layout, background, type system | `src/index.scss` |
+| Global tokens, typography, backgrounds, and shell sizing | `src/index.scss` |
 | Section-level layout styling | `src/sections/sections.module.scss` |
-| Component-level styling | `*.module.scss` beside the component |
+| Component-level styling | colocated `*.module.scss` files |
+| Shared document-page mixins | `src/styles/_documentPage.scss` |
 
 Rules used by the project:
 
-- SCSS files are the source of truth
-- generated CSS artifacts are not stored in `src/`
-- component styles stay colocated with the component
+- SCSS Modules are the source of truth for component and page styling.
+- Repeated document-page patterns are extracted into shared mixins instead of duplicated between resume, legal, and regional pages.
+- Media-query logic is centralized through `useMediaQuery` where responsive runtime behavior is shared.
 
-## Asset Strategy
+## SEO and Metadata
 
-### App assets
-
-- Local hero graphic and local font assets
-- Local JPG, SVG, PNG, and WebP project previews
-- Local icons, manifest assets, and resume PDF in `public/`
-- Documentation screenshots in `docs/assets/`
-
-### Why local assets are preferred
-
-- no hotlinked media dependencies
-- predictable performance
-- clear ownership over portfolio visuals
-- fewer licensing ambiguities
-
-## Metadata and SEO
-
-The project uses three metadata layers:
+The project uses three coordinated metadata layers:
 
 | Layer | Purpose |
 | --- | --- |
-| `index.html` | Base metadata, structured data, manifest links, favicon, and theme bootstrap |
-| `src/content/site.ts` | Canonical site metadata and per-route meta definitions |
-| `RouteMeta.tsx` | Runtime updates for title, description, canonical URL, and social tags |
+| `index.html` | Base metadata, theme bootstrap, manifest links, and structured data placeholders |
+| `src/content/site.ts` and `src/content/marketPages.ts` | Canonical site metadata plus per-route titles, descriptions, keywords, and regional alternates |
+| `src/seo.ts` | Route resolution, robots handling, sitemap generation, structured data, and `hreflang` support |
 
-## Operational Extensions
+`src/seo.ts` also models:
 
-The codebase includes release-facing operational workflows:
+- indexable vs non-indexable routes
+- sitemap priorities and change frequencies
+- professional audience, language, and market targeting
+- organization, person, website, breadcrumb, and page schemas
+- regional alternate links for Canada, USA, Europe, and the default route
 
-- release documentation in `docs/`
-- automated tests with Vitest and Playwright
-- pre-rendered route HTML with static-host deployment support
-- PDF resume export
-- reproducible documentation screenshot refresh via `npm run docs:screenshots`
+## Operational Notes
+
+Important release-facing behaviors:
+
+- Google Analytics is optional and activates only when a measurement ID is configured and the visitor grants consent.
+- The resume PDF is a generated artifact and must be refreshed after resume copy changes.
+- Documentation screenshots are release artifacts and should be refreshed after meaningful UI changes.
+- Static hosting must serve generated route HTML from `build/`, keep `/home` redirect output intact, and return `404.html` for unknown paths.

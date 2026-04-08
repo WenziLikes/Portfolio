@@ -2,54 +2,91 @@
 
 ## Purpose
 
-This project keeps marketing, hiring, legal, and resume copy in structured TypeScript files so the same information can power multiple UI surfaces without diverging.
+This project keeps hiring, marketing, legal, SEO, resume, and regional targeting copy in structured TypeScript files so the same information can drive multiple UI surfaces without drifting.
+
+That is one of the core engineering decisions in the repository: the portfolio is maintained like a product, not like a static page with scattered hardcoded copy.
 
 ## Source of Truth
 
 | File | What it owns |
 | --- | --- |
-| `src/content/site.ts` | Identity, SEO, route metadata, navigation labels, about copy, experience data, resume data, legal content, and footer contact copy |
-| `src/content/projects.ts` | Project card order, labels, descriptions, outbound links, stack chips, and responsive image metadata |
-| `src/utils/contact.ts` | Public email constants used to render `mailto:` links without scattering the address across UI files |
+| `src/content/site.ts` | Identity, SEO metadata, target markets, language coverage, navigation labels, about copy, expertise copy, experience data, resume data, legal content, and base route metadata |
+| `src/content/projects.ts` | Project order, descriptions, stack labels, CTA links, proof points, and responsive image metadata |
+| `src/content/marketPages.ts` | Canada, USA, and Europe landing-page copy plus regional route metadata and alternate links |
+| `src/utils/contact.ts` | Public email constants used to render protected `mailto:` links |
 
 ## `site.ts` Breakdown
 
-| Export | Purpose |
+| Export group | Purpose |
 | --- | --- |
-| `SITE_META` | Site-level title, description, URL, and social preview image path |
-| `PROFILE` | Name, role, summary, location, phone details, and availability |
-| `MAIN_SECTIONS` | One-page navigation model |
-| `SOCIAL_LINKS` | Shared contact and external destinations for hero, footer, and resume surfaces |
-| `ABOUT_COPY`, `ABOUT_PRINCIPLES`, `ABOUT_STACK` | Homepage about section copy and capability framing |
-| `EXPERTISE_COPY`, `EXPERTISE_ITEMS`, `EXPERTISE_SIGNALS` | Homepage expertise section and content SEO cluster framing |
+| `SITE_META` | Site-level title, canonical URL, social preview image, and language |
+| `TARGET_MARKETS*`, `PROFESSIONAL_LANGUAGE*`, `DEFAULT_SITE_KEYWORDS` | SEO and professional-positioning inputs shared with `src/seo.ts` |
+| `PROFILE` | Name, role, summary, location, phone, availability, and identity copy |
+| `MAIN_SECTIONS` | Main one-page navigation model |
+| `EXTERNAL_NAV_LINKS` | External brand or studio links used from the homepage shell |
+| `SOCIAL_LINKS` | Shared GitHub, LinkedIn, phone, and email-facing link metadata |
+| `ABOUT_COPY`, `ABOUT_PRINCIPLES`, `ABOUT_STACK` | About section narrative and capability framing |
+| `EXPERTISE_COPY`, `EXPERTISE_ITEMS`, `EXPERTISE_SIGNALS` | Expertise section messaging and SEO-aligned proof areas |
 | `EXPERIENCE_TIMELINE` | Homepage experience section |
-| `RESUME_PROFILE`, `RESUME_SKILLS`, `RESUME_EXPERIENCE`, `RESUME_CERTIFICATIONS`, `RESUME_ADDITIONAL_INFO` | Resume page and exported resume content |
+| `RESUME_PROFILE`, `RESUME_SKILLS`, `RESUME_EXPERIENCE`, `RESUME_CERTIFICATIONS`, `RESUME_ADDITIONAL_INFO` | Resume route and exported PDF content |
 | `PRIVACY_CONTENT`, `COPYRIGHT_CONTENT` | Legal page copy |
-| `ROUTE_META` | Per-route titles, descriptions, and canonical path mapping |
+| `ROUTE_META` | Per-route titles, descriptions, robots overrides, and canonical path mapping |
 
 ## `projects.ts` Breakdown
 
-Each project card defines:
+Each project entry can define:
 
 - project identity and ordering
 - eyebrow and scope labels
-- marketing description
+- summary and featured summary text
 - stack chips
 - CTA links
-- image source, dimensions, and responsive asset metadata
-- image behavior such as `fit`, `scale`, and `hoverScale`
+- proof points
+- image sources and responsive asset metadata
+- image presentation behavior such as fit, scale, frame inset, and hover scale
 
-The first item in the resolved project array becomes the featured desktop card. The remaining cards render in the supporting rail.
+The resolved project order is also used by the projects section when desktop drag-and-drop persistence is restored from local storage.
+
+## `marketPages.ts` Breakdown
+
+Each regional entry owns:
+
+- market identity (`canada`, `usa`, `europe`)
+- route path
+- hero title, lead, and pill signals
+- page-summary copy
+- section paragraphs and bullet lists
+- homepage and projects teasers used by other UI surfaces
+- alternate links for `hreflang`
+- market-specific SEO metadata
+
+This keeps regional positioning in one place instead of scattering it across homepage sections, footer CTAs, and SEO helpers.
+
+## How Content Flows Through the App
+
+| Surface | Main source |
+| --- | --- |
+| Homepage sections | `src/content/site.ts` and `src/content/projects.ts` |
+| Footer and contact CTAs | `src/content/site.ts`, `src/content/marketPages.ts`, and `src/utils/contact.ts` |
+| Resume route | `src/content/site.ts` |
+| Downloadable resume PDF | `/resume` route rendered through `scripts/export-resume.mjs` |
+| Legal pages | `src/content/site.ts` |
+| Regional landing pages | `src/content/marketPages.ts` and `src/content/site.ts` |
+| Route metadata and schema | `src/content/site.ts`, `src/content/marketPages.ts`, and `src/seo.ts` |
 
 ## Resume Delivery Surfaces
 
-The current app exposes resume content in three distinct ways:
+The current app exposes resume content in three aligned ways:
 
 - the home hero `Resume` button opens the routed `/resume` page
-- the footer primary CTA downloads `public/documents/viacheslav-murakhin-resume.pdf`
+- the footer CTA downloads `public/documents/viacheslav-murakhin-resume.pdf`
 - the `/resume` toolbar also downloads the same PDF asset
 
-When resume wording changes, update `src/content/site.ts` first and then regenerate the PDF so the downloadable document stays aligned with the rendered page.
+When resume wording changes:
+
+1. update `src/content/site.ts`
+2. run `npm run export:resume`
+3. verify the routed `/resume` page and the generated PDF still match
 
 ## Editing Workflows
 
@@ -67,6 +104,28 @@ Edit `PROFILE` in `src/content/site.ts` when changing:
 - summary
 - availability
 
+### Updating SEO positioning
+
+Edit `src/content/site.ts` when changing:
+
+- target markets
+- supported professional languages
+- default keyword clusters
+- route-level descriptions and titles for the core site
+
+Edit `src/content/marketPages.ts` when changing:
+
+- regional hiring positioning
+- market-specific headlines or claims
+- `hreflang` alternates
+- regional titles, descriptions, and keywords
+
+Then review:
+
+- `src/seo.ts`
+- the affected route
+- `docs/seo-keywords.md`
+
 ### Updating homepage or resume narrative
 
 Edit the relevant exports in `src/content/site.ts`.
@@ -74,47 +133,74 @@ Edit the relevant exports in `src/content/site.ts`.
 Always cross-check:
 
 - homepage sections
-- footer
-- resume page
-- route metadata when wording changes materially
+- footer copy
+- routed `/resume`
+- the generated PDF if resume content changed
+- route metadata when positioning changes materially
 
-### Updating projects
+### Updating project cards
 
 Edit `src/content/projects.ts` when changing:
 
-- project order
+- order
 - titles
 - descriptions
-- action links
+- proof points
 - stack labels
-- project preview image sources
+- action links
+- preview asset references
 
-### Updating legal pages
+Then review:
+
+- `/projects`
+- `docs/hr-overview.md`
+- `docs/visual-gallery.md`
+
+### Updating regional landing pages
+
+Edit `src/content/marketPages.ts` when changing:
+
+- Canada, USA, or Europe market copy
+- regional hero pills
+- CTA summary or proof sections
+- cross-link wording between regional pages
+
+Then review:
+
+- `/canada`
+- `/usa`
+- `/europe`
+- `src/seo.ts`
+- `docs/hr-overview.md`
+
+### Updating legal or privacy copy
 
 Edit legal content in `src/content/site.ts` and then review:
 
 - `/privacy`
 - `/copyright`
-- footer legal references
+- `docs/legal-and-brand.md`
 
 ## Content Change Checklist
 
 Use this flow after editing content:
 
-1. Update `src/content/site.ts`, `src/content/projects.ts`, or `src/utils/contact.ts`.
+1. Update `src/content/site.ts`, `src/content/projects.ts`, `src/content/marketPages.ts`, or `src/utils/contact.ts`.
 2. If resume wording changed, run `npm run export:resume`.
 3. Run `npm test`.
 4. Run `npm run build`.
-5. Run `npx playwright test` for route and interaction coverage.
+5. Run `npm run test:e2e`.
 6. Run `npm run docs:screenshots` if the visual presentation changed enough to affect documentation screenshots.
 7. Verify the affected route or section manually.
 
-## Why the model matters
+## Why This Model Matters
 
-Without centralized content, portfolio sites usually drift in three places:
+Without centralized content, portfolio sites commonly drift in these places:
 
 - homepage copy says one thing
 - resume says another
-- footer, legal, or metadata still show older details
+- regional pages introduce inconsistent claims
+- metadata still reflects older positioning
+- legal or footer text stays stale
 
-This project is structured specifically to avoid that failure mode.
+This repository is intentionally structured to avoid that failure mode.

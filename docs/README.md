@@ -1,64 +1,94 @@
 # Documentation Hub
 
-This folder is the operating handbook for the portfolio project.
+This folder is the working handbook for the portfolio project.
 
-Use it as the single documentation entry point when maintaining content, verifying releases, refreshing screenshots, or handing the project to another developer.
+Use it as the single entry point when you need to understand the product, update content, review the repository for hiring, or ship a production release safely.
 
-## Reading Order
+## Start Here by Audience
+
+### Recruiters and hiring managers
+
+Start with:
+
+1. `hr-overview.md`
+2. `visual-gallery.md`
+3. `../README.md`
+
+Use this path when the goal is to understand the candidate profile, project evidence, regional hiring pages, and the fastest review flow through the portfolio.
+
+### Developers and maintainers
+
+Start with:
+
+1. `architecture.md`
+2. `content-model.md`
+3. `testing.md`
+4. `production-handoff.md`
+
+Use this path when the goal is to understand routing, content ownership, UI state, SEO, tests, and release-sensitive behaviors without reverse-engineering the entire app first.
+
+### Release owners
+
+Start with:
+
+1. `deployment.md`
+2. `release-checklist.md`
+3. `legal-and-brand.md`
+
+Use this path when the goal is to publish or audit the site as a static production artifact.
+
+## Document Map
 
 | Document | Use it for |
 | --- | --- |
-| `architecture.md` | Understand routing, app structure, persisted UI state, and runtime behavior |
-| `content-model.md` | Update profile content, project data, legal copy, and resume-related surfaces safely |
-| `testing.md` | Run and interpret unit, integration, end-to-end, and visual-refresh checks |
-| `mobile-matrix.md` | Validate responsive behavior across mobile and tablet viewports |
-| `deployment.md` | Build, host, and launch the site with correct static route handling |
-| `legal-and-brand.md` | Maintain copyright, brand ownership, privacy, analytics, and third-party usage notes |
-| `release-checklist.md` | Run the final launch checklist before publishing changes |
-| `release-notes-template.md` | Record a release in a consistent, professional format |
-| `seo-keywords.md` | Review target keyword clusters, route intent, and content SEO positioning |
-| `visual-gallery.md` | Browse and regenerate current-state screenshots across desktop, mobile, and theme variants |
-| `roadmap.md` | Track future improvements and product direction |
+| `hr-overview.md` | Candidate summary, recruiter review flow, project evidence, and GitHub-review talking points |
+| `architecture.md` | Routing, runtime behavior, UI state, build pipeline, SEO flow, and component boundaries |
+| `content-model.md` | Source-of-truth content files, regional landing-page copy, resume ownership, and legal copy maintenance |
+| `testing.md` | Unit, SEO, end-to-end, build, resume-export, and docs-screenshot verification workflows |
+| `production-handoff.md` | Day-to-day engineering handoff, coupled files, persisted browser state, and common failure modes |
+| `deployment.md` | Static hosting requirements, build output structure, route handling, and post-deploy validation |
+| `mobile-matrix.md` | Mobile viewport expectations and responsive QA checkpoints |
+| `legal-and-brand.md` | Ownership stance, privacy surface, third-party requests, and licensing boundaries |
+| `release-checklist.md` | Final release gate before going live |
+| `release-notes-template.md` | Consistent release logging after shipping |
+| `seo-keywords.md` | Keyword clusters, page intent, and search-facing copy guidance |
+| `visual-gallery.md` | Current-state screenshots and screenshot refresh references |
+| `roadmap.md` | Future improvements and product direction |
 
-## Recommended Usage
+## Recommended Reading Paths
 
-1. Start with `architecture.md` if you are new to the codebase.
-2. Use `content-model.md` before editing hiring copy, contact details, project cards, or resume copy.
-3. Use `testing.md` and `mobile-matrix.md` after UI or content changes.
-4. Run `npm run docs:screenshots` after meaningful visual changes so the gallery stays current.
-5. Use `seo-keywords.md` before changing homepage, about, expertise, projects, or resume positioning copy.
-6. Use `deployment.md` and `release-checklist.md` immediately before production release.
-7. Use `release-notes-template.md` after packaging a release.
-8. Use `legal-and-brand.md` before introducing new fonts, analytics, embeds, or third-party assets.
+### Engineering onboarding path
 
-## Visual References
+1. Read `architecture.md`.
+2. Read `content-model.md`.
+3. Run the commands in `testing.md`.
+4. Read `production-handoff.md` before touching release or deployment work.
 
-Current gallery assets are generated with:
+### Content-update path
 
-```bash
-npm run docs:screenshots
-```
+1. Read `content-model.md`.
+2. Update `src/content/site.ts`, `src/content/projects.ts`, `src/content/marketPages.ts`, or `src/utils/contact.ts`.
+3. Run the verification flow in `testing.md`.
+4. Refresh screenshots if the UI changed meaningfully.
 
-### Homepage snapshot
+### Production-release path
 
-![Homepage hero](./assets/home-hero-desktop.png)
+1. Read `deployment.md`.
+2. Work through `release-checklist.md`.
+3. Re-check `legal-and-brand.md` if analytics, assets, embeds, or ownership assumptions changed.
 
-### Projects snapshot
+### Recruiter-review preparation path
 
-![Projects section](./assets/projects-section-desktop.png)
+1. Review `hr-overview.md`.
+2. Confirm `README.md` still matches the actual routes and resume surfaces.
+3. Refresh `visual-gallery.md` references if the UI changed materially.
 
-### Mobile resume snapshot
+## Documentation Rules
 
-![Resume mobile view](./assets/resume-mobile.png)
-
-Additional screenshots:
-
-- [Open the full visual gallery](./visual-gallery.md)
-
-## Documentation Principles
-
-- Documentation should describe the current code, not an older intention.
-- Commands should match `package.json`, `vite.config.ts`, and `playwright.config.ts`.
-- Release guidance should assume pre-rendered static route HTML with `404.html` support.
-- Content documentation should point back to `src/content/` and `src/utils/contact.ts` as the source of truth.
+- Documentation must describe the current code, not an earlier intention.
+- Commands must match `package.json`, `vite.config.ts`, Playwright configs, and scripts in `scripts/`.
+- Route lists must include the regional landing pages and the `/home` redirect.
+- Content documentation must point back to `src/content/` and `src/utils/contact.ts` as the source of truth.
+- HR-facing material should stay aligned with the actual resume content, project list, market pages, and live routes.
+- Deployment documentation should assume static hosting from `build/` with route folders and `404.html`.
 - Visual references in `docs/assets/` should be refreshed whenever the UI changes materially.

@@ -6,6 +6,7 @@ Use this checklist immediately before publishing any meaningful update to produc
 
 - confirm name, role, summary, location, phone number, and contact email
 - confirm project descriptions, ordering, and outbound links
+- confirm regional landing-page copy for Canada, USA, and Europe still matches the current positioning
 - confirm resume content still matches homepage positioning and footer CTA copy
 - confirm legal pages still reflect the current privacy and ownership stance
 - regenerate the resume PDF if resume content changed
@@ -32,6 +33,7 @@ Confirm:
 
 - confirm the home hero `Resume` button opens `/resume`
 - confirm the footer CTA and `/resume` toolbar download the current PDF
+- confirm `/canada`, `/usa`, and `/europe` still render the intended market-specific copy and CTAs
 - confirm theme switching still works in dark and light modes
 - confirm desktop sidebar collapse still behaves correctly
 - confirm desktop project reordering still works and persists locally
@@ -49,6 +51,7 @@ Confirm:
 
 - confirm canonical URL uses the live production domain
 - confirm route titles and descriptions remain accurate
+- confirm regional `hreflang` alternates are still correct
 - confirm `robots.txt` and `sitemap.xml` are present in the build
 - confirm Open Graph and Twitter image paths are valid
 - confirm structured data still reflects the live identity and links
@@ -75,6 +78,9 @@ Open these routes directly in a production-like environment:
 - `/resume`
 - `/privacy`
 - `/copyright`
+- `/canada`
+- `/usa`
+- `/europe`
 - an unknown route to verify the not-found page
 
 ## 8. Hosting Readiness
