@@ -1904,6 +1904,7 @@
 @media (max-width: 1200px) {
   .home,
   .about,
+  .expertise,
   .experience,
   .projects {
     padding: 8rem 3rem 4rem;
@@ -1975,6 +1976,7 @@
 
 @media (max-width: 1080px) {
   .about,
+  .expertise,
   .experience,
   .projects {
     padding-top: calc(var(--mobile-nav-offset) + 1.8rem);
@@ -2120,6 +2122,7 @@
 
 @media (max-width: 760px) {
   .about,
+  .expertise,
   .experience,
   .projects {
     padding: calc(var(--mobile-nav-offset) + 1.2rem) 1.8rem 3rem;
@@ -2151,6 +2154,60 @@
     transform: none;
     opacity: 1;
     will-change: auto;
+  }
+
+  .about__principles {
+    gap: 1rem;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .about__principle,
+  .about__principle:last-child,
+  .about__note,
+  .about__quote {
+    gap: 0.9rem;
+    min-height: auto;
+    padding: 1.6rem;
+    border: 1px solid rgba(90, 176, 255, 0.12);
+    border-radius: 2rem;
+    background:
+      linear-gradient(180deg, rgba(11, 20, 34, 0.76) 0%, rgba(8, 13, 22, 0.44) 100%),
+      radial-gradient(circle at top right, rgba(90, 176, 255, 0.08), transparent 42%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .about__rail {
+    gap: 1rem;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .about__noteLabel,
+  .about__quoteLabel {
+    color: var(--light-blue);
+  }
+
+  .about__principleText,
+  .about__noteText,
+  .about__quote p {
+    max-width: none;
+  }
+
+  [data-theme="light"] .about__principle,
+  [data-theme="light"] .about__principle:last-child,
+  [data-theme="light"] .about__note,
+  [data-theme="light"] .about__quote {
+    border-color: rgba(63, 131, 214, 0.12);
+    background:
+      linear-gradient(180deg, rgba(251, 254, 255, 0.9) 0%, rgba(240, 247, 251, 0.72) 100%),
+      radial-gradient(circle at top right, rgba(73, 190, 221, 0.08), transparent 42%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.66);
+  }
+
+  [data-theme="light"] .about__noteLabel,
+  [data-theme="light"] .about__quoteLabel {
+    color: var(--light-blue);
   }
 
   .home {
@@ -2604,6 +2661,14 @@
     gap: 1.3rem;
   }
 
+  .about__principle,
+  .about__principle:last-child,
+  .about__note,
+  .about__quote {
+    padding: 1.4rem;
+    border-radius: 1.8rem;
+  }
+
   .about__noteText {
     font-size: clamp(1.72rem, 5vw, 2.2rem);
   }
@@ -2615,6 +2680,7 @@
 
 @media (max-width: 560px) {
   .about,
+  .expertise,
   .experience,
   .projects {
     padding: calc(var(--mobile-nav-offset) + 0.9rem) 1.4rem 2.4rem;
@@ -2821,6 +2887,7 @@
 
 @media (max-width: 400px) {
   .about,
+  .expertise,
   .experience,
   .projects {
     padding: calc(var(--mobile-nav-offset) + 0.7rem) 1.2rem 2rem;

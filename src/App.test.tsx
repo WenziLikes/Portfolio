@@ -24,6 +24,22 @@ const mockDesktopMatchMedia = () => {
     })
 }
 
+const mockMobileMatchMedia = () => {
+    Object.defineProperty(window, "matchMedia", {
+        writable: true,
+        value: vi.fn().mockImplementation((query: string) => ({
+            matches: query.includes("max-width"),
+            media: query,
+            onchange: null,
+            addEventListener: vi.fn(),
+            removeEventListener: vi.fn(),
+            addListener: vi.fn(),
+            removeListener: vi.fn(),
+            dispatchEvent: vi.fn(),
+        })),
+    })
+}
+
 describe("App routing", () => {
     test("renders path-based portfolio navigation on the home route", () => {
         renderAt("/")
@@ -94,5 +110,24 @@ describe("App routing", () => {
         expect(sidebar).toHaveClass("portfolio-sidebar--compact")
         expect(window.localStorage.getItem("portfolio-sidebar-collapsed")).toBe("true")
         expect(screen.getByRole("link", {name: "About"})).toHaveAttribute("title", "About")
+    })
+
+    test("shows theme switching controls inside the mobile menu", () => {
+        window.localStorage.clear()
+        mockMobileMatchMedia()
+
+        renderAt("/about")
+
+        expect(screen.queryByRole("button", {name: /switch to dark theme/i})).not.toBeInTheDocument()
+        expect(screen.queryByRole("button", {name: /switch to light theme/i})).not.toBeInTheDocument()
+
+        fireEvent.click(screen.getByRole("button", {name: /open navigation menu/i}))
+        const mobileMenu = document.getElementById("portfolio-mobile-navigation")
+
+        expect(mobileMenu).not.toBeNull()
+        expect(within(mobileMenu!).getByText("Theme")).toBeInTheDocument()
+        expect(within(mobileMenu!).getByRole("button", {name: /switch to dark theme/i})).toBeInTheDocument()
+        expect(within(mobileMenu!).getByRole("button", {name: /switch to light theme/i})).toBeInTheDocument()
+        expect(within(mobileMenu!).getByRole("link", {name: /vm north/i})).toBeInTheDocument()
     })
 })

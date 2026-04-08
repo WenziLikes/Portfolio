@@ -255,6 +255,26 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
             ) : null}
         </>
     )
+    const renderStudioMenuCard = (link: (typeof EXTERNAL_NAV_LINKS)[number]) => (
+        <a
+            href={link.href}
+            target="_blank"
+            rel="noreferrer noopener"
+            className={styles.studioMenuCard}
+            aria-label={link.label}
+            onClick={() => setIsMobileMenuOpen(false)}
+        >
+            <span className={styles.studioMenuCardCopy}>
+                <span className={styles.studioMenuCardTitle}>{link.displayTitle}</span>
+                {link.subtitle ? (
+                    <span className={styles.studioMenuCardSubtitle}>{link.subtitle}</span>
+                ) : null}
+            </span>
+            <span className={styles.studioMenuCardIconWrap} aria-hidden="true">
+                {renderIcon(EXTERNAL_NAV_ICON_PATHS[link.id], styles.studioMenuCardIcon)}
+            </span>
+        </a>
+    )
     const renderThemeSwitcher = (extraClassName?: string) => (
         <div
             className={extraClassName ? `${styles.themeSwitch} ${extraClassName}` : styles.themeSwitch}
@@ -330,8 +350,6 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
                     </button>
 
                     <div className={styles.mobileBarActions}>
-                        {!isMobileMenuOpen ? renderThemeSwitcher(styles.mobileThemeSwitch) : null}
-
                         <button
                             type="button"
                             className={`${styles.mobileMenuButton} ${isMobileMenuOpen ? styles.mobileMenuButtonOpen : ""}`}
@@ -424,9 +442,9 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
                             </nav>
 
                             {isMobileViewport || !isDesktopCompact ? (
-                                <div className={styles.themeBlock}>
+                                <div className={isMobileViewport ? `${styles.themeBlock} ${styles.themeBlockMobile}` : styles.themeBlock}>
                                     <span className={styles.themeLabel}>Theme</span>
-                                    {renderThemeSwitcher()}
+                                    {renderThemeSwitcher(isMobileViewport ? styles.mobileMenuThemeSwitch : undefined)}
                                 </div>
                             ) : null}
                         </div>
@@ -442,9 +460,13 @@ const SideBar: React.FC<SideBarProps> = ({setTheme, theme}) => {
                             >
                                 {EXTERNAL_NAV_LINKS.map((link) => (
                                     <li key={link.id} className={styles.contactsStudioListItem}>
-                                        <div className={`${styles.navItemStudioGroup} ${styles.contactsStudioLink}`}>
-                                            {renderStudioLinkContent(link, isDesktopCompact ? link.label : undefined)}
-                                        </div>
+                                        {isMobileViewport ? (
+                                            renderStudioMenuCard(link)
+                                        ) : (
+                                            <div className={`${styles.navItemStudioGroup} ${styles.contactsStudioLink}`}>
+                                                {renderStudioLinkContent(link, isDesktopCompact ? link.label : undefined)}
+                                            </div>
+                                        )}
                                     </li>
                                 ))}
                             </SocialLinks>
