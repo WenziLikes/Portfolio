@@ -1,33 +1,44 @@
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg" x1="56" y1="28" x2="454" y2="492" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#565B61"/>
-      <stop offset="0.38" stop-color="#3F444A"/>
-      <stop offset="1" stop-color="#1C2025"/>
+    <linearGradient id="bg" x1="54" y1="34" x2="452" y2="490" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#31302F"/>
+      <stop offset="0.4" stop-color="#2A2929"/>
+      <stop offset="1" stop-color="#232323"/>
     </linearGradient>
     <radialGradient id="depth" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(382 426) rotate(-138) scale(348 316)">
-      <stop stop-color="#0D0F12" stop-opacity="0.56"/>
-      <stop offset="1" stop-color="#0D0F12" stop-opacity="0"/>
+      <stop stop-color="#0E0E0E" stop-opacity="0.54"/>
+      <stop offset="1" stop-color="#0E0E0E" stop-opacity="0"/>
     </radialGradient>
-    <linearGradient id="matte" x1="88" y1="42" x2="286" y2="254" gradientUnits="userSpaceOnUse">
+    <linearGradient id="matte" x1="90" y1="40" x2="292" y2="258" gradientUnits="userSpaceOnUse">
       <stop stop-color="#FFFFFF" stop-opacity="0.10"/>
       <stop offset="0.42" stop-color="#FFFFFF" stop-opacity="0.02"/>
       <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
     </linearGradient>
-    <linearGradient id="accent" x1="248" y1="182" x2="392" y2="366" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#C4CBD1"/>
-      <stop offset="1" stop-color="#7A838B"/>
+    <linearGradient id="accent" x1="108" y1="128" x2="352" y2="352" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A6EDFF"/>
+      <stop offset="0.28" stop-color="#6CC8FF"/>
+      <stop offset="0.62" stop-color="#489EFF"/>
+      <stop offset="1" stop-color="#225FC7"/>
     </linearGradient>
+    <filter id="letterShadow" x="0" y="0" width="430" height="410" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="0" stdDeviation="9" flood-color="#5AB0FF" flood-opacity="0.18"/>
+      <feDropShadow dx="0" dy="16" stdDeviation="14" flood-color="#03070C" flood-opacity="0.5"/>
+      <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#102238" flood-opacity="0.28"/>
+    </filter>
   </defs>
 
   <rect x="0" y="0" width="512" height="512" rx="136" fill="url(#bg)"/>
   <rect x="0" y="0" width="512" height="512" rx="136" fill="url(#depth)"/>
   <rect x="0" y="0" width="512" height="512" rx="136" fill="url(#matte)"/>
-  <rect x="18" y="18" width="476" height="476" rx="118" stroke="#F4F7FA" stroke-opacity="0.06"/>
-  <rect x="30" y="30" width="452" height="452" rx="106" stroke="#0E1114" stroke-opacity="0.22"/>
+  <rect x="18" y="18" width="476" height="476" rx="118" stroke="#F6F2E8" stroke-opacity="0.06"/>
+  <rect x="30" y="30" width="452" height="452" rx="106" stroke="#181818" stroke-opacity="0.24"/>
 
-  <path d="M118 156L188 356L250 214" stroke="#DEE4E8" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M250 214V356" stroke="url(#accent)" stroke-width="34" stroke-linecap="round"/>
-  <path d="M250 214L314 286L378 214" stroke="url(#accent)" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M378 214V356" stroke="url(#accent)" stroke-width="34" stroke-linecap="round"/>
+  <g filter="url(#letterShadow)" transform="translate(-56 -72)">
+    <g transform="translate(104.16 107.52) scale(0.58)">
+      <path d="M118 156L188 356L250 214" stroke="url(#accent)" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M250 214V356" stroke="url(#accent)" stroke-width="34" stroke-linecap="round"/>
+      <path d="M250 214L314 286L378 214" stroke="url(#accent)" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M378 214V356" stroke="url(#accent)" stroke-width="34" stroke-linecap="round"/>
+    </g>
+  </g>
 </svg>
