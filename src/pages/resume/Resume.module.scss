@@ -85,10 +85,7 @@
 .experienceMeta,
 .bulletList li,
 .plainList li {
-  margin: 0;
-  font-size: 1.28rem;
-  line-height: 1.48;
-  color: #303d4f;
+  @include documentPage.bodyText(1.28rem, 1.48, #303d4f);
 }
 
 .roleTitle {
@@ -121,13 +118,12 @@
 
 .contactLine :is(a, button),
 .bulletList a {
-  color: #2572c8;
-  text-decoration: none;
+  @include documentPage.textLink;
 }
 
 .contactLine :is(a, button):hover,
 .bulletList a:hover {
-  color: #174f8d;
+  @include documentPage.textLinkHover;
 }
 
 .contactDivider {
@@ -145,12 +141,7 @@
 }
 
 .sectionTitle {
-  margin: 0;
-  font-size: 1.48rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  color: #15406d;
-  text-transform: uppercase;
+  @include documentPage.sectionTitle(1.48rem);
 }
 
 .sectionRule {
@@ -202,10 +193,7 @@
 
 .bulletList,
 .plainList {
-  margin: 0.9rem 0 0;
-  padding-left: 1.55rem;
-  display: grid;
-  gap: 0.55rem;
+  @include documentPage.listBlock(1.55rem, 0.9rem, 0.55rem);
 }
 
 .plainList {

@@ -12,6 +12,7 @@ import {
     RESUME_SKILLS,
     SITE_META,
     SOCIAL_LINKS,
+    type ResumeExperienceItem,
 } from "../../content/site"
 import {trackContactClick, trackResumeClick, trackSocialClick} from "../../utils/analytics"
 
@@ -27,7 +28,44 @@ const ResumeSection: React.FC<React.PropsWithChildren<{title: string}>> = ({titl
     )
 }
 
+const ResumeExperienceList: React.FC<{items: ResumeExperienceItem[]}> = ({items}) => {
+    return (
+        <>
+            {items.map((item) => (
+                <article key={item.title} className={styles.experienceCard}>
+                    <h3 className={styles.experienceTitle}>
+                        {item.link ? (
+                            <a href={item.link.href} target="_blank" rel="noreferrer noopener">
+                                {item.title}
+                            </a>
+                        ) : (
+                            item.title
+                        )}
+                    </h3>
+                    <p className={styles.experienceMeta}>{item.role} | {item.period}</p>
+                    <ul className={styles.bulletList}>
+                        {item.bullets.map((bullet) => (
+                            <li key={bullet}>{bullet}</li>
+                        ))}
+                        {item.link ? (
+                            <li>
+                                <a href={item.link.href} target="_blank" rel="noreferrer noopener">
+                                    {item.link.label}
+                                </a>
+                            </li>
+                        ) : null}
+                    </ul>
+                </article>
+            ))}
+        </>
+    )
+}
+
 const Resume: React.FC = () => {
+    const primaryExperience = RESUME_EXPERIENCE.slice(0, 2)
+    const secondaryExperience = RESUME_EXPERIENCE.slice(2)
+    const socialLinksById = new Map(SOCIAL_LINKS.map((link) => [link.id, link.href]))
+
     return (
         <div className={styles.resume}>
             <div className={styles.toolbar}>
@@ -71,7 +109,7 @@ const Resume: React.FC = () => {
                                     </a>
                                     <span className={styles.contactDivider} aria-hidden="true">|</span>
                                     <a
-                                        href={SOCIAL_LINKS.find((link) => link.id === "linkedin")?.href}
+                                        href={socialLinksById.get("linkedin")}
                                         target="_blank"
                                         rel="noreferrer noopener"
                                         onClick={() => trackSocialClick("linkedin", "resume_contact_block")}
@@ -80,7 +118,7 @@ const Resume: React.FC = () => {
                                     </a>
                                     <span className={styles.contactDivider} aria-hidden="true">|</span>
                                     <a
-                                        href={SOCIAL_LINKS.find((link) => link.id === "github")?.href}
+                                        href={socialLinksById.get("github")}
                                         target="_blank"
                                         rel="noreferrer noopener"
                                         onClick={() => trackSocialClick("github", "resume_contact_block")}
@@ -107,63 +145,13 @@ const Resume: React.FC = () => {
                     </ResumeSection>
 
                     <ResumeSection title="Professional Experience">
-                        {RESUME_EXPERIENCE.slice(0, 2).map((item) => (
-                            <article key={item.title} className={styles.experienceCard}>
-                                <h3 className={styles.experienceTitle}>
-                                    {item.link ? (
-                                        <a href={item.link.href} target="_blank" rel="noreferrer noopener">
-                                            {item.title}
-                                        </a>
-                                    ) : (
-                                        item.title
-                                    )}
-                                </h3>
-                                <p className={styles.experienceMeta}>{item.role} | {item.period}</p>
-                                <ul className={styles.bulletList}>
-                                    {item.bullets.map((bullet) => (
-                                        <li key={bullet}>{bullet}</li>
-                                    ))}
-                                    {item.link ? (
-                                        <li>
-                                            <a href={item.link.href} target="_blank" rel="noreferrer noopener">
-                                                {item.link.label}
-                                            </a>
-                                        </li>
-                                    ) : null}
-                                </ul>
-                            </article>
-                        ))}
+                        <ResumeExperienceList items={primaryExperience}/>
                     </ResumeSection>
                 </article>
 
                 <article className={styles.sheet}>
                     <ResumeSection title="Professional Experience">
-                        {RESUME_EXPERIENCE.slice(2).map((item) => (
-                            <article key={item.title} className={styles.experienceCard}>
-                                <h3 className={styles.experienceTitle}>
-                                    {item.link ? (
-                                        <a href={item.link.href} target="_blank" rel="noreferrer noopener">
-                                            {item.title}
-                                        </a>
-                                    ) : (
-                                        item.title
-                                    )}
-                                </h3>
-                                <p className={styles.experienceMeta}>{item.role} | {item.period}</p>
-                                <ul className={styles.bulletList}>
-                                    {item.bullets.map((bullet) => (
-                                        <li key={bullet}>{bullet}</li>
-                                    ))}
-                                    {item.link ? (
-                                        <li>
-                                            <a href={item.link.href} target="_blank" rel="noreferrer noopener">
-                                                {item.link.label}
-                                            </a>
-                                        </li>
-                                    ) : null}
-                                </ul>
-                            </article>
-                        ))}
+                        <ResumeExperienceList items={secondaryExperience}/>
                     </ResumeSection>
 
                     <ResumeSection title="Education">
