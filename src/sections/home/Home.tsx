@@ -18,6 +18,8 @@ const HERO_EYEBROW = "Full Stack Developer"
 const HERO_HEADLINE = "React, TypeScript, and dependable product engineering."
 const HERO_HEADLINE_LINES = ["React, TypeScript,", "and dependable product engineering."]
 const HERO_PILLS = ["React & TypeScript", "Frontend systems", "Production-ready builds"]
+const HERO_PILLS_MOBILE = ["React & TypeScript", "Frontend systems"]
+const HERO_DESCRIPTION_MOBILE = "React and TypeScript products for remote teams across Canada, the United States, and Europe."
 const HERO_STATEMENT_LINES = ["Clean", "UI", "Solid", "Code", "Ready", "To Ship"]
 const HERO_STATEMENT_LINES_MOBILE_LIGHT = ["CLEAN UI", "SOLID CODE", "READY TO SHIP"]
 const MOBILE_LIGHT_STATEMENT_QUERY = "(max-width: 760px)"
@@ -46,8 +48,11 @@ const Home: React.FC<HomeProps> = ({theme}) => {
     const studioLink = EXTERNAL_NAV_LINKS[0]
     const isLightTheme = theme === "light"
     const isMobileLightStatementLayout = useMediaQuery(MOBILE_LIGHT_STATEMENT_QUERY)
+    const isMobileHeroLayout = isMobileLightStatementLayout
     const isLightMobileStatement = isLightTheme && isMobileLightStatementLayout
     const heroStatementLines = isLightMobileStatement ? HERO_STATEMENT_LINES_MOBILE_LIGHT : HERO_STATEMENT_LINES
+    const heroPills = isMobileHeroLayout ? HERO_PILLS_MOBILE : HERO_PILLS
+    const heroDescription = isMobileHeroLayout ? HERO_DESCRIPTION_MOBILE : PROFILE.summary
 
     useScrollProgress(homeRef, {mode: "hero", reducedMotionValue: 0, variableName: "--home-progress"})
 
@@ -94,7 +99,9 @@ const Home: React.FC<HomeProps> = ({theme}) => {
                             <span className={styles["home__nameTop"]}>{PROFILE.firstName}</span>
                             <span className={styles["home__nameBottom"]}>{PROFILE.lastName}</span>
                         </h1>
-                        <p className={styles["home__role"]}>{PROFILE.role}</p>
+                        {!isMobileHeroLayout ? (
+                            <p className={styles["home__role"]}>{PROFILE.role}</p>
+                        ) : null}
                         <p className={styles["home__headline"]} aria-label={HERO_HEADLINE}>
                             {HERO_HEADLINE_LINES.map((line, index) => (
                                 <span className={styles["home__headlineLine"]} key={line}>
@@ -103,32 +110,36 @@ const Home: React.FC<HomeProps> = ({theme}) => {
                                 </span>
                             ))}
                         </p>
-                        <p className={styles["home__description"]}>{PROFILE.summary}</p>
+                        <p className={styles["home__description"]}>{heroDescription}</p>
                         <div className={styles["home__pillRow"]} aria-label="Core strengths">
-                            {HERO_PILLS.map((pill) => (
+                            {heroPills.map((pill) => (
                                 <span className={styles["home__pill"]} key={pill}>{pill}</span>
                             ))}
                         </div>
-                        <div className={styles["home__marketCluster"]}>
-                            <p className={styles["home__marketIntro"]}>
-                                Market-specific hiring pages for North America and Europe.
-                            </p>
-                            <nav className={styles["home__marketLinks"]} aria-label="Regional hiring pages">
-                                {MARKET_PAGES.map((marketPage) => (
-                                    <Link
-                                        key={marketPage.path}
-                                        className={styles["home__marketLink"]}
-                                        to={marketPage.path}
-                                    >
-                                        <span className={styles["home__marketLabel"]}>{marketPage.marketLabel}</span>
-                                    </Link>
-                                ))}
-                            </nav>
-                        </div>
-                        <p className={styles["home__summary"]}>
-                            <span className={styles["home__summaryDot"]} aria-hidden="true"/>
-                            {PROFILE.availability}
-                        </p>
+                        {!isMobileHeroLayout ? (
+                            <>
+                                <div className={styles["home__marketCluster"]}>
+                                    <p className={styles["home__marketIntro"]}>
+                                        Market-specific hiring pages for North America and Europe.
+                                    </p>
+                                    <nav className={styles["home__marketLinks"]} aria-label="Regional hiring pages">
+                                        {MARKET_PAGES.map((marketPage) => (
+                                            <Link
+                                                key={marketPage.path}
+                                                className={styles["home__marketLink"]}
+                                                to={marketPage.path}
+                                            >
+                                                <span className={styles["home__marketLabel"]}>{marketPage.marketLabel}</span>
+                                            </Link>
+                                        ))}
+                                    </nav>
+                                </div>
+                                <p className={styles["home__summary"]}>
+                                    <span className={styles["home__summaryDot"]} aria-hidden="true"/>
+                                    {PROFILE.availability}
+                                </p>
+                            </>
+                        ) : null}
 
                         <div className={styles["home__actions"]}>
                             <button
@@ -145,9 +156,47 @@ const Home: React.FC<HomeProps> = ({theme}) => {
                                     secondaryLabel={RESUME_BUTTON_HOVER_LABEL}
                                 />
                             </button>
+                            {!isMobileHeroLayout ? (
+                                <button
+                                    type="button"
+                                    className={`${styles["home__button"]} ${styles["home__buttonGhost"]} ${styles["home__buttonSwap"]}`}
+                                    onClick={() => scrollToSectionId("projects")}
+                                    aria-label="Portfolio"
+                                >
+                                    <AnimatedButtonLabel
+                                        primaryLabel={PORTFOLIO_BUTTON_LABEL}
+                                        secondaryLabel={PORTFOLIO_BUTTON_HOVER_LABEL}
+                                    />
+                                </button>
+                            ) : null}
+                        </div>
+                    </div>
+
+                    {isMobileHeroLayout ? (
+                        <div className={styles["home__mobileDetails"]}>
+                            <div className={styles["home__marketCluster"]}>
+                                <p className={styles["home__marketIntro"]}>
+                                    Market-specific hiring pages for North America and Europe.
+                                </p>
+                                <nav className={styles["home__marketLinks"]} aria-label="Regional hiring pages">
+                                    {MARKET_PAGES.map((marketPage) => (
+                                        <Link
+                                            key={marketPage.path}
+                                            className={styles["home__marketLink"]}
+                                            to={marketPage.path}
+                                        >
+                                            <span className={styles["home__marketLabel"]}>{marketPage.marketLabel}</span>
+                                        </Link>
+                                    ))}
+                                </nav>
+                            </div>
+                            <p className={styles["home__summary"]}>
+                                <span className={styles["home__summaryDot"]} aria-hidden="true"/>
+                                {PROFILE.availability}
+                            </p>
                             <button
                                 type="button"
-                                className={`${styles["home__button"]} ${styles["home__buttonGhost"]} ${styles["home__buttonSwap"]}`}
+                                className={`${styles["home__button"]} ${styles["home__buttonGhost"]} ${styles["home__buttonSwap"]} ${styles["home__buttonSecondaryMobile"]}`}
                                 onClick={() => scrollToSectionId("projects")}
                                 aria-label="Portfolio"
                             >
@@ -157,7 +206,7 @@ const Home: React.FC<HomeProps> = ({theme}) => {
                                 />
                             </button>
                         </div>
-                    </div>
+                    ) : null}
 
                     {!isLightMobileStatement ? (
                         <div className={styles["home__visual"]} aria-hidden="true">

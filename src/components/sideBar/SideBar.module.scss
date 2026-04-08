@@ -72,7 +72,7 @@
   padding: 0;
   display: inline-flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.86rem;
   color: var(--text-color);
   cursor: pointer;
 }
@@ -83,17 +83,17 @@
   gap: 0.2rem;
   color: var(--light-blue);
   font-family: var(--font-family1), sans-serif;
-  font-size: 1.7rem;
+  font-size: 1.84rem;
   font-weight: 700;
   letter-spacing: 0.12em;
-  text-shadow: 0 0 0.85rem rgba(90, 176, 255, 0.22);
+  text-shadow: 0 0 1rem rgba(90, 176, 255, 0.24);
 }
 
 .mobileLogoText {
   font-family: var(--font-family1), sans-serif;
-  font-size: 1.08rem;
+  font-size: 1.16rem;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.17em;
   text-transform: uppercase;
   color: var(--muted-text);
 }
@@ -2352,6 +2352,14 @@
     padding: calc(env(safe-area-inset-top, 0px) + 0.7rem) 1rem 0.7rem;
   }
 
+  .mobileLogo {
+    gap: 0.78rem;
+  }
+
+  .mobileLogoMark {
+    font-size: 1.78rem;
+  }
+
   .themeToggleFloating {
     top: calc(env(safe-area-inset-top, 0px) + 0.7rem);
     right: calc(1rem + 4rem + 0.65rem);
@@ -2377,8 +2385,8 @@
   }
 
   .mobileLogoText {
-    font-size: 0.98rem;
-    letter-spacing: 0.15em;
+    font-size: 1.04rem;
+    letter-spacing: 0.14em;
   }
 
   .mobileMenuButton {
