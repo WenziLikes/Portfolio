@@ -11,15 +11,15 @@ import {PROJECTS_INFO, type CardInfo} from "../../content/projects"
 export const PROJECTS_STORAGE_KEY = "vm-projects-order"
 export const PROJECTS_CUSTOM_ORDER_STORAGE_KEY = "vm-projects-order-customized"
 const MOBILE_PROJECTS_LAYOUT_QUERY = "(max-width: 820px)"
-const PROJECTS_SUBTITLE = "Product-focused builds across desktop apps, internal CRM tools, commerce flows, and modern frontend systems."
+const PROJECTS_SUBTITLE = "Product-focused builds across studio platforms, desktop apps, internal CRM tools, commerce flows, and modern frontend systems."
 const PROJECTS_SUBTITLE_LINES = [
     "Product-focused builds",
-    "across desktop, CRM,",
-    "commerce, and frontend.",
+    "across platforms, desktop,",
+    "CRM, commerce, and frontend.",
 ]
 const PROJECTS_SUBTITLE_LINES_MOBILE = PROJECTS_SUBTITLE_LINES
 
-const DEFAULT_PROJECT_IDS = [4, 2, 1, 3]
+const DEFAULT_PROJECT_IDS = [5, 4, 2, 1, 3]
 
 const getDefaultProjects = (): CardInfo[] => {
     const projectsById = new Map(PROJECTS_INFO.map((card) => [card.id, card]))

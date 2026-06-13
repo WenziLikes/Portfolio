@@ -33,10 +33,10 @@ describe("Projects reordering", () => {
         mockMatchMedia(false)
     })
 
-    test("shows Flip Clock as the featured project by default", () => {
+    test("shows VM North as the featured project by default", () => {
         renderProjects()
 
-        expect(getProjectOrder()).toEqual(["Flip Clock", "CRM Dashboard", "E42 Store", "Portfolio"])
+        expect(getProjectOrder()).toEqual(["VM North", "Flip Clock", "CRM Dashboard", "E42 Store", "Portfolio"])
     })
 
     test("restores the saved project order from localStorage", () => {
@@ -45,7 +45,7 @@ describe("Projects reordering", () => {
 
         renderProjects()
 
-        expect(getProjectOrder()).toEqual(["Portfolio", "E42 Store", "CRM Dashboard", "Flip Clock"])
+        expect(getProjectOrder()).toEqual(["Portfolio", "E42 Store", "CRM Dashboard", "VM North", "Flip Clock"])
     })
 
     test("shows a detached overlay while dragging a project card", () => {
@@ -71,8 +71,8 @@ describe("Projects reordering", () => {
 
         fireEvent.keyDown(draggableCard, {key: "ArrowRight"})
 
-        expect(getProjectOrder()).toEqual(["Flip Clock", "E42 Store", "CRM Dashboard", "Portfolio"])
-        expect(window.localStorage.getItem(PROJECTS_STORAGE_KEY)).toBe(JSON.stringify([4, 1, 2, 3]))
+        expect(getProjectOrder()).toEqual(["VM North", "Flip Clock", "E42 Store", "CRM Dashboard", "Portfolio"])
+        expect(window.localStorage.getItem(PROJECTS_STORAGE_KEY)).toBe(JSON.stringify([5, 4, 1, 2, 3]))
         expect(window.localStorage.getItem(PROJECTS_CUSTOM_ORDER_STORAGE_KEY)).toBe("true")
     })
 

@@ -91,3 +91,9 @@
     width: min(100%, 56rem);
   }
 }
+
+@media print {
+  .banner {
+    display: none;
+  }
+}

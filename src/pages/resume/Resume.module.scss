@@ -339,7 +339,7 @@
   .sheet {
     width: 100%;
     min-height: auto;
-    padding: 1.6cm 1.4cm;
+    padding: 1.35cm 1.35cm;
     box-sizing: border-box;
     box-shadow: none;
     border-radius: 0;
@@ -358,5 +358,27 @@
   .educationBlock {
     page-break-inside: avoid;
     break-inside: avoid;
+  }
+
+  .section {
+    margin-top: 1.75rem;
+  }
+
+  .sectionBody {
+    padding-top: 0.75rem;
+  }
+
+  .experienceCard + .experienceCard {
+    margin-top: 1.45rem;
+  }
+
+  .experienceMeta {
+    margin-top: 0.35rem;
+  }
+
+  .bulletList,
+  .plainList {
+    gap: 0.38rem;
+    margin-top: 0.45rem;
   }
 }

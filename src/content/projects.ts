@@ -5,6 +5,8 @@ import flipClockPreview720 from "../assets/img/projects/flip-clock-720.png"
 import flipClockPreview1200 from "../assets/img/projects/flip-clock-1200.png"
 import portfolioPreview720 from "../assets/img/projects/portfolio-720.webp"
 import portfolioPreview1200 from "../assets/img/projects/portfolio-1200.webp"
+import vmNorthPreview720 from "../assets/img/projects/vmnorth-homepage-720.jpg"
+import vmNorthPreview1280 from "../assets/img/projects/vmnorth-homepage-1280.jpg"
 
 export interface CardImage {
     alt: string
@@ -46,6 +48,38 @@ export const PROJECTS_INFO: CardInfo[] = [
     {
         actions: [
             {
+                href: "https://vmnorth.com",
+                label: "Project site",
+            },
+        ],
+        description: "Multilingual digital product studio platform with a React and TypeScript marketing frontend, Node.js backend, real-time visitor chat, secure admin workspace, and production deployment tooling.",
+        eyebrow: "Product platform",
+        featuredActionLabel: "Review platform",
+        featuredDescription: "Pre-launch studio platform that combines a multilingual marketing site, real-time chat, project brief intake, passkey-first admin tools, and Docker-ready production operations.",
+        id: 5,
+        image: {
+            alt: "VM North product studio platform homepage preview",
+            fit: "contain",
+            frameInset: "4.4rem",
+            height: 720,
+            hoverScale: 1.02,
+            panelInsetBottomMobile: "-1.6rem",
+            position: "center",
+            scale: 0.99,
+            sizes: "(max-width: 760px) 100vw, (max-width: 1200px) 100vw, 56rem",
+            src: vmNorthPreview1280,
+            srcSet: `${vmNorthPreview720} 720w, ${vmNorthPreview1280} 1280w`,
+            width: 1280,
+        },
+        proofPoints: ["Multilingual product site", "Realtime chat and admin", "Docker and CI release flow"],
+        scope: "Platform / Studio",
+        stack: ["React 19", "TypeScript", "Node.js", "PostgreSQL", "SSE", "WebAuthn", "Docker"],
+        title: "VM North",
+        year: "2026",
+    },
+    {
+        actions: [
+            {
                 href: "https://github.com/WenziLikes/E42-StoreEcommerce",
                 label: "View repo",
             },
@@ -55,9 +89,13 @@ export const PROJECTS_INFO: CardInfo[] = [
         id: 1,
         image: {
             alt: "E42 Store eCommerce project preview",
+            fit: "contain",
+            frameInset: "4.8rem",
             height: 657,
-            hoverScale: 1.04,
-            scale: 1.01,
+            hoverScale: 1.02,
+            panelInsetBottomMobile: "-1.6rem",
+            position: "center",
+            scale: 0.99,
             sizes: "(max-width: 760px) 100vw, (max-width: 1200px) 100vw, 56rem",
             src: doc1200,
             srcSet: `${doc720} 720w, ${doc1200} 1200w`,
@@ -81,9 +119,13 @@ export const PROJECTS_INFO: CardInfo[] = [
         id: 2,
         image: {
             alt: "CRM dashboard interface illustration",
+            fit: "contain",
+            frameInset: "4.8rem",
             height: 800,
-            hoverScale: 1.04,
-            scale: 1.01,
+            hoverScale: 1.02,
+            panelInsetBottomMobile: "-1.6rem",
+            position: "center",
+            scale: 0.98,
             sizes: "(max-width: 760px) 100vw, (max-width: 1200px) 50vw, 32rem",
             src: crmDashboardPreview,
             width: 1200,
@@ -107,9 +149,11 @@ export const PROJECTS_INFO: CardInfo[] = [
         image: {
             alt: "Portfolio project preview",
             fit: "contain",
+            frameInset: "4.8rem",
             height: 842,
-            hoverScale: 1.04,
+            hoverScale: 1.02,
             panelInsetBottom: "1.8rem",
+            panelInsetBottomMobile: "-1.6rem",
             position: "center",
             scale: 1.01,
             sizes: "(max-width: 760px) 100vw, (max-width: 1200px) 50vw, 32rem",
@@ -139,7 +183,7 @@ export const PROJECTS_INFO: CardInfo[] = [
             fit: "contain",
             frameInset: "5.2rem",
             height: 675,
-            hoverScale: 1.04,
+            hoverScale: 1.02,
             panelInsetBottomMobile: "-2.4rem",
             scale: 1,
             sizes: "(max-width: 760px) 100vw, (max-width: 1200px) 50vw, 32rem",

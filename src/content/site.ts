@@ -239,7 +239,7 @@ export const EXPERTISE_ITEMS = [
 export const EXPERIENCE_TIMELINE: ExperienceTimelineItem[] = [
     {
         company: "Independent Product Work",
-        description: "Building and iterating on full-stack products, React and TypeScript frontends, portfolio systems, and admin tooling with Java, Spring Boot, and modern testing workflows.",
+        description: "Building and iterating on full-stack products, including VMNorth.com, React and TypeScript frontends, portfolio systems, realtime chat, admin tooling, and production-ready release workflows.",
         period: "2024 - Present",
         role: "Full Stack Developer",
     },
@@ -257,36 +257,36 @@ export const EXPERIENCE_TIMELINE: ExperienceTimelineItem[] = [
     },
 ]
 
-export const RESUME_PROFILE = `Full Stack Developer with 4+ years of experience building responsive web applications and product features from concept to deployment. Strong hands-on background in React, TypeScript, Java, and Spring Boot, with practical experience building ecommerce flows, admin dashboards, portfolio systems, and maintainable frontend architecture. Focused on performance, usability, and clear delivery for remote product teams across ${TARGET_MARKETS_TEXT}, with experience using Vite, React Router, Vitest, and Playwright to ship reliable production-ready products.`
+export const RESUME_PROFILE = `Full Stack Developer with 4+ years of experience building responsive web applications and product features from concept to deployment. Strong hands-on background in React, TypeScript, Java, Spring Boot, and Node.js, with practical experience building ecommerce flows, admin dashboards, realtime chat, portfolio publishing systems, and maintainable frontend architecture. Focused on performance, usability, and clear delivery for remote product teams across ${TARGET_MARKETS_TEXT}, with experience using Vite, React Router, Vitest, Playwright, Docker, and CI workflows to ship reliable production-ready products.`
 
 export const RESUME_SKILLS: ResumeSkill[] = [
     {
-        label: "Languages",
-        value: "HTML5, CSS3 / SCSS / Sass, JavaScript, TypeScript, Java, Rust",
+        label: "Languages / Runtime",
+        value: "HTML5, CSS3 / SCSS / Sass, JavaScript, TypeScript, Java, Rust, Node.js",
     },
     {
         label: "Frameworks / Libraries",
-        value: "React, React Router, Redux, Tauri v2, Spring Boot, Spring Security, Hibernate, JDBC",
+        value: "React, React Router, Redux, Three.js, Tauri v2, Spring Boot, Spring Security, Hibernate, JDBC",
     },
     {
         label: "Build Tools / Testing",
-        value: "Vite, pnpm, npm, Maven, Gradle, Vitest, Playwright",
+        value: "Vite, pnpm, npm, Maven, Gradle, Vitest, Playwright, ESLint",
     },
     {
         label: "Rendering / Runtime",
-        value: "Canvas 2D, Tauri desktop runtime, macOS app packaging",
+        value: "Canvas 2D, Server-Sent Events, Tauri desktop runtime, macOS app packaging",
     },
     {
         label: "Databases",
         value: "PostgreSQL, MySQL, Firebase",
     },
     {
-        label: "Tools",
-        value: "IntelliJ IDEA, VS Code, Terminal, Bash, Vim, Git",
+        label: "Tools / Delivery",
+        value: "IntelliJ IDEA, VS Code, Terminal, Bash, Vim, Git, GitHub Actions",
     },
     {
         label: "Containerization",
-        value: "Docker",
+        value: "Docker, Docker Compose, Caddy/VPS deployment",
     },
     {
         label: "Languages Spoken",
@@ -295,6 +295,21 @@ export const RESUME_SKILLS: ResumeSkill[] = [
 ]
 
 export const RESUME_EXPERIENCE: ResumeExperienceItem[] = [
+    {
+        bullets: [
+            "Built a multilingual digital product studio platform with React 19, React Router 7, TypeScript, Vite, CSS Modules, and Three.js visual effects.",
+            "Implemented a custom Node.js backend with PostgreSQL-backed visitor chat, SSE live updates, attachments, session restore, project brief intake, and email follow-up.",
+            "Developed a passkey-first admin workspace with TOTP fallback, recovery codes, auth audit logging, profile management, and portfolio publishing tools.",
+            "Prepared production delivery with Docker, Caddy/VPS deployment docs, GitHub Actions CI, smoke checks, health endpoints, and release runbooks.",
+        ],
+        link: {
+            href: "https://vmnorth.com",
+            label: "Project Site",
+        },
+        period: "2026 - Present",
+        role: "Full Stack Developer",
+        title: "VM North Product Platform",
+    },
     {
         bullets: [
             "Developed a full-featured eCommerce application from scratch.",
@@ -529,12 +544,13 @@ export const ROUTE_META: Record<string, RouteMetaEntry> = {
         title: "Privacy | Viacheslav Murakhin",
     },
     "/projects": {
-        description: "Featured React and TypeScript portfolio projects by Viacheslav Murakhin, including ecommerce, admin dashboards, portfolio engineering, and a macOS screensaver built for modern product teams.",
+        description: "Featured React and TypeScript portfolio projects by Viacheslav Murakhin, including VM North, ecommerce, admin dashboards, portfolio engineering, and a macOS screensaver built for modern product teams.",
         keywords: [
             "react developer portfolio",
             "typescript portfolio",
             "software developer portfolio",
             "full stack projects",
+            "vm north",
             "frontend portfolio",
             "product engineering",
         ],
