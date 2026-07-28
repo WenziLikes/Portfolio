@@ -84,6 +84,31 @@ describe("App routing", () => {
         expect(screen.getByRole("link", {name: /copyright/i})).toHaveAttribute("href", "/copyright")
     })
 
+    test.each([
+        ["/flipclock", /time, weather, and atmosphere/i],
+        ["/flipclock/support", /help with flipclock display/i],
+        ["/flipclock/privacy", /privacy policy for flipclock display/i],
+        ["/flipclock/terms", /terms of use for flipclock display/i],
+    ])("renders the FlipClock product route %s", (path, heading) => {
+        renderAt(path)
+
+        expect(screen.getByRole("heading", {name: heading})).toBeInTheDocument()
+        expect(screen.getByRole("navigation", {name: /flipclock display/i})).toBeInTheDocument()
+    })
+
+    test("exposes a working support mailto link", () => {
+        renderAt("/flipclock/support")
+
+        expect(
+            screen.getAllByRole("link", {name: "support@vmnorth.com"})
+                .every((link) => link.getAttribute("href") === "mailto:support@vmnorth.com")
+        ).toBe(true)
+        expect(screen.getByRole("link", {name: /email support/i})).toHaveAttribute(
+            "href",
+            "mailto:support@vmnorth.com?subject=FlipClock%20Display%20Support"
+        )
+    })
+
     test("renders the canada landing page on /canada", () => {
         renderAt("/canada")
 

@@ -3,7 +3,18 @@ import {BrowserRouter, Navigate, Route, Routes, useLocation} from "react-router-
 import {AnalyticsConsentBanner, Footer, RouteMeta, ScrollToSection, SideBar} from "./components"
 import {MARKET_PAGE_PATHS} from "./content/marketPages"
 import {MAIN_SECTIONS} from "./content/site"
-import {CopyrightPage, MainContent, MarketLandingPage, NotFound, PrivacyPage, Resume} from "./pages"
+import {
+    CopyrightPage,
+    FlipClockLandingPage,
+    FlipClockPrivacyPage,
+    FlipClockSupportPage,
+    FlipClockTermsPage,
+    MainContent,
+    MarketLandingPage,
+    NotFound,
+    PrivacyPage,
+    Resume,
+} from "./pages"
 import {disableAnalytics, getStoredAnalyticsConsent, initializeAnalytics, type AnalyticsConsentStatus, persistAnalyticsConsent} from "./utils/analytics"
 
 type Theme = "dark" | "light"
@@ -123,6 +134,22 @@ export const AppContent: React.FC<AppContentProps> = ({initialTheme = "dark"}) =
         {
             element: <CopyrightPage/>,
             path: "/copyright",
+        },
+        {
+            element: <FlipClockLandingPage/>,
+            path: "/flipclock",
+        },
+        {
+            element: <FlipClockSupportPage/>,
+            path: "/flipclock/support",
+        },
+        {
+            element: <FlipClockPrivacyPage/>,
+            path: "/flipclock/privacy",
+        },
+        {
+            element: <FlipClockTermsPage/>,
+            path: "/flipclock/terms",
         },
         ...MARKET_PAGE_PATHS.map((path) => ({
             element: <MarketLandingPage path={path}/>,

@@ -4,3 +4,9 @@ export {default as NotFound} from "./NotFound"
 export {default as Resume} from "./resume/Resume"
 export {default as CopyrightPage} from "./legal/CopyrightPage"
 export {default as PrivacyPage} from "./legal/PrivacyPage"
+export {
+    FlipClockLandingPage,
+    FlipClockPrivacyPage,
+    FlipClockSupportPage,
+    FlipClockTermsPage,
+} from "./flipclock/FlipClockPages"

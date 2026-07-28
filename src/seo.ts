@@ -18,8 +18,23 @@ type SchemaNode = Record<string, unknown>
 
 export const DEFAULT_ROBOTS = "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"
 export const NOINDEX_ROBOTS = "noindex,follow"
-export const INDEXABLE_ROUTE_PATHS = ["/", "/about", "/expertise", "/experience", "/projects", "/resume", ...MARKET_PAGE_PATHS] as const
-export const NON_INDEXABLE_ROUTE_PATHS = ["/privacy", "/copyright"] as const
+export const INDEXABLE_ROUTE_PATHS = [
+    "/",
+    "/about",
+    "/expertise",
+    "/experience",
+    "/projects",
+    "/resume",
+    "/flipclock",
+    "/flipclock/support",
+    ...MARKET_PAGE_PATHS,
+] as const
+export const NON_INDEXABLE_ROUTE_PATHS = [
+    "/privacy",
+    "/copyright",
+    "/flipclock/privacy",
+    "/flipclock/terms",
+] as const
 export const PRERENDER_ROUTE_PATHS = [...INDEXABLE_ROUTE_PATHS, ...NON_INDEXABLE_ROUTE_PATHS] as const
 export const NOT_FOUND_PATH = "/404"
 export const LEGACY_HOME_PATH = "/home"
@@ -53,6 +68,8 @@ const SITEMAP_ROUTES: SitemapRouteConfig[] = [
     {changefreq: "monthly", path: "/experience", priority: "0.8"},
     {changefreq: "monthly", path: "/projects", priority: "0.9"},
     {changefreq: "weekly", path: "/resume", priority: "0.9"},
+    {changefreq: "monthly", path: "/flipclock", priority: "0.8"},
+    {changefreq: "monthly", path: "/flipclock/support", priority: "0.6"},
     {changefreq: "monthly", path: "/canada", priority: "0.8"},
     {changefreq: "monthly", path: "/usa", priority: "0.8"},
     {changefreq: "monthly", path: "/europe", priority: "0.8"},

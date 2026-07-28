@@ -55,7 +55,19 @@ describe("seo configuration", () => {
         expect(xml).toContain("<loc>https://viacheslavmurakhin.com/canada</loc>")
         expect(xml).toContain("<loc>https://viacheslavmurakhin.com/usa</loc>")
         expect(xml).toContain("<loc>https://viacheslavmurakhin.com/europe</loc>")
+        expect(xml).toContain("<loc>https://viacheslavmurakhin.com/flipclock</loc>")
+        expect(xml).toContain("<loc>https://viacheslavmurakhin.com/flipclock/support</loc>")
         expect(xml).not.toContain("/privacy")
         expect(xml).not.toContain("/copyright")
+    })
+
+    test("returns product-specific metadata for FlipClock legal routes", () => {
+        const privacyMeta = getRouteMeta("/flipclock/privacy")
+        const termsMeta = getRouteMeta("/flipclock/terms")
+
+        expect(privacyMeta.title).toBe("Privacy Policy | FlipClock Display")
+        expect(privacyMeta.description).toContain("location")
+        expect(privacyMeta.robots).toBe("noindex,follow")
+        expect(termsMeta.title).toBe("Terms of Use | FlipClock Display")
     })
 })
