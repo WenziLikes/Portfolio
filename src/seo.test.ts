@@ -70,4 +70,17 @@ describe("seo configuration", () => {
         expect(privacyMeta.robots).toBe("noindex,follow")
         expect(termsMeta.title).toBe("Terms of Use | FlipClock Display")
     })
+
+    test("normalizes Cloudflare trailing slashes for route metadata", () => {
+        const privacyMeta = getRouteMeta("/flipclock/privacy/")
+        const schemas = getStructuredData("/flipclock/privacy/")
+        const webPage = findSchemaByType(schemas, "WebPage")
+
+        expect(privacyMeta.title).toBe("Privacy Policy | FlipClock Display")
+        expect(privacyMeta.canonicalUrl).toBe("https://viacheslavmurakhin.com/flipclock/privacy")
+        expect(webPage).toEqual(expect.objectContaining({
+            name: "Privacy Policy | FlipClock Display",
+            url: "https://viacheslavmurakhin.com/flipclock/privacy",
+        }))
+    })
 })

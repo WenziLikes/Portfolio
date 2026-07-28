@@ -39,6 +39,10 @@ export const PRERENDER_ROUTE_PATHS = [...INDEXABLE_ROUTE_PATHS, ...NON_INDEXABLE
 export const NOT_FOUND_PATH = "/404"
 export const LEGACY_HOME_PATH = "/home"
 
+const normalizeRoutePathname = (pathname: string): string => pathname.length > 1
+    ? pathname.replace(/\/+$/, "")
+    : pathname
+
 interface ResolvedRouteMeta {
     alternates: ReadonlyArray<{href: string; hrefLang: MarketAlternateLink["hrefLang"]}>
     canonicalUrl: string
@@ -128,7 +132,7 @@ const getProjectProgrammingLanguages = (stack: string[]): string[] => {
 }
 
 export const getRouteMeta = (pathname: string): ResolvedRouteMeta => {
-    const routeMeta = ROUTE_META[pathname] ?? ROUTE_META[NOT_FOUND_PATH]
+    const routeMeta = ROUTE_META[normalizeRoutePathname(pathname)] ?? ROUTE_META[NOT_FOUND_PATH]
 
     return {
         alternates: routeMeta.alternates?.map((alternate) => ({
@@ -352,24 +356,25 @@ const getResumeSchema = (): SchemaNode => ({
 })
 
 export const getStructuredData = (pathname: string): SchemaNode[] => {
+    const normalizedPathname = normalizeRoutePathname(pathname)
     const schemas: SchemaNode[] = [
         getOrganizationSchema(),
         getPersonSchema(),
         getWebsiteSchema(),
-        getWebPageSchema(pathname),
+        getWebPageSchema(normalizedPathname),
     ]
 
-    const breadcrumbSchema = getBreadcrumbSchema(pathname)
+    const breadcrumbSchema = getBreadcrumbSchema(normalizedPathname)
 
     if (breadcrumbSchema) {
         schemas.push(breadcrumbSchema)
     }
 
-    if (pathname === "/projects") {
+    if (normalizedPathname === "/projects") {
         schemas.push(getProjectsSchema())
     }
 
-    if (pathname === "/resume") {
+    if (normalizedPathname === "/resume") {
         schemas.push(getResumeSchema())
     }
 
