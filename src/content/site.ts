@@ -136,7 +136,7 @@ export const MAIN_SECTIONS: MainSection[] = [
 export const EXTERNAL_NAV_LINKS: ExternalNavLink[] = [
     {
         displayTitle: "VM NORTH",
-        href: "https://vmnorth.com",
+        href: "https://admin.vmnorth.com",
         id: "vm-studio",
         label: "Vm North",
         subtitle: "DIGITAL PRODUCT STUDIO",
