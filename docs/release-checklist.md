@@ -38,6 +38,7 @@ Confirm:
 - confirm desktop sidebar collapse still behaves correctly
 - confirm desktop project reordering still works and persists locally
 - confirm protected email, phone, GitHub, and LinkedIn links resolve correctly
+- confirm the FlipClock Display project card and `/flipclock` page open the live Mac App Store listing
 
 ## 4. Asset and Documentation Verification
 
@@ -55,6 +56,7 @@ Confirm:
 - confirm `robots.txt` and `sitemap.xml` are present in the build
 - confirm Open Graph and Twitter image paths are valid
 - confirm structured data still reflects the live identity and links
+- confirm `/flipclock` emits current `SoftwareApplication` version, operating system, download URL, and App Store offer data
 
 ## 6. Responsive and Mobile QA
 
@@ -78,6 +80,10 @@ Open these routes directly in a production-like environment:
 - `/resume`
 - `/privacy`
 - `/copyright`
+- `/flipclock`
+- `/flipclock/support`
+- `/flipclock/privacy`
+- `/flipclock/terms`
 - `/canada`
 - `/usa`
 - `/europe`

@@ -18,6 +18,7 @@ The repository is structured as a real product rather than a one-off landing pag
 | Runtime model | React 18 with `BrowserRouter`, build-time prerendering, and static route HTML output |
 | Primary routes | `/`, `/about`, `/expertise`, `/experience`, `/projects`, `/resume`, `/privacy`, `/copyright` |
 | Regional routes | `/canada`, `/usa`, `/europe` |
+| Product routes | `/flipclock`, `/flipclock/support`, `/flipclock/privacy`, `/flipclock/terms` |
 | Legacy redirect | `/home` redirects to `/` |
 | Content model | TypeScript source-of-truth content in `src/content/` plus protected contact constants in `src/utils/contact.ts` |
 | UX behaviors | Scroll-synced section routing, desktop sidebar collapse, mobile menu, theme switching, draggable desktop project ordering |
@@ -42,6 +43,7 @@ The repository is structured as a real product rather than a one-off landing pag
 - Production-minded frontend architecture instead of a static brochure page.
 - Centralized content that keeps homepage copy, resume, legal pages, footer, and SEO metadata aligned.
 - Regional hiring landing pages that support Canada, USA, and Europe targeting without fragmenting the codebase.
+- A shipped macOS product surface that connects the FlipClock Display portfolio case study, Mac App Store listing, support, privacy, and terms.
 - Static deployment readiness with prerendered route HTML, `404.html`, manifest, sitemap, and legal/privacy coverage.
 - Automated verification across unit tests, route tests, SEO tests, and Playwright browser coverage.
 
@@ -127,6 +129,8 @@ http://localhost:4173
 | `/resume` | Dedicated resume page with PDF download |
 | `/privacy`, `/copyright` | Legal and production-trust pages |
 | `/canada`, `/usa`, `/europe` | Regional hiring landing pages with market-specific copy and `hreflang` support |
+| `/flipclock` | FlipClock Display product page with a direct Mac App Store download link |
+| `/flipclock/support`, `/flipclock/privacy`, `/flipclock/terms` | Product support and legal routes for FlipClock Display |
 | `/home` | Legacy route that redirects to `/` |
 | `*` | Not-found route rendered through the shared page shell |
 
@@ -135,11 +139,12 @@ http://localhost:4173
 | Path | Responsibility |
 | --- | --- |
 | `src/content/site.ts` | Identity, navigation, about copy, expertise copy, resume data, legal copy, and base route metadata |
+| `src/content/flipClock.ts` | Canonical FlipClock Display name, App Store URL, release metadata, and product route |
 | `src/content/projects.ts` | Project cards, proof points, stacks, actions, and responsive image metadata |
 | `src/content/marketPages.ts` | Canada, USA, and Europe landing-page copy plus regional route metadata |
 | `src/components/` | Shared UI such as sidebar, footer, route metadata, consent banner, protected email links, and cards |
 | `src/sections/` | Homepage sections mounted inside the main scrolling portfolio shell |
-| `src/pages/` | Routed pages for resume, legal content, regional landing pages, and not-found handling |
+| `src/pages/` | Routed pages for resume, legal content, FlipClock Display, regional landing pages, and not-found handling |
 | `src/hooks/` | Shared media-query and scroll behavior hooks |
 | `src/utils/` | Analytics, contact constants, scrolling helpers, and low-level helpers |
 | `scripts/` | Prerendering, resume export, and docs-screenshot automation |

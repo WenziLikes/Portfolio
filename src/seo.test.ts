@@ -71,6 +71,30 @@ describe("seo configuration", () => {
         expect(termsMeta.title).toBe("Terms of Use | FlipClock Display")
     })
 
+    test("exposes FlipClock Display as a published Mac App Store application", () => {
+        const meta = getRouteMeta("/flipclock")
+        const schemas = getStructuredData("/flipclock")
+        const application = findSchemaByType(schemas, "SoftwareApplication")
+        const webPage = findSchemaByType(schemas, "WebPage")
+
+        expect(meta.title).toContain("Mac App Store")
+        expect(meta.ogImageAlt).toContain("FlipClock Display")
+        expect(application).toEqual(expect.objectContaining({
+            applicationCategory: "Utilities",
+            downloadUrl: "https://apps.apple.com/ca/app/flipclock-display/id6759590290?mt=12",
+            isAccessibleForFree: true,
+            name: "FlipClock Display",
+            operatingSystem: "macOS 13.0 or later",
+            softwareVersion: "1.0.1",
+        }))
+        expect(webPage).toEqual(expect.objectContaining({
+            mainEntity: {"@id": "https://viacheslavmurakhin.com/flipclock#software"},
+            primaryImageOfPage: expect.objectContaining({
+                caption: "FlipClock Display fullscreen clock and settings preview",
+            }),
+        }))
+    })
+
     test("normalizes Cloudflare trailing slashes for route metadata", () => {
         const privacyMeta = getRouteMeta("/flipclock/privacy/")
         const schemas = getStructuredData("/flipclock/privacy/")

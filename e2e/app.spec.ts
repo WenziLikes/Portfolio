@@ -1,5 +1,9 @@
 import {expect, test} from "@playwright/test"
 
+test.beforeEach(async ({page}) => {
+    await page.route("https://vmnorth.com/chat-embed.js", (route) => route.abort())
+})
+
 test("home and resume routes render", async ({page}) => {
     await page.goto("/")
 
@@ -39,6 +43,17 @@ test("legal routes render", async ({page}) => {
     await page.goto("/copyright")
 
     await expect(page.getByRole("heading", {name: /Copyright/i})).toBeVisible()
+})
+
+test("FlipClock Display route exposes the live Mac App Store listing", async ({page}) => {
+    await page.goto("/flipclock")
+
+    await expect(page.getByRole("heading", {name: /time, weather, and atmosphere/i})).toBeVisible()
+    await expect(page.getByRole("link", {name: /download on the mac app store/i})).toHaveAttribute(
+        "href",
+        "https://apps.apple.com/ca/app/flipclock-display/id6759590290?mt=12"
+    )
+    await expect(page.getByText(/available now on the mac app store/i)).toBeVisible()
 })
 
 test("regional landing pages render directly", async ({page}) => {

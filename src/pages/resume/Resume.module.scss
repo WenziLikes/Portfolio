@@ -338,7 +338,7 @@
 
   .sheet {
     width: 100%;
-    min-height: auto;
+    min-height: 297mm;
     padding: 1.35cm 1.35cm;
     box-sizing: border-box;
     box-shadow: none;
@@ -351,6 +351,36 @@
 
   .sheet:last-child {
     break-after: auto;
+  }
+
+  .sheet + .sheet {
+    padding-block: 1.05cm;
+  }
+
+  .sheet + .sheet :is(.copy, .experienceMeta, .bulletList li, .plainList li) {
+    font-size: 1.13rem;
+    line-height: 1.36;
+  }
+
+  .sheet + .sheet :is(.experienceTitle, .educationTitle) {
+    font-size: 1.34rem;
+  }
+
+  .sheet + .sheet .section {
+    margin-top: 1.25rem;
+  }
+
+  .sheet + .sheet .sectionBody {
+    padding-top: 0.55rem;
+  }
+
+  .sheet + .sheet .experienceCard + .experienceCard {
+    margin-top: 1rem;
+  }
+
+  .sheet + .sheet :is(.bulletList, .plainList) {
+    gap: 0.28rem;
+    margin-top: 0.35rem;
   }
 
   .section,

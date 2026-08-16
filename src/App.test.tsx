@@ -49,6 +49,7 @@ describe("App routing", () => {
         expect(screen.getByRole("button", {name: "Portfolio"})).toBeInTheDocument()
         expect(screen.getByRole("link", {name: "About"})).toHaveAttribute("href", "/about")
         expect(screen.getByRole("link", {name: "Expertise"})).toHaveAttribute("href", "/expertise")
+        expect(screen.getByRole("link", {name: "FlipClock Display"})).toHaveAttribute("href", "/flipclock")
         const regionalNav = screen.getByRole("navigation", {name: /regional hiring pages/i})
         expect(within(regionalNav).getByRole("link", {name: /canada/i})).toHaveAttribute("href", "/canada")
         expect(within(regionalNav).getByRole("link", {name: /usa/i})).toHaveAttribute("href", "/usa")
@@ -107,6 +108,16 @@ describe("App routing", () => {
             "href",
             "mailto:support@vmnorth.com?subject=FlipClock%20Display%20Support"
         )
+    })
+
+    test("links the FlipClock product page to the Mac App Store", () => {
+        renderAt("/flipclock")
+
+        expect(screen.getByRole("link", {name: /download on the mac app store/i})).toHaveAttribute(
+            "href",
+            "https://apps.apple.com/ca/app/flipclock-display/id6759590290?mt=12"
+        )
+        expect(screen.getAllByRole("link", {name: /mac app store/i}).length).toBeGreaterThanOrEqual(2)
     })
 
     test("renders the canada landing page on /canada", () => {

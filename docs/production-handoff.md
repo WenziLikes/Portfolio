@@ -66,6 +66,7 @@ npm run export:resume
 | If you change | Also review |
 | --- | --- |
 | `src/content/site.ts` | `src/seo.ts`, `/resume`, footer, legal pages, route metadata |
+| `src/content/flipClock.ts` | FlipClock project card, `/flipclock`, `/resume`, `src/seo.ts`, App Store links, release docs |
 | `src/content/projects.ts` | `/projects`, docs screenshots, `docs/hr-overview.md`, SEO/project copy alignment |
 | `src/content/marketPages.ts` | `/canada`, `/usa`, `/europe`, `src/seo.ts`, `docs/hr-overview.md`, deployment docs |
 | resume-related copy | `public/documents/viacheslav-murakhin-resume.pdf` via `npm run export:resume` |
@@ -78,6 +79,8 @@ npm run export:resume
 Do not ship without checking these:
 
 - deep links to `/about`, `/expertise`, `/experience`, `/projects`, `/resume`, `/privacy`, and `/copyright`
+- direct rendering of `/flipclock`, `/flipclock/support`, `/flipclock/privacy`, and `/flipclock/terms`
+- FlipClock Display links from the project card, product page, resume, and structured data all use the canonical App Store URL
 - direct rendering of `/canada`, `/usa`, and `/europe`
 - `/home` redirect behavior
 - resume download CTA from both footer and `/resume`
@@ -93,6 +96,7 @@ The app is mostly self-contained, but production behavior still depends on:
 - Google Fonts for typography
 - Google Analytics when enabled
 - outbound links to GitHub, LinkedIn, `mailto:`, and `tel:`
+- the Apple App Store listing used by FlipClock Display CTAs
 - Playwright Chromium for end-to-end tests, docs screenshots, and resume PDF export
 
 If any of these change, review both release docs and privacy/legal docs.

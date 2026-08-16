@@ -75,7 +75,8 @@
 }
 
 .navLink,
-.navLinkActive {
+.navLinkActive,
+.storeNavLink {
   padding: 0.6rem 0.8rem;
   border-radius: 999px;
   color: #9fb0c4;
@@ -86,9 +87,15 @@
 }
 
 .navLink:hover,
-.navLinkActive {
+.navLinkActive,
+.storeNavLink:hover {
   color: #ffffff;
   background: rgba(255, 255, 255, 0.09);
+}
+
+.storeNavLink {
+  border: 1px solid rgba(239, 187, 116, 0.32);
+  color: #f3c788;
 }
 
 .hero {

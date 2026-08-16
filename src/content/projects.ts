@@ -7,6 +7,7 @@ import portfolioPreview720 from "../assets/img/projects/portfolio-720.webp"
 import portfolioPreview1200 from "../assets/img/projects/portfolio-1200.webp"
 import vmNorthPreview720 from "../assets/img/projects/vmnorth-homepage-720.jpg"
 import vmNorthPreview1280 from "../assets/img/projects/vmnorth-homepage-1280.jpg"
+import {FLIP_CLOCK_PRODUCT} from "./flipClock"
 
 export interface CardImage {
     alt: string
@@ -37,7 +38,9 @@ export interface CardInfo {
     featuredDescription?: string
     id: number
     image: CardImage
+    productUrl?: string
     proofPoints?: string[]
+    repositoryUrl?: string
     scope: string
     stack: string[]
     title: string
@@ -169,17 +172,17 @@ export const PROJECTS_INFO: CardInfo[] = [
     {
         actions: [
             {
-                href: "https://github.com/WenziLikes/FlipClock",
-                label: "View repo",
+                href: FLIP_CLOCK_PRODUCT.appStoreUrl,
+                label: "Mac App Store",
             },
         ],
-        description: "macOS flip-clock screensaver built with React, TypeScript, Rust, and Tauri, focused on deterministic rendering, multi-display support, and a polished settings experience.",
-        eyebrow: "Desktop product",
-        featuredActionLabel: "Explore project",
-        featuredDescription: "Desktop product for macOS with a deterministic Canvas engine, floating controls, multi-display support, and packaging prepared for App Store release.",
+        description: "Published macOS fullscreen clock built with React, TypeScript, Rust, and Tauri, with polished themes, optional weather, and multi-display support.",
+        eyebrow: "Shipped Mac app",
+        featuredActionLabel: "View on Mac App Store",
+        featuredDescription: "Live Mac App Store product with a deterministic Canvas engine, privacy-first optional weather, premium themes, idle controls, and multi-display support.",
         id: 4,
         image: {
-            alt: "Flip Clock project preview",
+            alt: "FlipClock Display fullscreen clock and settings preview",
             fit: "contain",
             frameInset: "5.2rem",
             height: 675,
@@ -191,10 +194,12 @@ export const PROJECTS_INFO: CardInfo[] = [
             srcSet: `${flipClockPreview720} 720w, ${flipClockPreview1200} 1200w`,
             width: 1200,
         },
-        proofPoints: ["Deterministic Canvas engine", "Multi-display support", "Prepared for App Store"],
-        scope: "macOS / Screensaver",
+        productUrl: FLIP_CLOCK_PRODUCT.appStoreUrl,
+        proofPoints: ["Live on the Mac App Store", "Privacy-first optional weather", "Multi-display support"],
+        repositoryUrl: FLIP_CLOCK_PRODUCT.repositoryUrl,
+        scope: "macOS / App Store",
         stack: ["React", "TypeScript", "Tauri v2", "Rust", "Canvas 2D", "CSS Modules"],
-        title: "Flip Clock",
-        year: "2025",
+        title: FLIP_CLOCK_PRODUCT.name,
+        year: "2026",
     },
 ]

@@ -53,6 +53,7 @@ These help with project and portfolio-intent searches.
 | `/experience` | `full stack experience`, `react typescript developer`, `frontend developer` |
 | `/projects` | `react developer portfolio`, `typescript portfolio`, `software developer portfolio` |
 | `/resume` | `full stack developer`, `react developer`, `typescript developer`, `java spring boot developer` |
+| `/flipclock` | `FlipClock Display`, `macOS flip clock`, `fullscreen clock for Mac`, `Mac App Store` |
 | `/canada` | `full stack developer canada`, `react developer canada`, `remote developer canada` |
 | `/usa` | `full stack developer usa`, `react developer usa`, `remote developer usa` |
 | `/europe` | `full stack developer europe`, `react developer europe`, `remote developer europe` |
@@ -78,6 +79,7 @@ These help with project and portfolio-intent searches.
 - `Expertise` should target stack and capability intent.
 - `Projects` should target portfolio and proof-of-work intent.
 - `Resume` should support hiring and recruiter intent.
+- `/flipclock` should support branded product discovery and Mac App Store download intent.
 - `/canada`, `/usa`, and `/europe` should target regional hiring intent while still reinforcing the same core stack and role.
 
 ## Useful Sources

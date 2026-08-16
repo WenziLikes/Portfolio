@@ -146,17 +146,23 @@ const Card: React.FC<CardProps> = ({
                 )}
 
                 <div className={styles.card__actions}>
-                    {actions.map((action) => (
-                        <a
-                            className={`${styles.card__button} ${isFeatured ? styles.card__buttonPrimary : styles.card__buttonGhost}`}
-                            href={action.href}
-                            key={action.label}
-                            target="_blank"
-                            rel="noreferrer noopener"
-                        >
-                            {isFeatured ? featuredActionLabel ?? action.label : action.label}
-                        </a>
-                    ))}
+                    {actions.map((action, actionIndex) => {
+                        const isPrimaryAction = isFeatured && actionIndex === 0
+                        const actionClassName = `${styles.card__button} ${isPrimaryAction ? styles.card__buttonPrimary : styles.card__buttonGhost}`
+                        const actionLabel = isPrimaryAction ? featuredActionLabel ?? action.label : action.label
+
+                        return (
+                            <a
+                                className={actionClassName}
+                                href={action.href}
+                                key={action.label}
+                                target="_blank"
+                                rel="noreferrer noopener"
+                            >
+                                {actionLabel}
+                            </a>
+                        )
+                    })}
                 </div>
             </div>
         </article>
