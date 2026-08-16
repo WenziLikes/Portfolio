@@ -2,7 +2,7 @@ import React from "react"
 import {Link} from "react-router-dom"
 import styles from "./Resume.module.scss"
 import ProtectedEmailLink from "../../components/protectedEmailLink/ProtectedEmailLink"
-import {RESUME_DOWNLOAD_NAME, RESUME_FILE_URL} from "../../constants/resume"
+import ResumeDownloadLink from "../../components/resumeDownloadLink/ResumeDownloadLink"
 import {
     PROFILE,
     RESUME_ADDITIONAL_INFO,
@@ -14,7 +14,7 @@ import {
     SOCIAL_LINKS,
     type ResumeExperienceItem,
 } from "../../content/site"
-import {trackContactClick, trackResumeClick, trackSocialClick} from "../../utils/analytics"
+import {trackContactClick, trackSocialClick} from "../../utils/analytics"
 
 const ResumeSection: React.FC<React.PropsWithChildren<{title: string}>> = ({title, children}) => {
     return (
@@ -72,14 +72,13 @@ const Resume: React.FC = () => {
                 <Link className={styles.backLink} to="/">
                     Back to portfolio
                 </Link>
-                <a
+                <ResumeDownloadLink
                     className={styles.downloadLink}
-                    href={RESUME_FILE_URL}
-                    download={RESUME_DOWNLOAD_NAME}
-                    onClick={() => trackResumeClick("download_pdf", "resume_toolbar")}
+                    eventSource="resume_toolbar"
+                    standaloneLabel="Save PDF"
                 >
                     Download PDF
-                </a>
+                </ResumeDownloadLink>
             </div>
 
             <div className={styles.paperStack}>

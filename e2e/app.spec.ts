@@ -16,6 +16,49 @@ test("home and resume routes render", async ({page}) => {
     await expect(page.getByRole("link", {name: "Download PDF"})).toHaveAttribute("download", "Viacheslav-Murakhin-Resume.pdf")
 })
 
+test("installed web app shares the resume file instead of opening the PDF viewer", async ({page}) => {
+    await page.addInitScript(() => {
+        const originalMatchMedia = window.matchMedia.bind(window)
+
+        Object.defineProperty(window, "matchMedia", {
+            configurable: true,
+            value: (query: string) => query === "(display-mode: standalone)"
+                ? {
+                    matches: true,
+                    media: query,
+                    onchange: null,
+                    addEventListener: () => undefined,
+                    addListener: () => undefined,
+                    dispatchEvent: () => true,
+                    removeEventListener: () => undefined,
+                    removeListener: () => undefined,
+                } as MediaQueryList
+                : originalMatchMedia(query),
+        })
+        Object.defineProperty(window.navigator, "canShare", {
+            configurable: true,
+            value: () => true,
+        })
+        Object.defineProperty(window.navigator, "share", {
+            configurable: true,
+            value: (data: ShareData) => {
+                window.sessionStorage.setItem("shared-resume-name", data.files?.[0]?.name ?? "")
+                return Promise.resolve()
+            },
+        })
+    })
+
+    await page.goto("/resume")
+
+    const saveLink = page.getByRole("link", {name: "Save PDF"})
+    await expect(saveLink).toBeVisible()
+    await saveLink.click()
+
+    await expect(page).toHaveURL(/\/resume$/)
+    await expect.poll(() => page.evaluate(() => window.sessionStorage.getItem("shared-resume-name")))
+        .toBe("Viacheslav-Murakhin-Resume.pdf")
+})
+
 test("deep links and not found routes work", async ({page}) => {
     await page.goto("/about")
 
