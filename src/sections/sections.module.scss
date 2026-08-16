@@ -2226,7 +2226,7 @@
     --home-mobile-top-edge: calc(env(safe-area-inset-top, 0px) + 0.85rem);
     --home-mobile-media-top: calc(var(--home-mobile-top-edge) + 2.5rem);
     --home-mobile-media-height: clamp(18.6rem, 56vw, 23.5rem);
-    --home-mobile-card-offset: clamp(8.1rem, 24vw, 10.1rem);
+    --home-mobile-content-offset: clamp(8.1rem, 24vw, 10.1rem);
     --home-mobile-light-statement-top: calc(var(--home-mobile-top-edge) + clamp(3.15rem, 9.2vw, 4.55rem) + 50px);
     --home-mobile-light-statement-right: calc(0.7rem + 50px);
     --home-mobile-light-statement-width: min(82vw, 29rem);
@@ -2342,63 +2342,21 @@
     position: relative;
     max-width: 100%;
     gap: 0.52rem;
-    padding: 1.34rem 1.3rem 1.2rem;
-    border-radius: 2.4rem;
-    overflow: hidden;
-    isolation: isolate;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    background:
-      linear-gradient(180deg, rgba(18, 25, 35, 0.34) 0%, rgba(8, 12, 19, 0.56) 100%);
-    backdrop-filter: blur(28px) saturate(185%) brightness(1.04);
-    -webkit-backdrop-filter: blur(28px) saturate(185%) brightness(1.04);
-    box-shadow:
-      0 2.4rem 5rem rgba(0, 0, 0, 0.24),
-      inset 0 1px 0 rgba(255, 255, 255, 0.16),
-      inset 0 -1px 0 rgba(255, 255, 255, 0.04);
-    margin-top: var(--home-mobile-card-offset);
+    padding: 0;
+    overflow: visible;
+    isolation: auto;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+    margin-top: var(--home-mobile-content-offset);
   }
 
   .home__content::before,
   .home__content::after {
-    opacity: 1;
-  }
-
-  .home__content::before {
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.26) 0%, rgba(255, 255, 255, 0.1) 16%, rgba(255, 255, 255, 0) 42%),
-      radial-gradient(24rem 12rem at 16% 0%, rgba(255, 255, 255, 0.2), transparent 55%),
-      radial-gradient(18rem 12rem at 86% 16%, rgba(129, 217, 239, 0.14), transparent 70%);
-  }
-
-  .home__content::after {
-    inset: 1px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 28%);
-  }
-
-  .homeLight .home__content {
-    border-color: rgba(255, 255, 255, 0.38);
-    background:
-      linear-gradient(180deg, rgba(246, 251, 255, 0.32) 0%, rgba(228, 237, 245, 0.56) 100%);
-    backdrop-filter: blur(28px) saturate(185%) brightness(1.04);
-    -webkit-backdrop-filter: blur(28px) saturate(185%) brightness(1.04);
-    box-shadow:
-      0 2.4rem 5rem rgba(112, 132, 150, 0.2),
-      0 0.8rem 2rem rgba(173, 191, 205, 0.12),
-      inset 0 1px 0 rgba(255, 255, 255, 0.58),
-      inset 0 -1px 0 rgba(255, 255, 255, 0.12);
-  }
-
-  .homeLight .home__content::before {
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.48) 0%, rgba(255, 255, 255, 0.14) 18%, rgba(255, 255, 255, 0) 42%),
-      radial-gradient(26rem 13rem at 14% 0%, rgba(255, 255, 255, 0.34), transparent 58%),
-      radial-gradient(18rem 12rem at 88% 12%, rgba(101, 213, 239, 0.16), transparent 68%);
-  }
-
-  .homeLight .home__content::after {
-    border-color: rgba(255, 255, 255, 0.22);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 28%);
+    content: none;
   }
 
   .home__eyebrow {
@@ -2746,7 +2704,7 @@
     --home-mobile-top-edge: calc(env(safe-area-inset-top, 0px) + 0.7rem);
     --home-mobile-media-top: calc(var(--home-mobile-top-edge) + 2.2rem);
     --home-mobile-media-height: clamp(16.4rem, 60vw, 20.6rem);
-    --home-mobile-card-offset: clamp(7.25rem, 23vw, 9.2rem);
+    --home-mobile-content-offset: clamp(7.25rem, 23vw, 9.2rem);
     --home-mobile-light-statement-top: calc(var(--home-mobile-top-edge) + clamp(2.95rem, 8.8vw, 4.15rem) + 50px);
     --home-mobile-light-statement-right: calc(0.56rem + 50px);
     --home-mobile-light-statement-width: min(80vw, 26rem);
@@ -2800,8 +2758,6 @@
   .home__content {
     max-width: 100%;
     gap: 0.5rem;
-    padding: 1.2rem 1.08rem 1rem;
-    border-radius: 2.1rem;
   }
 
   .home__nameTop {
@@ -2965,7 +2921,7 @@
     --home-mobile-top-edge: calc(env(safe-area-inset-top, 0px) + 0.58rem);
     --home-mobile-media-top: calc(var(--home-mobile-top-edge) + 1.9rem);
     --home-mobile-media-height: clamp(14.7rem, 63vw, 18rem);
-    --home-mobile-card-offset: clamp(6.5rem, 22vw, 8.25rem);
+    --home-mobile-content-offset: clamp(6.5rem, 22vw, 8.25rem);
   }
 
   .home:not(.homeLight) {
@@ -2975,10 +2931,6 @@
 
   .home__stage {
     padding: var(--home-mobile-top-edge) 1.2rem calc(env(safe-area-inset-bottom, 0px) + clamp(1.5rem, 5vw, 2.4rem));
-  }
-
-  .home__content {
-    padding: 1.08rem 0.95rem 0.95rem;
   }
 
   .home__media {
