@@ -4,9 +4,9 @@ import styles from "./Footer.module.scss"
 import {FLIP_CLOCK_PRODUCT} from "../../content/flipClock"
 import {MARKET_PAGES} from "../../content/marketPages"
 import {COPYRIGHT_NOTICE, PROFILE, SITE_META, SOCIAL_LINKS} from "../../content/site"
-import {RESUME_DOWNLOAD_NAME, RESUME_FILE_URL} from "../../constants/resume"
 import {trackContactClick, trackResumeClick, trackSocialClick} from "../../utils/analytics"
 import ProtectedEmailLink from "../protectedEmailLink/ProtectedEmailLink"
+import ResumeDownloadLink from "../resumeDownloadLink/ResumeDownloadLink"
 
 const footerLinks = [
     {label: "Portfolio", to: "/"},
@@ -42,14 +42,13 @@ const Footer: React.FC = () => {
 
                 <div className={styles.side}>
                     <div className={styles.actions}>
-                        <a
+                        <ResumeDownloadLink
                             className={styles.primaryCta}
-                            href={RESUME_FILE_URL}
-                            download={RESUME_DOWNLOAD_NAME}
-                            onClick={() => trackResumeClick("download_pdf", "footer_primary_cta")}
+                            eventSource="footer_primary_cta"
+                            standaloneLabel="Save Resume PDF"
                         >
                             Download Resume
-                        </a>
+                        </ResumeDownloadLink>
                         <ProtectedEmailLink
                             className={styles.secondaryCta}
                             eventSource="footer_secondary_cta"
