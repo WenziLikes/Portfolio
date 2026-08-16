@@ -225,6 +225,37 @@ test("mobile hero keeps primary actions in the first viewport on modern phone wi
     await expect(page.getByRole("button", {name: "Portfolio"})).toBeInViewport()
 })
 
+test("phone hero content sits directly on the page without an outer card", async ({page}, testInfo) => {
+    test.skip(!/^phone-/.test(testInfo.project.name))
+
+    await page.goto("/")
+
+    const heroContent = page.locator("[data-home-hero-content]")
+    await expect(heroContent).toBeVisible()
+
+    const styles = await heroContent.evaluate((element) => {
+        const computed = window.getComputedStyle(element)
+
+        return {
+            backdropFilter: computed.backdropFilter,
+            backgroundColor: computed.backgroundColor,
+            backgroundImage: computed.backgroundImage,
+            borderTopWidth: computed.borderTopWidth,
+            borderRadius: computed.borderRadius,
+            boxShadow: computed.boxShadow,
+        }
+    })
+
+    expect(styles).toEqual({
+        backdropFilter: "none",
+        backgroundColor: "rgba(0, 0, 0, 0)",
+        backgroundImage: "none",
+        borderTopWidth: "0px",
+        borderRadius: "0px",
+        boxShadow: "none",
+    })
+})
+
 test("desktop sections and footer stay inside the viewport with the sidebar open", async ({page}, testInfo) => {
     test.skip(testInfo.project.name !== "chromium")
 

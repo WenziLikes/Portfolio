@@ -93,7 +93,7 @@ const Home: React.FC<HomeProps> = ({theme}) => {
                 ) : null}
 
                 <div className={styles["home__layout"]}>
-                    <div className={styles["home__content"]}>
+                    <div className={styles["home__content"]} data-home-hero-content>
                         <span className={styles["home__eyebrow"]}>{HERO_EYEBROW}</span>
                         <h1 className={styles["home__name"]}>
                             <span className={styles["home__nameTop"]}>{PROFILE.firstName}</span>
