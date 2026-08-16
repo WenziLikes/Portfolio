@@ -1,4 +1,5 @@
 import {MARKET_PAGE_PATHS, type MarketAlternateLink} from "./content/marketPages"
+import {FLIP_CLOCK_PRODUCT} from "./content/flipClock"
 import {PROJECTS_INFO} from "./content/projects"
 import {
     ABOUT_STACK,
@@ -88,6 +89,7 @@ const SOCIAL_PROFILE_URLS = SOCIAL_LINKS
 const AUDIENCE_TYPES = ["Recruiters and hiring managers", "Founders, product teams, and startups"] as const
 const MARKET_PAGE_PATH_SET = new Set<string>(MARKET_PAGE_PATHS)
 const PROGRAMMING_LANGUAGE_LABELS = new Set(["Java", "JavaScript", "TypeScript", "Rust"])
+const FLIP_CLOCK_PROJECT = PROJECTS_INFO.find((project) => project.title === FLIP_CLOCK_PRODUCT.name)
 
 const escapeXml = (value: string): string => value
     .replaceAll("&", "&amp;")
@@ -133,6 +135,7 @@ const getProjectProgrammingLanguages = (stack: string[]): string[] => {
 
 export const getRouteMeta = (pathname: string): ResolvedRouteMeta => {
     const routeMeta = ROUTE_META[normalizeRoutePathname(pathname)] ?? ROUTE_META[NOT_FOUND_PATH]
+    const ogImagePath = routeMeta.ogImagePath ?? SITE_META.ogImagePath
 
     return {
         alternates: routeMeta.alternates?.map((alternate) => ({
@@ -143,10 +146,10 @@ export const getRouteMeta = (pathname: string): ResolvedRouteMeta => {
         description: routeMeta.description,
         keywords: routeMeta.keywords ?? DEFAULT_SITE_KEYWORDS,
         ogLocale: routeMeta.ogLocale ?? "en_CA",
-        ogImageAlt: SITE_META.ogImageAlt,
-        ogImageHeight: SITE_META.ogImageHeight,
-        ogImageUrl: getCanonicalUrl(SITE_META.ogImagePath),
-        ogImageWidth: SITE_META.ogImageWidth,
+        ogImageAlt: routeMeta.ogImageAlt ?? SITE_META.ogImageAlt,
+        ogImageHeight: routeMeta.ogImageHeight ?? SITE_META.ogImageHeight,
+        ogImageUrl: getAbsoluteUrl(ogImagePath),
+        ogImageWidth: routeMeta.ogImageWidth ?? SITE_META.ogImageWidth,
         ogType: routeMeta.ogType ?? "website",
         path: routeMeta.path,
         robots: routeMeta.robots ?? DEFAULT_ROBOTS,
@@ -278,13 +281,25 @@ const getWebPageSchema = (pathname: string): SchemaNode => {
             "@id": PERSON_ID,
         },
         name: meta.title,
-        primaryImageOfPage: getPrimaryImageObject(),
+        primaryImageOfPage: {
+            "@type": "ImageObject",
+            caption: meta.ogImageAlt,
+            height: meta.ogImageHeight,
+            url: meta.ogImageUrl,
+            width: meta.ogImageWidth,
+        },
         url: meta.canonicalUrl,
     }
 
     if (pathname === "/projects") {
         baseSchema.mainEntity = {
             "@id": `${meta.canonicalUrl}#projects`,
+        }
+    }
+
+    if (pathname === FLIP_CLOCK_PRODUCT.productPath) {
+        baseSchema.mainEntity = {
+            "@id": `${meta.canonicalUrl}#software`,
         }
     }
 
@@ -306,7 +321,7 @@ const getProjectsSchema = (): SchemaNode => ({
             author: {
                 "@id": PERSON_ID,
             },
-            codeRepository: project.actions[0]?.href,
+            codeRepository: project.repositoryUrl ?? project.actions.find((action) => action.href.includes("github.com"))?.href,
             creator: {
                 "@id": PERSON_ID,
             },
@@ -321,15 +336,66 @@ const getProjectsSchema = (): SchemaNode => ({
             keywords: project.stack.join(", "),
             name: project.title,
             programmingLanguage: getProjectProgrammingLanguages(project.stack),
-            url: project.actions[0]?.href ?? getCanonicalUrl("/projects"),
+            url: project.productUrl ?? project.actions[0]?.href ?? getCanonicalUrl("/projects"),
         },
         position: index + 1,
-        url: project.actions[0]?.href ?? getCanonicalUrl("/projects"),
+        url: project.productUrl ?? project.actions[0]?.href ?? getCanonicalUrl("/projects"),
     })),
     itemListOrder: "https://schema.org/ItemListOrderAscending",
     name: "Featured software projects",
     numberOfItems: PROJECTS_INFO.length,
 })
+
+const getFlipClockSchema = (): SchemaNode => {
+    const preview = FLIP_CLOCK_PROJECT?.image
+
+    return {
+        "@context": "https://schema.org",
+        "@id": `${getCanonicalUrl(FLIP_CLOCK_PRODUCT.productPath)}#software`,
+        "@type": "SoftwareApplication",
+        applicationCategory: FLIP_CLOCK_PRODUCT.category,
+        applicationSubCategory: "Productivity",
+        author: {
+            "@id": PERSON_ID,
+        },
+        ...(FLIP_CLOCK_PROJECT?.repositoryUrl ? {codeRepository: FLIP_CLOCK_PROJECT.repositoryUrl} : {}),
+        datePublished: FLIP_CLOCK_PRODUCT.releaseDate,
+        description: getRouteMeta(FLIP_CLOCK_PRODUCT.productPath).description,
+        downloadUrl: FLIP_CLOCK_PRODUCT.appStoreUrl,
+        image: preview ? {
+            "@type": "ImageObject",
+            caption: preview.alt,
+            height: preview.height,
+            url: getAbsoluteUrl(preview.src),
+            width: preview.width,
+        } : getPrimaryImageObject(),
+        identifier: [
+            {
+                "@type": "PropertyValue",
+                name: "Bundle ID",
+                value: FLIP_CLOCK_PRODUCT.bundleId,
+            },
+            {
+                "@type": "PropertyValue",
+                name: "Mac App Store ID",
+                value: String(FLIP_CLOCK_PRODUCT.appStoreId),
+            },
+        ],
+        installUrl: FLIP_CLOCK_PRODUCT.appStoreUrl,
+        isAccessibleForFree: true,
+        name: FLIP_CLOCK_PRODUCT.name,
+        offers: {
+            "@type": "Offer",
+            availability: "https://schema.org/InStock",
+            price: "0",
+            priceCurrency: "CAD",
+            url: FLIP_CLOCK_PRODUCT.appStoreUrl,
+        },
+        operatingSystem: FLIP_CLOCK_PRODUCT.minimumOsVersion,
+        softwareVersion: FLIP_CLOCK_PRODUCT.version,
+        url: getCanonicalUrl(FLIP_CLOCK_PRODUCT.productPath),
+    }
+}
 
 const getResumeSchema = (): SchemaNode => ({
     "@context": "https://schema.org",
@@ -372,6 +438,10 @@ export const getStructuredData = (pathname: string): SchemaNode[] => {
 
     if (normalizedPathname === "/projects") {
         schemas.push(getProjectsSchema())
+    }
+
+    if (normalizedPathname === FLIP_CLOCK_PRODUCT.productPath) {
+        schemas.push(getFlipClockSchema())
     }
 
     if (normalizedPathname === "/resume") {

@@ -1,4 +1,4 @@
-import {fireEvent, render, screen} from "@testing-library/react"
+import {fireEvent, render, screen, within} from "@testing-library/react"
 import {MemoryRouter} from "react-router-dom"
 import {beforeEach, describe, expect, test, vi} from "vitest"
 import Projects, {PROJECTS_CUSTOM_ORDER_STORAGE_KEY, PROJECTS_STORAGE_KEY} from "./Projects"
@@ -36,7 +36,7 @@ describe("Projects reordering", () => {
     test("shows VM North as the featured project by default", () => {
         renderProjects()
 
-        expect(getProjectOrder()).toEqual(["VM North", "Flip Clock", "CRM Dashboard", "E42 Store", "Portfolio"])
+        expect(getProjectOrder()).toEqual(["VM North", "FlipClock Display", "CRM Dashboard", "E42 Store", "Portfolio"])
     })
 
     test("restores the saved project order from localStorage", () => {
@@ -45,7 +45,7 @@ describe("Projects reordering", () => {
 
         renderProjects()
 
-        expect(getProjectOrder()).toEqual(["Portfolio", "E42 Store", "CRM Dashboard", "VM North", "Flip Clock"])
+        expect(getProjectOrder()).toEqual(["Portfolio", "E42 Store", "CRM Dashboard", "VM North", "FlipClock Display"])
     })
 
     test("shows a detached overlay while dragging a project card", () => {
@@ -71,7 +71,7 @@ describe("Projects reordering", () => {
 
         fireEvent.keyDown(draggableCard, {key: "ArrowRight"})
 
-        expect(getProjectOrder()).toEqual(["VM North", "Flip Clock", "E42 Store", "CRM Dashboard", "Portfolio"])
+        expect(getProjectOrder()).toEqual(["VM North", "FlipClock Display", "E42 Store", "CRM Dashboard", "Portfolio"])
         expect(window.localStorage.getItem(PROJECTS_STORAGE_KEY)).toBe(JSON.stringify([5, 4, 1, 2, 3]))
         expect(window.localStorage.getItem(PROJECTS_CUSTOM_ORDER_STORAGE_KEY)).toBe("true")
     })
@@ -82,7 +82,19 @@ describe("Projects reordering", () => {
         renderProjects()
 
         expect(screen.queryByRole("link", {name: /explore project/i})).toBeNull()
-        expect(screen.getAllByRole("link", {name: /view repo/i})).toHaveLength(4)
+        expect(screen.getAllByRole("link", {name: /view repo/i})).toHaveLength(3)
+    })
+
+    test("links FlipClock Display to the Mac App Store", () => {
+        renderProjects()
+
+        const flipClockCard = document.querySelector<HTMLElement>('[data-project-card-id="4"]')
+
+        expect(flipClockCard).not.toBeNull()
+        expect(within(flipClockCard!).getByRole("link", {name: /mac app store/i})).toHaveAttribute(
+            "href",
+            "https://apps.apple.com/ca/app/flipclock-display/id6759590290?mt=12"
+        )
     })
 
     test("renders regional case-study links for internal SEO support", () => {

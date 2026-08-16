@@ -37,6 +37,10 @@ The final build includes:
 - `build/resume/index.html`
 - `build/privacy/index.html`
 - `build/copyright/index.html`
+- `build/flipclock/index.html`
+- `build/flipclock/support/index.html`
+- `build/flipclock/privacy/index.html`
+- `build/flipclock/terms/index.html`
 - `build/canada/index.html`
 - `build/usa/index.html`
 - `build/europe/index.html`
@@ -60,6 +64,10 @@ Because the app ships prerendered HTML for known routes, direct requests to rout
 - `/resume`
 - `/privacy`
 - `/copyright`
+- `/flipclock`
+- `/flipclock/support`
+- `/flipclock/privacy`
+- `/flipclock/terms`
 - `/canada`
 - `/usa`
 - `/europe`
@@ -164,11 +172,13 @@ After the site is live:
 2. open `/resume` directly
 3. open `/privacy` directly
 4. open `/copyright` directly
-5. open `/canada`, `/usa`, and `/europe` directly
-6. open `/about`, `/expertise`, `/experience`, and `/projects` directly
-7. open `/home` and confirm it redirects to `/`
-8. verify the home hero `Resume` button opens `/resume`
-9. verify the footer and `/resume` page download the current PDF
-10. verify favicon, manifest, and social preview assets
-11. if analytics is enabled, verify the first visit appears in GA4 Realtime
-12. re-submit the sitemap in search tooling if needed
+5. open `/flipclock`, `/flipclock/support`, `/flipclock/privacy`, and `/flipclock/terms` directly
+6. verify the `/flipclock` Mac App Store CTA opens the live FlipClock Display listing
+7. open `/canada`, `/usa`, and `/europe` directly
+8. open `/about`, `/expertise`, `/experience`, and `/projects` directly
+9. open `/home` and confirm it redirects to `/`
+10. verify the home hero `Resume` button opens `/resume`
+11. verify the footer and `/resume` page download the current PDF
+12. verify favicon, manifest, and social preview assets
+13. if analytics is enabled, verify the first visit appears in GA4 Realtime
+14. re-submit the sitemap in search tooling if needed

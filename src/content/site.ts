@@ -1,4 +1,6 @@
 import {isAnalyticsEnabled} from "../utils/analytics"
+import flipClockPreview from "../assets/img/projects/flip-clock-1200.png"
+import {FLIP_CLOCK_PRODUCT} from "./flipClock"
 import {MARKET_ROUTE_META, type MarketAlternateLink} from "./marketPages"
 
 export interface MainSection {
@@ -70,6 +72,10 @@ export interface RouteMetaEntry {
     description: string
     keywords?: readonly string[]
     ogLocale?: string
+    ogImageAlt?: string
+    ogImageHeight?: number
+    ogImagePath?: string
+    ogImageWidth?: number
     ogType?: "profile" | "website"
     path: string
     robots?: string
@@ -239,7 +245,7 @@ export const EXPERTISE_ITEMS = [
 export const EXPERIENCE_TIMELINE: ExperienceTimelineItem[] = [
     {
         company: "Independent Product Work",
-        description: "Building and iterating on full-stack products, including VMNorth.com, React and TypeScript frontends, portfolio systems, realtime chat, admin tooling, and production-ready release workflows.",
+        description: "Building and shipping products including VMNorth.com, the FlipClock Display macOS app, React and TypeScript frontends, realtime chat, admin tooling, and production-ready release workflows.",
         period: "2024 - Present",
         role: "Full Stack Developer",
     },
@@ -257,7 +263,7 @@ export const EXPERIENCE_TIMELINE: ExperienceTimelineItem[] = [
     },
 ]
 
-export const RESUME_PROFILE = `Full Stack Developer with 4+ years of experience building responsive web applications and product features from concept to deployment. Strong hands-on background in React, TypeScript, Java, Spring Boot, and Node.js, with practical experience building ecommerce flows, admin dashboards, realtime chat, portfolio publishing systems, and maintainable frontend architecture. Focused on performance, usability, and clear delivery for remote product teams across ${TARGET_MARKETS_TEXT}, with experience using Vite, React Router, Vitest, Playwright, Docker, and CI workflows to ship reliable production-ready products.`
+export const RESUME_PROFILE = `Full Stack Developer with 4+ years of experience building responsive applications and product features from concept to deployment, including a shipped macOS app on the Mac App Store. Strong hands-on background in React, TypeScript, Java, Spring Boot, Node.js, and Tauri, with practical experience building ecommerce flows, admin dashboards, realtime chat, portfolio publishing systems, and maintainable frontend architecture. Focused on performance, usability, and clear delivery for remote product teams across ${TARGET_MARKETS_TEXT}, with experience using Vite, React Router, Vitest, Playwright, Docker, and CI workflows to ship reliable production-ready products.`
 
 export const RESUME_SKILLS: ResumeSkill[] = [
     {
@@ -274,7 +280,7 @@ export const RESUME_SKILLS: ResumeSkill[] = [
     },
     {
         label: "Rendering / Runtime",
-        value: "Canvas 2D, Server-Sent Events, Tauri desktop runtime, macOS app packaging",
+        value: "Canvas 2D, Server-Sent Events, Tauri desktop runtime, Mac App Store distribution",
     },
     {
         label: "Databases",
@@ -327,18 +333,18 @@ export const RESUME_EXPERIENCE: ResumeExperienceItem[] = [
     },
     {
         bullets: [
-            "Built a macOS flip-clock screensaver with React, TypeScript, Tauri v2, and a Rust-backed desktop runtime.",
+            "Built and published FlipClock Display for macOS with React, TypeScript, Tauri v2, and a Rust-backed desktop runtime.",
             "Implemented a deterministic Canvas 2D rendering engine with live settings updates and stable runtime behavior without canvas re-mounts.",
-            "Added multi-display support, night dimming, audio click feedback, and a floating settings panel for a polished desktop experience.",
-            "Structured the app with Feature-Sliced Design and release flows prepared for App Store distribution.",
+            "Added privacy-first optional weather, premium themes, multi-display support, night dimming, idle controls, and a dedicated settings window.",
+            "Shipped the production app through App Store Connect with StoreKit entitlements, release automation, support, privacy, and legal surfaces.",
         ],
         link: {
-            href: "https://github.com/WenziLikes/FlipClock",
-            label: "GitHub Project",
+            href: FLIP_CLOCK_PRODUCT.appStoreUrl,
+            label: "View on Mac App Store",
         },
         period: "2025 - Present",
-        role: "Frontend / Desktop Developer",
-        title: "Flip Clock Screensaver",
+        role: "Product / Desktop Developer",
+        title: FLIP_CLOCK_PRODUCT.name,
     },
     {
         bullets: [
@@ -536,7 +542,7 @@ export const ROUTE_META: Record<string, RouteMetaEntry> = {
         title: SITE_META.title,
     },
     "/flipclock": {
-        description: "FlipClock Display is a privacy-first fullscreen clock for macOS with polished themes, optional weather, and multi-display support.",
+        description: "Download FlipClock Display from the Mac App Store: a privacy-first fullscreen clock for macOS with polished themes, optional weather, and multi-display support.",
         keywords: [
             "FlipClock Display",
             "macOS flip clock",
@@ -544,9 +550,13 @@ export const ROUTE_META: Record<string, RouteMetaEntry> = {
             "Mac screensaver clock",
             "privacy-first weather clock",
         ],
+        ogImageAlt: "FlipClock Display fullscreen clock and settings preview",
+        ogImageHeight: 675,
+        ogImagePath: flipClockPreview,
+        ogImageWidth: 1200,
         ogType: "website",
         path: "/flipclock",
-        title: "FlipClock Display for macOS",
+        title: "FlipClock Display for macOS | Mac App Store",
     },
     "/flipclock/privacy": {
         description: "Privacy Policy for FlipClock Display, including optional location, weather providers, IP and request data, retention, controls, and local deletion.",
@@ -593,7 +603,7 @@ export const ROUTE_META: Record<string, RouteMetaEntry> = {
         title: "Privacy | Viacheslav Murakhin",
     },
     "/projects": {
-        description: "Featured React and TypeScript portfolio projects by Viacheslav Murakhin, including VM North, ecommerce, admin dashboards, portfolio engineering, and a macOS screensaver built for modern product teams.",
+        description: "Featured React and TypeScript portfolio projects by Viacheslav Murakhin, including VM North, ecommerce, admin dashboards, portfolio engineering, and the shipped FlipClock Display macOS app.",
         keywords: [
             "react developer portfolio",
             "typescript portfolio",

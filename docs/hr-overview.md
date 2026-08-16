@@ -30,7 +30,7 @@ Use it when reviewing the repository for hiring, screening, interview preparatio
 
 | Project | Focus | What it proves |
 | --- | --- | --- |
-| Flip Clock | React, TypeScript, Tauri, Rust, Canvas 2D | Desktop product engineering, rendering logic, platform polish, App Store-oriented quality |
+| FlipClock Display | React, TypeScript, Tauri, Rust, Canvas 2D | Shipped Mac App Store product, desktop engineering, rendering logic, privacy-first weather, and platform polish |
 | E42 Store | React, TypeScript, Java, Spring Boot | Full-stack commerce delivery, auth, catalog, cart, checkout, and backend integration |
 | CRM Dashboard | React, TypeScript, Spring Boot | Internal tooling, admin UX, reporting flows, and maintainable operations interfaces |
 | Portfolio | React, TypeScript, Vite, Playwright, Vitest | Personal branding, SEO, responsive design, release readiness, and documentation quality |
@@ -51,13 +51,13 @@ When reviewing the live site or repository, the strongest signals are:
 ### 3-minute review
 
 1. Open the homepage and review the hero summary.
-2. Open `/projects` and scan the four showcased projects.
+2. Open `/projects` and scan the five showcased projects, including the live Mac App Store release.
 3. Open `/resume` and compare the experience summary to the project evidence.
 
 ### 10-minute review
 
 1. Review the portfolio homepage.
-2. Open `/projects` and inspect the linked GitHub repositories.
+2. Open `/projects` and inspect the linked GitHub repositories, product pages, and FlipClock Display App Store listing.
 3. Open `/resume`.
 4. Open one of `/canada`, `/usa`, or `/europe` to see market-specific positioning.
 5. Review `README.md` for engineering scope and release readiness.

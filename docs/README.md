@@ -67,7 +67,7 @@ Use this path when the goal is to publish or audit the site as a static producti
 ### Content-update path
 
 1. Read `content-model.md`.
-2. Update `src/content/site.ts`, `src/content/projects.ts`, `src/content/marketPages.ts`, or `src/utils/contact.ts`.
+2. Update `src/content/site.ts`, `src/content/flipClock.ts`, `src/content/projects.ts`, `src/content/marketPages.ts`, or `src/utils/contact.ts`.
 3. Run the verification flow in `testing.md`.
 4. Refresh screenshots if the UI changed meaningfully.
 
@@ -87,7 +87,7 @@ Use this path when the goal is to publish or audit the site as a static producti
 
 - Documentation must describe the current code, not an earlier intention.
 - Commands must match `package.json`, `vite.config.ts`, Playwright configs, and scripts in `scripts/`.
-- Route lists must include the regional landing pages and the `/home` redirect.
+- Route lists must include the regional landing pages, FlipClock Display product routes, and the `/home` redirect.
 - Content documentation must point back to `src/content/` and `src/utils/contact.ts` as the source of truth.
 - HR-facing material should stay aligned with the actual resume content, project list, market pages, and live routes.
 - Deployment documentation should assume static hosting from `build/` with route folders and `404.html`.

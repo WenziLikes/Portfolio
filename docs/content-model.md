@@ -11,6 +11,7 @@ That is one of the core engineering decisions in the repository: the portfolio i
 | File | What it owns |
 | --- | --- |
 | `src/content/site.ts` | Identity, SEO metadata, target markets, language coverage, navigation labels, about copy, expertise copy, experience data, resume data, legal content, and base route metadata |
+| `src/content/flipClock.ts` | Canonical FlipClock Display product name, App Store URL, release metadata, and product route |
 | `src/content/projects.ts` | Project order, descriptions, stack labels, CTA links, proof points, and responsive image metadata |
 | `src/content/marketPages.ts` | Canada, USA, and Europe landing-page copy plus regional route metadata and alternate links |
 | `src/utils/contact.ts` | Public email constants used to render protected `mailto:` links |
@@ -67,6 +68,7 @@ This keeps regional positioning in one place instead of scattering it across hom
 | Surface | Main source |
 | --- | --- |
 | Homepage sections | `src/content/site.ts` and `src/content/projects.ts` |
+| FlipClock Display project, product page, resume link, and software schema | `src/content/flipClock.ts`, `src/content/projects.ts`, `src/content/site.ts`, and `src/seo.ts` |
 | Footer and contact CTAs | `src/content/site.ts`, `src/content/marketPages.ts`, and `src/utils/contact.ts` |
 | Resume route | `src/content/site.ts` |
 | Downloadable resume PDF | `/resume` route rendered through `scripts/export-resume.mjs` |
@@ -153,8 +155,21 @@ Edit `src/content/projects.ts` when changing:
 Then review:
 
 - `/projects`
+- the linked product route and external destination
 - `docs/hr-overview.md`
 - `docs/visual-gallery.md`
+
+### Updating FlipClock Display release metadata
+
+Edit `src/content/flipClock.ts` when the App Store URL, version, minimum macOS version, or release metadata changes.
+
+Then review:
+
+- the FlipClock Display card on `/projects`
+- `/flipclock` and its App Store CTAs
+- the FlipClock entry on `/resume` and the regenerated PDF
+- `src/seo.ts` software application structured data
+- `docs/hr-overview.md`
 
 ### Updating regional landing pages
 
@@ -185,7 +200,7 @@ Edit legal content in `src/content/site.ts` and then review:
 
 Use this flow after editing content:
 
-1. Update `src/content/site.ts`, `src/content/projects.ts`, `src/content/marketPages.ts`, or `src/utils/contact.ts`.
+1. Update `src/content/site.ts`, `src/content/flipClock.ts`, `src/content/projects.ts`, `src/content/marketPages.ts`, or `src/utils/contact.ts`.
 2. If resume wording changed, run `npm run export:resume`.
 3. Run `npm test`.
 4. Run `npm run build`.

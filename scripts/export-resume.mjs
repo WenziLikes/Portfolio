@@ -145,6 +145,7 @@ const exportResumePdf = async (baseUrl) => {
             },
         })
 
+        await page.route("https://vmnorth.com/chat-embed.js", (route) => route.abort())
         await page.goto(`${baseUrl}/resume`, {waitUntil: "networkidle"})
         await page.emulateMedia({media: "print"})
         await page.pdf({

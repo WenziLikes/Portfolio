@@ -51,12 +51,17 @@ const createPage = async (
     await context.addInitScript((theme: Theme) => {
         try {
             window.localStorage.setItem("theme", theme)
+            window.localStorage.setItem("vm-analytics-consent", "denied")
         } catch {
             // Ignore unavailable storage in screenshot contexts.
         }
     }, options.theme)
 
-    return context.newPage()
+    const page = await context.newPage()
+
+    await page.route("https://vmnorth.com/chat-embed.js", (route) => route.abort())
+
+    return page
 }
 
 test.describe.configure({mode: "serial"})
@@ -98,10 +103,8 @@ test("refresh documentation screenshots", async ({browser}) => {
 
     await desktopLightPage.goto("/projects")
     await waitForUi(desktopLightPage)
-    await desktopLightPage.locator("main.content").evaluate((element) => {
-        element.scrollTo({behavior: "auto", top: element.scrollHeight})
-    })
-    await desktopLightPage.waitForTimeout(150)
+    await desktopLightPage.locator("footer").scrollIntoViewIfNeeded()
+    await desktopLightPage.waitForTimeout(250)
     await captureScreenshot(desktopLightPage, "footer-light-desktop.jpg")
 
     await desktopLightPage.context().close()

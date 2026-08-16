@@ -2,9 +2,10 @@ import React from "react"
 import {Link} from "react-router-dom"
 
 import flipClockPreview from "../../assets/img/projects/flip-clock-1200.png"
+import {FLIP_CLOCK_PRODUCT} from "../../content/flipClock"
 import styles from "./FlipClockPages.module.scss"
 
-const PRODUCT_PATH = "/flipclock"
+const PRODUCT_PATH = FLIP_CLOCK_PRODUCT.productPath
 const SUPPORT_EMAIL = "support@vmnorth.com"
 const PRIVACY_EMAIL = "privacy@vmnorth.com"
 const LEGAL_EMAIL = "legal@vmnorth.com"
@@ -45,6 +46,14 @@ const FlipClockShell: React.FC<FlipClockShellProps> = ({activePath, children}) =
                         {item.label}
                     </Link>
                 ))}
+                <a
+                    className={styles.storeNavLink}
+                    href={FLIP_CLOCK_PRODUCT.appStoreUrl}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                >
+                    Mac App Store
+                </a>
             </nav>
         </header>
 
@@ -85,15 +94,20 @@ export const FlipClockLandingPage: React.FC = () => (
                 </p>
 
                 <div className={styles.actionRow}>
-                    <Link className={styles.primaryAction} to={`${PRODUCT_PATH}/support`}>
-                        Get support
-                    </Link>
-                    <Link className={styles.secondaryAction} to={`${PRODUCT_PATH}/privacy`}>
-                        Read privacy policy
-                    </Link>
+                    <a
+                        className={styles.primaryAction}
+                        href={FLIP_CLOCK_PRODUCT.appStoreUrl}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                    >
+                        Download on the Mac App Store
+                    </a>
+                    <Link className={styles.secondaryAction} to={`${PRODUCT_PATH}/support`}>Get support</Link>
+                    <Link className={styles.secondaryAction} to={`${PRODUCT_PATH}/privacy`}>Privacy</Link>
                 </div>
 
                 <ul className={styles.trustList}>
+                    <li>Available now on the Mac App Store</li>
                     <li>No account required</li>
                     <li>No advertising</li>
                     <li>No analytics or user tracking in the app</li>
@@ -108,7 +122,7 @@ export const FlipClockLandingPage: React.FC = () => (
                     height="675"
                 />
                 <div className={styles.previewMeta}>
-                    <span>Native macOS app</span>
+                    <span>Mac App Store · {FLIP_CLOCK_PRODUCT.version}</span>
                     <span>React · TypeScript · Rust · Tauri</span>
                 </div>
             </div>
@@ -138,6 +152,12 @@ export const FlipClockLandingPage: React.FC = () => (
                 <h2>Clear answers before you use the app.</h2>
             </div>
             <div className={styles.linkPanelActions}>
+                <a href={FLIP_CLOCK_PRODUCT.appStoreUrl} target="_blank" rel="noreferrer noopener">
+                    Mac App Store
+                </a>
+                <a href={FLIP_CLOCK_PRODUCT.repositoryUrl} target="_blank" rel="noreferrer noopener">
+                    Source code
+                </a>
                 <Link to={`${PRODUCT_PATH}/support`}>Support</Link>
                 <Link to={`${PRODUCT_PATH}/privacy`}>Privacy Policy</Link>
                 <Link to={`${PRODUCT_PATH}/terms`}>Terms of Use</Link>

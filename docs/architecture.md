@@ -49,6 +49,10 @@ flowchart TD
 | `/resume` | Dedicated resume page |
 | `/privacy` | Privacy notice |
 | `/copyright` | Copyright notice |
+| `/flipclock` | FlipClock Display product page and Mac App Store entry point |
+| `/flipclock/support` | FlipClock Display support page |
+| `/flipclock/privacy` | Product-specific privacy policy |
+| `/flipclock/terms` | Product-specific terms of use |
 | `/canada` | Regional hiring page for Canadian teams |
 | `/usa` | Regional hiring page for US teams |
 | `/europe` | Regional hiring page for Europe and default English `hreflang` targeting |
@@ -68,6 +72,7 @@ The app uses `BrowserRouter`, but production does not rely on a generic SPA catc
 | `src/components/sideBar/SideBar.tsx` | Desktop navigation, mobile navigation, theme controls, sidebar collapse behavior, and section highlighting |
 | `src/pages/market/MarketLandingPage.tsx` | Regional landing page UI for Canada, USA, and Europe |
 | `src/pages/resume/Resume.tsx` | Resume page, contact block, and PDF download entry point |
+| `src/pages/flipclock/FlipClockPages.tsx` | FlipClock Display landing, App Store CTA, support, privacy, and terms pages |
 | `src/pages/legal/LegalDocumentPage.tsx` | Shared legal-page layout used by privacy and copyright routes |
 | `src/components/footer/Footer.tsx` | Shared footer, resume CTA, legal links, regional links, and contact entry points |
 | `src/components/routeMeta/RouteMeta.tsx` | Runtime updates for title, description, canonical URL, robots, structured data, and alternate links |
@@ -95,6 +100,7 @@ The project intentionally keeps human-facing copy out of scattered UI files.
 | Source file | Owns |
 | --- | --- |
 | `src/content/site.ts` | Identity, navigation labels, target markets, about copy, expertise copy, experience timeline, resume content, legal copy, and route metadata |
+| `src/content/flipClock.ts` | Shared FlipClock Display identity, App Store URL, release metadata, and product route |
 | `src/content/projects.ts` | Project order, titles, descriptions, proof points, stack labels, actions, and responsive image metadata |
 | `src/content/marketPages.ts` | Regional landing-page content, market-specific claims, `hreflang` alternates, and regional route metadata |
 | `src/utils/contact.ts` | Public email constants used by protected email link rendering |
