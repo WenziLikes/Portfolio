@@ -366,10 +366,6 @@ export const RESUME_EXPERIENCE: ResumeExperienceItem[] = [
             "Implemented CRUD flows, role-based access patterns, and data management features for day-to-day product operations.",
             "Improved maintainability by organizing frontend and backend modules around reusable workflows.",
         ],
-        link: {
-            href: "https://github.com/WenziLikes/PetProjectCRM",
-            label: "GitHub Project",
-        },
         period: "2021 - Present",
         role: "Full Stack Developer",
         title: "CRM Dashboard Project",
@@ -432,32 +428,55 @@ export const COPYRIGHT_CONTENT: LegalSection[] = [
 export const PRIVACY_CONTENT: LegalSection[] = [
     {
         paragraphs: [
-            isAnalyticsEnabled
-                ? "This portfolio does not require an account and does not ask visitors to submit personal information directly on the site, but it can use Google Analytics 4 to measure page visits and navigation patterns after you explicitly allow analytics on your device."
-                : "This portfolio does not require an account and does not ask visitors to submit personal information directly on the site.",
+            "This portfolio does not require an account to browse. It does load the VMNorth support-chat script and a VMNorth-hosted chat iframe on every route. Those resources connect to vmnorth.com even if you do not open the chat.",
+            "The chat is an essential support feature and loads independently of the portfolio's optional analytics setting. The analytics choice controls Google Analytics 4 on this portfolio; it does not stop the VMNorth chat script, iframe, or technical requests needed to deliver and secure the chat.",
         ],
-        title: "What This Site Collects",
+        title: "What Loads When You Visit",
     },
     {
         bullets: [
-            "Your hosting provider may log basic technical request data such as IP address, browser, device, and access time as part of standard web server operations.",
-            ...(isAnalyticsEnabled
-                ? [
-                    "Google Analytics 4 loads only after you allow analytics on this device.",
-                    "Once enabled, Google Analytics 4 may process page views, approximate location, browser, device, referral information, and selected interaction events such as resume, social, and contact link clicks to help understand how the site is used.",
-                    "If you allow analytics, Google Analytics can use cookies or similar browser storage to distinguish returning visitors and session activity.",
-                ]
-                : []),
-            "The site includes external links to email, phone, GitHub, and LinkedIn. Those services apply their own privacy policies after you leave this site.",
-            "Google Fonts are requested from Google's CDN for typography rendering while browsing the site.",
+            "The portfolio host and VMNorth may receive standard request data such as your public IP address, browser or user-agent details, request time, requested resource, referring origin, response status, and security or diagnostic logs.",
+            "The embed identifies this website with the site ID “portfolio” and can request public chat configuration and presence information from VMNorth.",
+            "Simply loading the widget does not send a chat message. The information described in the next section is sent only when you choose to start or use the chat.",
         ],
-        title: "Third-Party Requests",
+        title: "Automatic Technical Data",
+    },
+    {
+        bullets: [
+            "Starting a conversation requires a name and email address. VMNorth then creates a site-aware session so the conversation can be restored and answered.",
+            "Messages can include the text and files you submit, attachment names, types and sizes, timestamps, read and typing state, locale, source site, and the session data needed to deliver replies.",
+            "Chat session credentials are stored in browser storage for session restore. Reset Chat removes that saved browser credential and starts the widget over, but it does not by itself delete the server-side conversation.",
+            "VMNorth stores chat sessions and messages in PostgreSQL, stores attachment files separately in S3/R2-compatible object storage, and may use an email provider to send a follow-up or reply link.",
+        ],
+        title: "When You Use VMNorth Chat",
     },
     {
         paragraphs: [
-            isAnalyticsEnabled
-                ? "If analytics settings, cookies, forms, embeds, or other third-party scripts change in the future, this policy should be reviewed and updated before those changes go live."
-                : "If analytics, forms, or cookies are added in the future, this policy should be updated before those features go live.",
+            "VMNorth's published privacy notice does not state one fixed retention period for every chat record, attachment, or operational log. It says information is kept for as long as reasonably necessary to provide services, resolve disputes, maintain records, and meet legal obligations.",
+            "To request access, correction, or deletion of chat information, email privacy@vmnorth.com and identify the email address used in the conversation and this portfolio as the source site. VMNorth may request additional information to verify the request. Clearing browser storage prevents local session restore but does not replace a server-side deletion request.",
+        ],
+        title: "Retention and Deletion",
+    },
+    {
+        bullets: isAnalyticsEnabled
+            ? [
+                "Google Analytics 4 loads only after you allow analytics on this device.",
+                "Once enabled, Google Analytics 4 may process page views, approximate location, browser, device, referral information, and selected interaction events such as resume, social, and contact link clicks to help understand how the site is used.",
+                "If you allow analytics, Google Analytics can use cookies or similar browser storage to distinguish returning visitors and session activity.",
+            ]
+            : ["Google Analytics 4 is not enabled in this build of the portfolio."],
+        title: "Optional Analytics",
+    },
+    {
+        bullets: [
+            "The site includes external links to email, phone, GitHub, and LinkedIn. Those services apply their own privacy policies after you leave this site.",
+            "Google Fonts are requested from Google's CDN for typography rendering while browsing the site.",
+        ],
+        title: "Other Third-Party Requests",
+    },
+    {
+        paragraphs: [
+            "This notice should be reviewed before the chat data flow, retention practice, analytics settings, cookies, forms, embeds, or other third-party scripts change.",
         ],
         title: "Future Changes",
     },
@@ -595,8 +614,8 @@ export const ROUTE_META: Record<string, RouteMetaEntry> = {
         title: "Terms of Use | FlipClock Display",
     },
     "/privacy": {
-        description: "Privacy notice for visitors of the Viacheslav Murakhin portfolio website.",
-        keywords: ["privacy notice", "portfolio privacy policy", "analytics consent"],
+        description: "Privacy notice for the Viacheslav Murakhin portfolio website, including the VMNorth support chat, browser storage, data requests, and analytics consent.",
+        keywords: ["privacy notice", "portfolio privacy policy", "VMNorth chat privacy", "analytics consent"],
         ogType: "website",
         path: "/privacy",
         robots: "noindex,follow",

@@ -1,8 +1,10 @@
 # Content Model
 
+[← Back to documentation hub](./README.md)
+
 ## Purpose
 
-This project keeps hiring, marketing, legal, SEO, resume, and regional targeting copy in structured TypeScript files so the same information can drive multiple UI surfaces without drifting.
+This project keeps most hiring, marketing, portfolio legal, SEO, resume, and regional targeting copy in structured TypeScript files so the same information can drive multiple UI surfaces without drifting. FlipClock Display's support, privacy, and terms copy is intentionally colocated with its routed product pages.
 
 That is one of the core engineering decisions in the repository: the portfolio is maintained like a product, not like a static page with scattered hardcoded copy.
 
@@ -10,11 +12,12 @@ That is one of the core engineering decisions in the repository: the portfolio i
 
 | File | What it owns |
 | --- | --- |
-| `src/content/site.ts` | Identity, SEO metadata, target markets, language coverage, navigation labels, about copy, expertise copy, experience data, resume data, legal content, and base route metadata |
-| `src/content/flipClock.ts` | Canonical FlipClock Display product name, App Store URL, release metadata, and product route |
-| `src/content/projects.ts` | Project order, descriptions, stack labels, CTA links, proof points, and responsive image metadata |
-| `src/content/marketPages.ts` | Canada, USA, and Europe landing-page copy plus regional route metadata and alternate links |
-| `src/utils/contact.ts` | Public email constants used to render protected `mailto:` links |
+| [`src/content/site.ts`](../src/content/site.ts) | Identity, SEO metadata, target markets, language coverage, navigation labels, about copy, expertise copy, experience data, resume data, portfolio `/privacy` and `/copyright` copy, and base route metadata |
+| [`src/content/flipClock.ts`](../src/content/flipClock.ts) | Canonical FlipClock Display product name, App Store URL, release metadata, and product route |
+| [`src/content/projects.ts`](../src/content/projects.ts) | Project order, descriptions, stack labels, CTA links, proof points, and responsive image metadata |
+| [`src/content/marketPages.ts`](../src/content/marketPages.ts) | Canada, USA, and Europe landing-page copy plus regional route metadata and alternate links |
+| [`src/utils/contact.ts`](../src/utils/contact.ts) | Public email constants used to render protected `mailto:` links |
+| [`src/pages/flipclock/FlipClockPages.tsx`](../src/pages/flipclock/FlipClockPages.tsx) | FlipClock Display overview, support, privacy, and terms page copy; product-specific support/privacy/legal addresses; and the policy last-updated date |
 
 ## `site.ts` Breakdown
 
@@ -30,7 +33,7 @@ That is one of the core engineering decisions in the repository: the portfolio i
 | `EXPERTISE_COPY`, `EXPERTISE_ITEMS`, `EXPERTISE_SIGNALS` | Expertise section messaging and SEO-aligned proof areas |
 | `EXPERIENCE_TIMELINE` | Homepage experience section |
 | `RESUME_PROFILE`, `RESUME_SKILLS`, `RESUME_EXPERIENCE`, `RESUME_CERTIFICATIONS`, `RESUME_ADDITIONAL_INFO` | Resume route and exported PDF content |
-| `PRIVACY_CONTENT`, `COPYRIGHT_CONTENT` | Legal page copy |
+| `PRIVACY_CONTENT`, `COPYRIGHT_CONTENT` | Portfolio website `/privacy` and `/copyright` copy; these exports do not own the FlipClock Display legal routes |
 | `ROUTE_META` | Per-route titles, descriptions, robots overrides, and canonical path mapping |
 
 ## `projects.ts` Breakdown
@@ -68,11 +71,12 @@ This keeps regional positioning in one place instead of scattering it across hom
 | Surface | Main source |
 | --- | --- |
 | Homepage sections | `src/content/site.ts` and `src/content/projects.ts` |
-| FlipClock Display project, product page, resume link, and software schema | `src/content/flipClock.ts`, `src/content/projects.ts`, `src/content/site.ts`, and `src/seo.ts` |
+| FlipClock Display project, product page, resume link, and software schema | `src/content/flipClock.ts`, `src/content/projects.ts`, `src/content/site.ts`, `src/pages/flipclock/FlipClockPages.tsx`, and `src/seo.ts` |
 | Footer and contact CTAs | `src/content/site.ts`, `src/content/marketPages.ts`, and `src/utils/contact.ts` |
 | Resume route | `src/content/site.ts` |
 | Downloadable resume PDF | `/resume` route rendered through `scripts/export-resume.mjs` |
-| Legal pages | `src/content/site.ts` |
+| Portfolio `/privacy` and `/copyright` pages | `src/content/site.ts` |
+| FlipClock `/support`, `/privacy`, and `/terms` pages | `src/pages/flipclock/FlipClockPages.tsx`; canonical product metadata remains in `src/content/flipClock.ts` |
 | Regional landing pages | `src/content/marketPages.ts` and `src/content/site.ts` |
 | Route metadata and schema | `src/content/site.ts`, `src/content/marketPages.ts`, and `src/seo.ts` |
 
@@ -81,14 +85,22 @@ This keeps regional positioning in one place instead of scattering it across hom
 The current app exposes resume content in three aligned ways:
 
 - the home hero `Resume` button opens the routed `/resume` page
-- the footer CTA downloads `public/documents/viacheslav-murakhin-resume.pdf`
-- the `/resume` toolbar also downloads the same PDF asset
+- the footer CTA delivers `public/documents/viacheslav-murakhin-resume.pdf`
+- the `/resume` toolbar delivers the same PDF asset
+
+Delivery depends on the browsing context:
+
+- In a standard desktop browser, the PDF CTA uses the normal browser download flow.
+- In an installed iOS web app, the CTA prepares the PDF and uses the system Share/Save sheet when file sharing is supported.
+- If the installed-app share preparation or capability check fails, the fallback opens the PDF in a separate browser view so it can still be saved manually.
 
 When resume wording changes:
 
-1. update `src/content/site.ts`
-2. run `npm run export:resume`
-3. verify the routed `/resume` page and the generated PDF still match
+1. Update `src/content/site.ts`.
+2. Run `npm run export:resume` to regenerate `public/documents/viacheslav-murakhin-resume.pdf`.
+3. Run the final `npm run build` after the export to recreate the complete artifact from the updated public PDF. The export command also synchronizes and verifies the current `build/documents/` copy immediately.
+4. Verify the routed `/resume` page, the public PDF, and the built PDF still match.
+5. Check both a standard browser download and the installed iOS Share/Save path when resume delivery code changes.
 
 ## Editing Workflows
 
@@ -190,21 +202,29 @@ Then review:
 
 ### Updating legal or privacy copy
 
-Edit legal content in `src/content/site.ts` and then review:
+For the portfolio website, edit `PRIVACY_CONTENT` or `COPYRIGHT_CONTENT` in `src/content/site.ts`, then review:
 
 - `/privacy`
 - `/copyright`
+- `docs/legal-and-brand.md`
+
+For FlipClock Display, edit the product-specific support, privacy, terms, email addresses, and `LAST_UPDATED` value in `src/pages/flipclock/FlipClockPages.tsx`, then review:
+
+- `/flipclock/support`
+- `/flipclock/privacy`
+- `/flipclock/terms`
+- `src/content/flipClock.ts` if the product version, release date, App Store link, or other canonical metadata also changed
 - `docs/legal-and-brand.md`
 
 ## Content Change Checklist
 
 Use this flow after editing content:
 
-1. Update `src/content/site.ts`, `src/content/flipClock.ts`, `src/content/projects.ts`, `src/content/marketPages.ts`, or `src/utils/contact.ts`.
+1. Update `src/content/site.ts`, `src/content/flipClock.ts`, `src/content/projects.ts`, `src/content/marketPages.ts`, `src/utils/contact.ts`, or `src/pages/flipclock/FlipClockPages.tsx`.
 2. If resume wording changed, run `npm run export:resume`.
 3. Run `npm test`.
-4. Run `npm run build`.
-5. Run `npm run test:e2e`.
+4. Run the final `npm run build` after `npm run export:resume` to recreate the complete artifact from the updated public PDF; the export command itself also synchronizes and byte-verifies both PDF copies.
+5. On a clean environment, run `npm run test:e2e:install` once, then run `npm run test:e2e`.
 6. Run `npm run docs:screenshots` if the visual presentation changed enough to affect documentation screenshots.
 7. Verify the affected route or section manually.
 

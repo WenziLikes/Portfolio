@@ -1,0 +1,101 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality-and-build:
+    name: Unit, build, and static smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Run unit and integration tests
+        run: npm test
+
+      - name: Build production artifact
+        run: npm run build
+
+      - name: Verify static production artifact
+        run: npm run test:static
+
+  browser:
+    name: Playwright production E2E
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Install Chromium and Linux dependencies
+        run: npx playwright install --with-deps chromium
+
+      - name: Build production artifact
+        run: npm run build
+
+      - name: Verify production routes in Chromium
+        env:
+          PLAYWRIGHT_SKIP_BUILD: "1"
+        run: npm run test:e2e
+
+      - name: Upload Playwright diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-diagnostics
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 7
+
+  markdown-links:
+    name: Markdown links
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Check Markdown links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          fail: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: >-
+            --no-progress
+            --accept '100..=103,200..=299,429'
+            --exclude 'https://www.linkedin.com/.*'
+            './**/*.md'

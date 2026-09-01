@@ -1,5 +1,7 @@
 # Mobile Matrix
 
+[← Back to documentation hub](./README.md)
+
 ## Goal
 
 The site should remain readable, stable, and easy to navigate across mobile devices commonly encountered between roughly 2018 and 2026.

@@ -25,7 +25,7 @@ const Card: React.FC<CardProps> = ({
     sequence,
     style,
 }) => {
-    const {actions, description, eyebrow, featuredActionLabel, featuredDescription, image, proofPoints, scope, stack, title, year} = card
+    const {actions = [], description, eyebrow, featuredActionLabel, featuredDescription, image, proofPoints, scope, stack, title, year} = card
     const isFeatured = variant === "featured"
     const isContainedImage = image.fit === "contain"
     const visibleStack = isFeatured ? stack.slice(0, 6) : stack.slice(0, 4)
@@ -145,25 +145,27 @@ const Card: React.FC<CardProps> = ({
                     </ul>
                 )}
 
-                <div className={styles.card__actions}>
-                    {actions.map((action, actionIndex) => {
-                        const isPrimaryAction = isFeatured && actionIndex === 0
-                        const actionClassName = `${styles.card__button} ${isPrimaryAction ? styles.card__buttonPrimary : styles.card__buttonGhost}`
-                        const actionLabel = isPrimaryAction ? featuredActionLabel ?? action.label : action.label
+                {actions.length > 0 ? (
+                    <div className={styles.card__actions}>
+                        {actions.map((action, actionIndex) => {
+                            const isPrimaryAction = isFeatured && actionIndex === 0
+                            const actionClassName = `${styles.card__button} ${isPrimaryAction ? styles.card__buttonPrimary : styles.card__buttonGhost}`
+                            const actionLabel = isPrimaryAction ? featuredActionLabel ?? action.label : action.label
 
-                        return (
-                            <a
-                                className={actionClassName}
-                                href={action.href}
-                                key={action.label}
-                                target="_blank"
-                                rel="noreferrer noopener"
-                            >
-                                {actionLabel}
-                            </a>
-                        )
-                    })}
-                </div>
+                            return (
+                                <a
+                                    className={actionClassName}
+                                    href={action.href}
+                                    key={action.label}
+                                    target="_blank"
+                                    rel="noreferrer noopener"
+                                >
+                                    {actionLabel}
+                                </a>
+                            )
+                        })}
+                    </div>
+                ) : null}
             </div>
         </article>
     )
