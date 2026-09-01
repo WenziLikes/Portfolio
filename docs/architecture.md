@@ -1,5 +1,7 @@
 # Architecture
 
+[← Back to documentation hub](./README.md)
+
 ## Purpose
 
 The project is a static-hosted React portfolio that combines:
@@ -11,6 +13,7 @@ The project is a static-hosted React portfolio that combines:
 - build-time prerendering for crawlable route HTML
 - centralized content and SEO inputs
 - persisted browser-only UI state
+- an externally hosted VMNorth visitor-chat embed
 - automated validation for layout, routing, metadata, and release behavior
 
 ## System View
@@ -34,6 +37,8 @@ flowchart TD
     J --> N["src/seo.ts"]
     H --> O["useMediaQuery + scroll helpers"]
     C --> P["analytics.ts"]
+    B --> Q["VMNorth chat embed script + iframe"]
+    Q --> R["vmnorth.com chat runtime"]
 ```
 
 ## Route Model
@@ -79,7 +84,18 @@ The app uses `BrowserRouter`, but production does not rely on a generic SPA catc
 | `src/seo.ts` | Shared SEO metadata, structured data generation, robots, sitemap, and route-indexability helpers |
 | `src/entry-server.tsx` | SSR entry used only during build-time prerendering |
 | `scripts/prerender.mjs` | Generates route HTML, `/home` redirect HTML, `404.html`, `robots.txt`, and `sitemap.xml` after the build |
-| `scripts/export-resume.mjs` | Builds the app, serves `build/` locally, and exports the `/resume` route as PDF using Playwright |
+| `scripts/serve-build.mjs` | Serves the static artifact with route-folder, hosting-rule, and real `404` semantics for release checks |
+| `scripts/static-build-smoke.mjs` | Verifies direct routes, metadata, hosting rules, SEO files, and byte-identical resume artifacts |
+| `scripts/export-resume.mjs` | Builds the app, serves `build/`, exports `/resume` with Playwright, and synchronizes the PDF into both public and deployable artifacts |
+| `index.html` | Boots the React app and loads the external VMNorth site-aware chat embed |
+
+## External Chat Boundary
+
+The portfolio itself has no local application backend, but the production page loads `https://vmnorth.com/chat-embed.js` independently of the optional GA4 consent setting. That script mounts a `vmnorth.com` iframe for the `portfolio` site and connects visitors who use it to the VMNorth chat runtime.
+
+The external runtime can create and restore chat sessions, transmit contact details and messages, upload attachment metadata and bytes when a visitor chooses an attachment, and deliver live updates. VMNorth owns the related APIs and persistence; this repository owns only the embed declaration and the surrounding disclosure. Do not describe production as fully backend-free without this qualification.
+
+Playwright E2E tests, resume export, and documentation screenshot capture block the external script so automated results remain deterministic. That test isolation does not describe production behavior. Changes to the embed, its load timing, or its data handling require coordinated updates to the portfolio privacy notice, `docs/legal-and-brand.md`, production handoff, and release checklist.
 
 ## Homepage Shell Composition
 
@@ -99,11 +115,12 @@ The project intentionally keeps human-facing copy out of scattered UI files.
 
 | Source file | Owns |
 | --- | --- |
-| `src/content/site.ts` | Identity, navigation labels, target markets, about copy, expertise copy, experience timeline, resume content, legal copy, and route metadata |
+| `src/content/site.ts` | Identity, navigation labels, target markets, about copy, expertise copy, experience timeline, resume content, Portfolio privacy/copyright copy, and route metadata |
 | `src/content/flipClock.ts` | Shared FlipClock Display identity, App Store URL, release metadata, and product route |
 | `src/content/projects.ts` | Project order, titles, descriptions, proof points, stack labels, actions, and responsive image metadata |
 | `src/content/marketPages.ts` | Regional landing-page content, market-specific claims, `hreflang` alternates, and regional route metadata |
 | `src/utils/contact.ts` | Public email constants used by protected email link rendering |
+| `src/pages/flipclock/FlipClockPages.tsx` | FlipClock Display support, privacy, terms, product-specific contacts, and policy date |
 
 This structure prevents copy drift across:
 
@@ -123,7 +140,7 @@ This structure prevents copy drift across:
 | Custom project order | `localStorage["vm-projects-order"]` and `localStorage["vm-projects-order-customized"]` | `src/sections/projects/Projects.tsx` |
 | Analytics consent | `localStorage["vm-analytics-consent"]` | `src/App.tsx` and `src/utils/analytics.ts` |
 
-These states are deliberately browser-local. There is no account system and no remote persistence layer.
+These Portfolio-owned states are deliberately browser-local, and the Portfolio has no account system. Separately, the VMNorth embed stores a chat-session credential in browser storage and persists chat sessions, messages, and attachment records through its external backend. Clearing local widget state does not delete that server-side data.
 
 ## Styling Strategy
 
@@ -163,6 +180,7 @@ The project uses three coordinated metadata layers:
 Important release-facing behaviors:
 
 - Google Analytics is optional and activates only when a measurement ID is configured and the visitor grants consent.
+- The VMNorth chat embed is a separate external integration and is not controlled by the GA4 consent preference.
 - The resume PDF is a generated artifact and must be refreshed after resume copy changes.
 - Documentation screenshots are release artifacts and should be refreshed after meaningful UI changes.
 - Static hosting must serve generated route HTML from `build/`, keep `/home` redirect output intact, and return `404.html` for unknown paths.

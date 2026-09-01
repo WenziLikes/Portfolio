@@ -1,5 +1,7 @@
 # HR and Hiring Overview
 
+[← Back to documentation hub](./README.md)
+
 ## Purpose
 
 This document is the recruiter-friendly summary of the portfolio project and the candidate profile it represents.
@@ -30,6 +32,7 @@ Use it when reviewing the repository for hiring, screening, interview preparatio
 
 | Project | Focus | What it proves |
 | --- | --- | --- |
+| VM North | React 19, TypeScript, Node.js, PostgreSQL, SSE, WebAuthn, Docker | Multilingual product-platform delivery, real-time visitor chat, project intake, passkey-first administration, and production operations |
 | FlipClock Display | React, TypeScript, Tauri, Rust, Canvas 2D | Shipped Mac App Store product, desktop engineering, rendering logic, privacy-first weather, and platform polish |
 | E42 Store | React, TypeScript, Java, Spring Boot | Full-stack commerce delivery, auth, catalog, cart, checkout, and backend integration |
 | CRM Dashboard | React, TypeScript, Spring Boot | Internal tooling, admin UX, reporting flows, and maintainable operations interfaces |
@@ -40,7 +43,7 @@ Use it when reviewing the repository for hiring, screening, interview preparatio
 When reviewing the live site or repository, the strongest signals are:
 
 - clear role positioning and technical specialization
-- direct access to both a routed resume page and downloadable PDF
+- direct access to a routed resume page and a PDF delivered through browser download or the installed iOS Share/Save flow
 - project cards that describe scope, stack, and evidence clearly
 - regional landing pages for Canada, USA, and Europe that show deliberate market targeting
 - legal and privacy pages that show production awareness
@@ -51,17 +54,17 @@ When reviewing the live site or repository, the strongest signals are:
 ### 3-minute review
 
 1. Open the homepage and review the hero summary.
-2. Open `/projects` and scan the five showcased projects, including the live Mac App Store release.
+2. Open `/projects` and scan the five showcased projects: VM North, FlipClock Display, E42 Store, CRM Dashboard, and Portfolio.
 3. Open `/resume` and compare the experience summary to the project evidence.
 
 ### 10-minute review
 
 1. Review the portfolio homepage.
-2. Open `/projects` and inspect the linked GitHub repositories, product pages, and FlipClock Display App Store listing.
+2. Open `/projects` and inspect the public destinations that are currently available: the VM North product site, E42 Store and Portfolio repositories, and the FlipClock Display App Store listing. Treat CRM Dashboard as portfolio evidence unless and until its repository link is publicly reachable.
 3. Open `/resume`.
 4. Open one of `/canada`, `/usa`, or `/europe` to see market-specific positioning.
-5. Review `README.md` for engineering scope and release readiness.
-6. Check `docs/visual-gallery.md` for additional UI states.
+5. Review the [project README](../README.md) for engineering scope and release readiness.
+6. Check the [visual gallery](./visual-gallery.md) for additional UI states.
 
 ## Good Interview Follow-Ups
 
@@ -88,7 +91,7 @@ The project exposes the candidate through several aligned surfaces:
 
 - homepage summary
 - routed `/resume` page
-- downloadable PDF in `public/documents/viacheslav-murakhin-resume.pdf`
+- PDF in `public/documents/viacheslav-murakhin-resume.pdf`, downloaded by standard browsers and offered through the native Share/Save sheet in a supported installed iOS web app, with a separate-view fallback
 - regional landing pages for Canada, USA, and Europe
 
 That alignment is intentional and makes the portfolio suitable both as a live website and as a GitHub review artifact.

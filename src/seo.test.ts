@@ -1,4 +1,5 @@
 import {describe, expect, test} from "vitest"
+import {FLIP_CLOCK_PRODUCT} from "./content/flipClock"
 import {getRouteMeta, getSitemapXml, getStructuredData} from "./seo"
 
 const findSchemaByType = (schemas: Record<string, unknown>[], type: string) => schemas.find((schema) => schema["@type"] === type)
@@ -85,13 +86,21 @@ describe("seo configuration", () => {
             isAccessibleForFree: true,
             name: "FlipClock Display",
             operatingSystem: "macOS 13.0 or later",
-            softwareVersion: "1.0.1",
+            softwareVersion: "1.0.4",
+            dateModified: "2026-08-30",
+            datePublished: "2026-08-10",
         }))
         expect(webPage).toEqual(expect.objectContaining({
             mainEntity: {"@id": "https://viacheslavmurakhin.com/flipclock#software"},
             primaryImageOfPage: expect.objectContaining({
                 caption: "FlipClock Display fullscreen clock and settings preview",
             }),
+        }))
+        expect(FLIP_CLOCK_PRODUCT).toEqual(expect.objectContaining({
+            releaseDate: "2026-08-10",
+            version: "1.0.4",
+            versionReleaseDate: "2026-08-30",
+            versionReleaseDateLabel: "August 30, 2026",
         }))
     })
 

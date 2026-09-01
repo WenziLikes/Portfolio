@@ -31,7 +31,7 @@ export interface CardAction {
 }
 
 export interface CardInfo {
-    actions: CardAction[]
+    actions?: CardAction[]
     description: string
     eyebrow: string
     featuredActionLabel?: string
@@ -110,12 +110,6 @@ export const PROJECTS_INFO: CardInfo[] = [
         year: "2025",
     },
     {
-        actions: [
-            {
-                href: "https://github.com/WenziLikes/PetProjectCRM",
-                label: "View repo",
-            },
-        ],
         description: "Internal CRM dashboard built for support and operations, bringing user management, reporting, exports, and day-to-day admin workflows into one workspace.",
         eyebrow: "CRM / Operations tool",
         featuredDescription: "Internal operations dashboard that centralizes support, reporting, exports, and manager workflows in a single CRM interface.",

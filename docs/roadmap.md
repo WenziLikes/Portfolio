@@ -1,8 +1,16 @@
 # Roadmap
 
+[← Back to documentation hub](./README.md)
+
 This roadmap is a planning document, not a hard commitment list.
 
 It captures the highest-value directions for improving the portfolio as a professional public-facing product.
+
+## Existing Foundation
+
+The site already supports optional Google Analytics 4. Analytics loads only when a measurement ID is configured and the visitor explicitly allows it. Future measurement work should refine that consent-gated implementation and its reporting purpose, not describe analytics as an unimplemented feature.
+
+The repository also maintains a dated [`CHANGELOG.md`](../CHANGELOG.md). New shipped milestones should be added there or published as GitHub Releases rather than left only in commit messages.
 
 ## Priority Themes
 
@@ -20,18 +28,19 @@ It captures the highest-value directions for improving the portfolio as a profes
 - expand project case studies with clearer business outcomes and implementation details
 - review typography and spacing polish across light and dark themes
 - document accessibility review findings and track remediations
+- validate the existing GA4 event taxonomy against a small, explicit reporting goal and keep privacy copy aligned with any event changes
 
 ## Mid-Term Opportunities
 
 - add richer project detail pages if deeper case-study storytelling becomes necessary
-- add a changelog or public-facing release highlights section if the portfolio evolves frequently
+- turn selected changelog entries into concise public-facing release highlights if the portfolio evolves frequently
 - improve structured data coverage for portfolio and resume surfaces
-- add host-specific deployment playbooks for Vercel and Netlify with exact steps
+- keep the Cloudflare Pages deployment playbook aligned with the actual project configuration, preview flow, and rollback procedure
 - automate additional release checks if the site starts changing more frequently
 
 ## Long-Term Opportunities
 
-- introduce analytics only if there is a clear reporting goal and legal copy is updated first
+- expand or replace the existing consent-gated analytics only when there is a clear reporting goal, and update privacy documentation before new collection goes live
 - add a lightweight CMS or content-editing workflow only if manual `src/content/` editing becomes a bottleneck
 - add deeper asset automation if the portfolio starts changing visuals often
 - build a more formal design system section if the component library grows beyond the current site scope

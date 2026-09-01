@@ -1,0 +1,48 @@
+name: Bug report
+description: Report a reproducible problem with the portfolio site or repository.
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Thanks for reporting a bug. Do not include secrets, personal data, or security-sensitive details here. Read the [security policy](https://github.com/WenziLikes/Portfolio/security/policy) and use Security → Report a vulnerability for suspected vulnerabilities.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What is wrong, and what did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Include the route, actions, and smallest reliable reproduction.
+      placeholder: |
+        1. Open …
+        2. Select …
+        3. Observe …
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser, operating system, viewport, and production or preview URL.
+      placeholder: Safari 18, iOS, 390 px, production
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Additional evidence
+      description: Add screenshots, console output, or other non-sensitive context if useful.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-submission checks
+      options:
+        - label: I searched existing issues for the same problem.
+          required: true
+        - label: This report does not contain vulnerability details or sensitive data.
+          required: true

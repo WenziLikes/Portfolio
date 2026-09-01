@@ -8,6 +8,9 @@ const PLAYWRIGHT_ENV = Object.fromEntries(
 
 const PLAYWRIGHT_PORT = 4181
 const PLAYWRIGHT_BASE_URL = `http://127.0.0.1:${PLAYWRIGHT_PORT}`
+const PLAYWRIGHT_WEB_SERVER_COMMAND = process.env.PLAYWRIGHT_SKIP_BUILD === "1"
+    ? `node scripts/serve-build.mjs --port ${PLAYWRIGHT_PORT}`
+    : `npm run build && node scripts/serve-build.mjs --port ${PLAYWRIGHT_PORT}`
 
 export default defineConfig({
     testDir: "./e2e",
@@ -83,7 +86,7 @@ export default defineConfig({
         },
     ],
     webServer: {
-        command: `npm run dev -- --host 127.0.0.1 --port ${PLAYWRIGHT_PORT} --strictPort`,
+        command: PLAYWRIGHT_WEB_SERVER_COMMAND,
         env: PLAYWRIGHT_ENV,
         reuseExistingServer: false,
         timeout: 120_000,

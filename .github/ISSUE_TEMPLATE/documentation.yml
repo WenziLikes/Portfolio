@@ -1,0 +1,36 @@
+name: Documentation correction
+description: Report inaccurate, stale, unclear, or broken project documentation.
+title: "[Docs]: "
+body:
+  - type: markdown
+    attributes:
+      value: Review the [documentation hub](https://github.com/WenziLikes/Portfolio/blob/main/docs/README.md) before filing a correction.
+  - type: input
+    id: location
+    attributes:
+      label: Document or link
+      description: Identify the file, heading, or URL that needs attention.
+      placeholder: docs/deployment.md — Cloudflare Pages runbook
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Current problem
+      description: Explain what is incorrect, missing, unclear, or broken.
+    validations:
+      required: true
+  - type: textarea
+    id: proposed
+    attributes:
+      label: Suggested correction
+      description: Provide corrected wording or the source that establishes the current behavior, if available.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-submission check
+      options:
+        - label: I checked the current main branch and searched existing issues.
+          required: true

@@ -1,12 +1,14 @@
 # SEO Keywords
 
+[← Back to documentation hub](./README.md)
+
 ## Purpose
 
 This document tracks the current SEO direction for the portfolio so future copy updates stay aligned with the live route structure, search intent, and regional hiring positioning.
 
 ## Reference Date
 
-Strategy snapshot: April 4, 2026.
+Strategy snapshot: August 31, 2026.
 
 ## Priority 1
 

@@ -82,7 +82,12 @@ describe("Projects reordering", () => {
         renderProjects()
 
         expect(screen.queryByRole("link", {name: /explore project/i})).toBeNull()
-        expect(screen.getAllByRole("link", {name: /view repo/i})).toHaveLength(3)
+        expect(screen.getAllByRole("link", {name: /view repo/i})).toHaveLength(2)
+
+        const crmCard = document.querySelector<HTMLElement>('[data-project-card-id="2"]')
+
+        expect(crmCard).not.toBeNull()
+        expect(within(crmCard!).queryAllByRole("link")).toHaveLength(0)
     })
 
     test("links FlipClock Display to the Mac App Store", () => {

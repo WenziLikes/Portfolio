@@ -9,7 +9,7 @@ const PRODUCT_PATH = FLIP_CLOCK_PRODUCT.productPath
 const SUPPORT_EMAIL = "support@vmnorth.com"
 const PRIVACY_EMAIL = "privacy@vmnorth.com"
 const LEGAL_EMAIL = "legal@vmnorth.com"
-const LAST_UPDATED = "July 28, 2026"
+const LAST_UPDATED = "August 31, 2026"
 
 const PRODUCT_LINKS = [
     {label: "Overview", path: PRODUCT_PATH},
@@ -122,7 +122,12 @@ export const FlipClockLandingPage: React.FC = () => (
                     height="675"
                 />
                 <div className={styles.previewMeta}>
-                    <span>Mac App Store · {FLIP_CLOCK_PRODUCT.version}</span>
+                    <span>
+                        Mac App Store · {FLIP_CLOCK_PRODUCT.version} ·{" "}
+                        <time dateTime={FLIP_CLOCK_PRODUCT.versionReleaseDate}>
+                            {FLIP_CLOCK_PRODUCT.versionReleaseDateLabel}
+                        </time>
+                    </span>
                     <span>React · TypeScript · Rust · Tauri</span>
                 </div>
             </div>
@@ -229,7 +234,7 @@ export const FlipClockSupportPage: React.FC = () => (
                         <h3>Reset local state</h3>
                         <p>
                             Open Settings → Reset. Shared app settings removes saved coordinates;
-                            Weather cache removes cached forecasts and reverse-geocoding results.
+                            Weather cache removes cached forecasts and Apple geocoding results.
                         </p>
                     </div>
                 </div>
@@ -274,13 +279,13 @@ export const FlipClockPrivacyPage: React.FC = () => (
                         A coarse location rounded to two decimal places (approximately 1–2 km) or
                         exact latitude and longitude, depending on the mode you choose.
                     </li>
-                    <li>Location save timestamps, cached weather responses, and cached city/region labels.</li>
+                    <li>Location save timestamps, cached Apple Weather responses, and cached city/region labels.</li>
                     <li>App Store entitlement state needed to unlock Pro features.</li>
                 </ul>
                 <p>
                     This local information is not synced to a FlipClock account or uploaded to a
                     developer database. Forecast cache entries are refreshed according to your
-                    selected 10, 30, or 60 minute interval. Reverse-geocoding results may be cached
+                    selected 10, 30, or 60 minute interval. Apple geocoding results may be cached
                     on the Mac for up to 30 days. Settings and saved coordinates remain until you
                     reset them or remove the app data.
                 </p>
@@ -300,16 +305,21 @@ export const FlipClockPrivacyPage: React.FC = () => (
                     alerts. The app does not collect continuous location history and does not request
                     location in the background simply because the clock is running.
                 </p>
+                <p>
+                    In the Mac App Store build, the selected coordinates go directly to Apple
+                    WeatherKit and Apple geocoding. They are not sent to VM North or routed through a
+                    developer-owned weather proxy. An Open-Meteo fallback exists only in explicitly
+                    enabled non-App-Store diagnostic builds; it is not active in the Mac App Store version.
+                </p>
             </section>
 
             <section className={styles.documentSection}>
                 <h2>3. Network providers, purposes, and retention</h2>
                 <p>
-                    Direct providers receive your public IP address automatically when your Mac
-                    connects to them. They may also receive request time, requested URL and query
-                    parameters, response status, TLS/network information, and the FlipClock Display
-                    user-agent, which includes the app version. Provider policies can change; the
-                    periods below reflect their published notices as of {LAST_UPDATED}.
+                    Network providers receive the selected coordinates and technical request data
+                    needed to return the requested service. Direct connections also expose your
+                    public IP address. Provider policies can change; the descriptions below reflect
+                    published notices as of {LAST_UPDATED}.
                 </p>
 
                 <div className={styles.providerTableWrap}>
@@ -324,86 +334,64 @@ export const FlipClockPrivacyPage: React.FC = () => (
                         <tbody>
                             <tr>
                                 <td>
+                                    <a href="https://developer.apple.com/weatherkit/" rel="noreferrer" target="_blank">
+                                        Apple WeatherKit
+                                    </a>
+                                </td>
+                                <td>
+                                    In the Mac App Store build, selected latitude/longitude and the
+                                    technical request data needed to return current conditions and
+                                    forecasts go directly to Apple. Apple states that WeatherKit uses
+                                    location only to provide forecasts, does not associate it with
+                                    personally identifiable information, and does not track it between requests.
+                                </td>
+                                <td>
+                                    Apple does not publish a fixed WeatherKit-specific period on the
+                                    linked page. Its{" "}
+                                    <a href="https://www.apple.com/legal/privacy/en-ww/" rel="noreferrer" target="_blank">
+                                        general privacy policy
+                                    </a>{" "}
+                                    says personal data is kept only as long as necessary for the stated
+                                    purpose or as required by law.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="https://www.apple.com/legal/privacy/data/en/location-services/" rel="noreferrer" target="_blank">
+                                        Apple geocoding and Location Services
+                                    </a>
+                                </td>
+                                <td>
+                                    The selected coordinates are processed through Apple's native
+                                    geocoding service to obtain a city and region label. The Mac App
+                                    Store build does not send this request through VM North or a
+                                    developer-owned proxy.
+                                </td>
+                                <td>
+                                    Apple's Location Services notice does not publish a fixed period
+                                    for these geocoding requests. Apple handles collected information
+                                    under its{" "}
+                                    <a href="https://www.apple.com/legal/privacy/en-ww/" rel="noreferrer" target="_blank">
+                                        general privacy policy
+                                    </a>.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
                                     <a href="https://open-meteo.com/en/terms" rel="noreferrer" target="_blank">
-                                        Open-Meteo
+                                        Open-Meteo diagnostic fallback
                                     </a>
                                 </td>
                                 <td>
-                                    Selected latitude/longitude, IP address, app version, and request
-                                    details to return current conditions and forecast data.
+                                    Only an explicitly enabled non-App-Store diagnostic build can send
+                                    selected latitude/longitude, public IP address, app version, and
+                                    request details to Open-Meteo for current conditions and forecasts.
+                                    This fallback is not active in the Mac App Store version.
                                 </td>
                                 <td>
-                                    API web-server logs, which may contain coordinates, are deleted
-                                    after 90 days. Aggregated call counts may remain longer.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="https://osmfoundation.org/wiki/Privacy_Policy" rel="noreferrer" target="_blank">
-                                        OpenStreetMap / Nominatim
-                                    </a>
-                                </td>
-                                <td>
-                                    If FlipClock reverse geocoding is enabled, the selected coordinates
-                                    go through the configured FlipClock proxy to an OpenStreetMap-based
-                                    provider to obtain a city and region label. The proxy receives the
-                                    device IP and request data; the upstream provider normally sees the
-                                    proxy IP plus the coordinate query. The current production
-                                    configuration has reverse geocoding disabled.
-                                </td>
-                                <td>
-                                    OSMF states that detailed Piwik usage information is retained for
-                                    180 days. Its policy does not publish a separate fixed period for
-                                    every Nominatim/API server log.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="https://www.weather.gov/privacy" rel="noreferrer" target="_blank">
-                                        U.S. National Weather Service (NWS)
-                                    </a>
-                                </td>
-                                <td>
-                                    Selected latitude/longitude, IP address, app version, and request
-                                    details to retrieve active official alerts for U.S. locations.
-                                </td>
-                                <td>
-                                    NWS states that HTTP logs may be preserved indefinitely for
-                                    security and service-integrity purposes.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="https://www.canada.ca/en/transparency/privacy.html" rel="noreferrer" target="_blank">
-                                        Environment and Climate Change Canada
-                                    </a>
-                                </td>
-                                <td>
-                                    A small bounding box centred on the selected coordinates, plus IP
-                                    address, app version, and request details, to retrieve Canadian
-                                    alerts and lightning information.
-                                </td>
-                                <td>
-                                    Government of Canada web-analytics personal information has a
-                                    maximum 18-month period. A separate fixed period for all GeoMet
-                                    security/server logs is not published in the linked notice.
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="https://api.meteoalarm.org/privacy" rel="noreferrer" target="_blank">
-                                        MeteoAlarm
-                                    </a>
-                                </td>
-                                <td>
-                                    Country feed, IP address, app version, and request details to obtain
-                                    official European alerts. Coordinates are not placed in the
-                                    MeteoAlarm feed request; matching to the locally derived area is
-                                    performed on the Mac.
-                                </td>
-                                <td>
-                                    MeteoAlarm’s published API notice says security and operations logs
-                                    are retained for 180 days, then deleted or anonymized.
+                                    Open-Meteo states that API web-server logs, which may contain
+                                    coordinates, are deleted after 90 days. Aggregated call counts may
+                                    remain longer.
                                 </td>
                             </tr>
                         </tbody>
@@ -438,7 +426,7 @@ export const FlipClockPrivacyPage: React.FC = () => (
                     </li>
                     <li>
                         Keep Weather cache selected to delete cached forecasts and native
-                        reverse-geocoding results.
+                        Apple geocoding results.
                     </li>
                     <li>Confirm the reset.</li>
                 </ol>
@@ -453,9 +441,10 @@ export const FlipClockPrivacyPage: React.FC = () => (
                 <h2>6. Website, purchases, and contact</h2>
                 <p>
                     These product pages are hosted separately from the app. The web host receives
-                    ordinary IP and request data, and the portfolio website’s consent-based analytics
-                    choices are described in its separate <Link to="/privacy">website privacy notice</Link>.
-                    FlipClock Display itself contains no analytics or advertising.
+                    ordinary IP and request data. They also load the VMNorth support chat independently
+                    of the portfolio website’s consent-based analytics choice; both are described in
+                    the separate <Link to="/privacy">website privacy notice</Link>. FlipClock Display
+                    itself contains no analytics or advertising.
                 </p>
                 <p>
                     Apple processes App Store purchases, subscription management, refunds, and
@@ -530,11 +519,12 @@ export const FlipClockTermsPage: React.FC = () => (
                 <h2>4. Weather, location, and alerts</h2>
                 <p>
                     Weather and alert information comes from third-party public services, including
-                    Open-Meteo, OpenStreetMap-based geocoding, NWS, Environment and Climate Change
-                    Canada, and MeteoAlarm. Data can be delayed, unavailable, incomplete, or
-                    inaccurate. FlipClock Display is not an emergency-warning system and must not be
-                    your only source for safety-critical, travel, medical, or property-protection
-                    decisions. Follow official local authorities during severe weather.
+                    Apple WeatherKit and Apple geocoding in the Mac App Store build. An Open-Meteo
+                    fallback may be used only by an explicitly enabled non-App-Store diagnostic build.
+                    Data can be delayed, unavailable, incomplete, or inaccurate. FlipClock Display is
+                    not an emergency-warning system and must not be your only source for safety-critical,
+                    travel, medical, or property-protection decisions. Follow official local authorities
+                    during severe weather.
                 </p>
             </section>
 

@@ -1,86 +1,159 @@
 # Release Notes Template
 
-Use this template to document a production release, portfolio refresh, or significant content update.
+[Back to documentation hub](./README.md)
 
-## Release Summary
+Use this template for a production release, portfolio refresh, or significant content/infrastructure update.
+
+## Release Identity
 
 | Field | Value |
 | --- | --- |
 | Release name | |
-| Release date | |
-| Environment | Production / Staging / Local preview |
+| Release date and timezone | |
 | Owner | |
-| Domain | |
+| Environment | Production / Cloudflare preview / Local artifact |
+| Domain or preview URL | |
+| Git commit SHA | |
+| Pull request | |
+| GitHub CI run | |
+| Cloudflare Pages check/deployment | |
+| Previous known-good production deployment | |
 
-## Scope
+## Summary
 
-Describe the purpose of the release in 2 to 5 sentences.
-
-Example prompts:
-
-- What changed for visitors?
-- What changed technically?
-- Why was this release necessary?
+Describe what changed for visitors, why the release was needed, and the most important technical or operational change in two to five sentences.
 
 ## Included Changes
 
-### Content
+### Content and Projects
+
+-
+
+### Design and User Experience
+
+-
+
+### Engineering and Testing
+
+-
+
+### SEO and Metadata
 
 - 
 
-### Design and UX
+### Privacy, Legal, or External Services
 
 - 
 
-### Engineering
+### Deployment and Documentation
 
 - 
 
-### SEO, legal, deployment, or documentation
+## Runtime and Build Configuration
 
-- 
+| Item | Release value |
+| --- | --- |
+| Node.js | `22.12.0` / other supported version |
+| npm | |
+| Build command | `npm run build` |
+| Output directory | `build` |
+| `VITE_GA_MEASUREMENT_ID` | Configured / intentionally absent (do not record the real value) |
+| VMNorth chat embed | Unchanged / changed and privacy-reviewed |
+| Resume PDF | Unchanged / regenerated |
+| Documentation screenshots | Unchanged / refreshed |
 
-## Verification
+## Automated Verification
 
-List the exact checks completed before release.
+Record the exact commands and results:
 
 ```bash
+nvm use
+npm ci
+npm run test:e2e:install
 npm test
 npm run build
-npx playwright test
+npm run test:static
+npm run test:e2e
 ```
 
-If visuals changed, also note:
+If resume content changed:
+
+```bash
+npm run export:resume
+npm run build
+npm run test:static
+```
+
+If visuals changed:
 
 ```bash
 npm run docs:screenshots
 ```
 
-Manual checks:
+| Check | Result / evidence |
+| --- | --- |
+| Unit and integration tests | |
+| Production build and prerender | |
+| Static route/metadata/404/header smoke | |
+| Playwright production E2E | |
+| GitHub Markdown link check | |
+| Cloudflare Pages status | |
 
-- 
+## Manual Verification
 
-## Risks or Follow-Ups
+- Direct routes checked:
+- Unknown route and HTTP status:
+- Desktop browsers/viewports:
+- Mobile/tablet browsers/viewports:
+- Standard resume download:
+- Installed iOS **Save PDF** Share/Save flow:
+- Unsupported-share fallback:
+- VMNorth chat load/start/restore:
+- GA4 before and after consent, if configured:
+- External links and App Store CTA:
+- Custom-domain metadata/social preview:
 
-- 
+## Privacy and Legal Review
 
-## Rollback Notes
+Answer explicitly when analytics, embeds, forms, storage, providers, retention, deletion, or legal copy changed.
 
-If needed, describe the fastest safe rollback path.
+| Question | Answer |
+| --- | --- |
+| Does this release change data sent automatically on page load? | |
+| Does it change chat fields, sessions, messages, attachments, storage, retention, or deletion? | |
+| Does it change GA4 configuration or consent behavior? | |
+| Were `/privacy`, product privacy, legal/brand, architecture, and handoff docs updated where needed? | |
+| Was private security reporting still verified? | |
 
-- previous working deployment:
-- host/platform:
-- restore steps:
+## Known Risks and Follow-Ups
+
+-
+
+## Rollback Record
+
+- Rollback trigger:
+- Last known-good production deployment:
+- Cloudflare rollback target:
+- Repository revert/fix plan:
+- Data or configuration steps that are not reverted by static deployment rollback:
 
 ## Final Sign-Off
 
-| Check | Status |
+| Gate | Status |
 | --- | --- |
 | Content reviewed | |
-| Tests passed | |
+| Privacy/legal reviewed | |
+| Locked install completed | |
+| Unit tests passed | |
 | Build passed | |
-| Routes verified | |
-| Mobile checked | |
-| Metadata checked | |
-| Docs/screenshots refreshed | |
-| Published | |
+| Static smoke passed | |
+| Playwright passed | |
+| Markdown links passed | |
+| Resume verified | |
+| Mobile/iOS behavior verified | |
+| VMNorth chat verified | |
+| Metadata and direct routes verified | |
+| GitHub CI passed | |
+| Cloudflare deployment passed | |
+| Custom domain verified | |
+| Release published | |

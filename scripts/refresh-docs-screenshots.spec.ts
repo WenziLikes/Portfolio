@@ -116,6 +116,10 @@ test("refresh documentation screenshots", async ({browser}) => {
         viewport: {height: 844, width: 390},
     })
 
+    await mobilePage.goto("/home")
+    await waitForUi(mobilePage)
+    await captureScreenshot(mobilePage, "home-hero-mobile.png")
+
     await mobilePage.goto("/resume")
     await waitForUi(mobilePage)
     await captureScreenshot(mobilePage, "resume-mobile.png")
