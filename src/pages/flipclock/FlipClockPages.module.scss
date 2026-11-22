@@ -34,18 +34,11 @@
 }
 
 .brandMark {
-  display: grid;
-  min-width: 3.75rem;
-  min-height: 2.75rem;
-  place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  display: block;
+  width: 4.4rem;
+  height: 4.4rem;
+  flex: none;
   border-radius: 0.75rem;
-  color: #0c1118;
-  background: linear-gradient(145deg, #f7c983, #b97942);
-  box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.25);
-  font-size: 1.1rem;
-  font-weight: 900;
-  letter-spacing: -0.04em;
 }
 
 .brand strong,

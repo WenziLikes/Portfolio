@@ -2,6 +2,7 @@ import React from "react"
 import {Link} from "react-router-dom"
 
 import flipClockPreview from "../../assets/img/projects/flip-clock-1200.png"
+import flipClockIcon from "../../assets/img/projects/flipclock-icon.png"
 import {FLIP_CLOCK_PRODUCT} from "../../content/flipClock"
 import styles from "./FlipClockPages.module.scss"
 
@@ -9,7 +10,7 @@ const PRODUCT_PATH = FLIP_CLOCK_PRODUCT.productPath
 const SUPPORT_EMAIL = "support@vmnorth.com"
 const PRIVACY_EMAIL = "privacy@vmnorth.com"
 const LEGAL_EMAIL = "legal@vmnorth.com"
-const LAST_UPDATED = "August 31, 2026"
+const LAST_UPDATED = "November 22, 2026"
 
 const PRODUCT_LINKS = [
     {label: "Overview", path: PRODUCT_PATH},
@@ -29,7 +30,7 @@ const FlipClockShell: React.FC<FlipClockShellProps> = ({activePath, children}) =
     <div className={styles.page}>
         <header className={styles.header}>
             <Link className={styles.brand} to={PRODUCT_PATH} aria-label="FlipClock Display home">
-                <span className={styles.brandMark} aria-hidden="true">12:48</span>
+                <img className={styles.brandMark} src={flipClockIcon} alt="" width="44" height="44"/>
                 <span>
                     <strong>FlipClock Display</strong>
                     <small>for macOS</small>
@@ -89,8 +90,8 @@ export const FlipClockLandingPage: React.FC = () => (
                 <p className={styles.eyebrow}>A focused display for your Mac</p>
                 <h1>Time, weather, and atmosphere—without the noise.</h1>
                 <p className={styles.heroLead}>
-                    FlipClock Display is a fullscreen macOS clock with a dedicated settings window,
-                    polished themes, optional local weather, and multi-display support.
+                    Open FlipClock Display fullscreen for free on your main display.
+                    Pro adds more themes, optional local weather, and secondary-display selection.
                 </p>
 
                 <div className={styles.actionRow}>
@@ -107,7 +108,7 @@ export const FlipClockLandingPage: React.FC = () => (
                 </div>
 
                 <ul className={styles.trustList}>
-                    <li>Available now on the Mac App Store</li>
+                    <li>Apple silicon · macOS 13 or later</li>
                     <li>No account required</li>
                     <li>No advertising</li>
                     <li>No analytics or user tracking in the app</li>
@@ -212,8 +213,9 @@ export const FlipClockSupportPage: React.FC = () => (
                     <div>
                         <h3>Weather or location</h3>
                         <p>
-                            Confirm Weather is on, save Coarse or Precise location again, and check
-                            macOS System Settings → Privacy &amp; Security → Location Services.
+                            In Weather, choose an accuracy and select Set up weather or Update
+                            location. If access is denied, check macOS System Settings →
+                            Privacy &amp; Security → Location Services.
                         </p>
                     </div>
                     <div>
@@ -234,7 +236,7 @@ export const FlipClockSupportPage: React.FC = () => (
                         <h3>Reset local state</h3>
                         <p>
                             Open Settings → Reset. Shared app settings removes saved coordinates;
-                            Weather cache removes cached forecasts and Apple geocoding results.
+                            Weather cache removes cached Apple Weather forecasts.
                         </p>
                     </div>
                 </div>
@@ -284,10 +286,9 @@ export const FlipClockPrivacyPage: React.FC = () => (
                 </ul>
                 <p>
                     This local information is not synced to a FlipClock account or uploaded to a
-                    developer database. Forecast cache entries are refreshed according to your
-                    selected 10, 30, or 60 minute interval. Apple geocoding results may be cached
-                    on the Mac for up to 30 days. Settings and saved coordinates remain until you
-                    reset them or remove the app data.
+                    developer database. Forecasts refresh every 30 or 60 minutes while weather is
+                    active. Settings and saved coordinates remain until you reset them or remove
+                    the app data.
                 </p>
             </section>
 
@@ -295,21 +296,19 @@ export const FlipClockPrivacyPage: React.FC = () => (
                 <h2>2. Location permission and exact coordinates</h2>
                 <p>
                     FlipClock Display requests macOS Location Services only when you press
-                    Save Coarse or Save Precise. Precise mode stores and transmits the latitude and
+                    Set up weather or Update location. Precise mode stores and transmits the latitude and
                     longitude returned by macOS. Coarse mode rounds both values to two decimal places
                     before they are stored or sent.
                 </p>
                 <p>
                     When optional weather is active, the selected coordinates are used to request a
-                    forecast, determine a city/region label, and select official regional weather
-                    alerts. The app does not collect continuous location history and does not request
+                    forecast, determine a city or region label, and fetch available weather alerts.
+                    The app does not collect continuous location history and does not request
                     location in the background simply because the clock is running.
                 </p>
                 <p>
                     In the Mac App Store build, the selected coordinates go directly to Apple
-                    WeatherKit and Apple geocoding. They are not sent to VM North or routed through a
-                    developer-owned weather proxy. An Open-Meteo fallback exists only in explicitly
-                    enabled non-App-Store diagnostic builds; it is not active in the Mac App Store version.
+                    WeatherKit and Apple CLGeocoder. VM North does not receive these coordinates.
                 </p>
             </section>
 
@@ -318,8 +317,8 @@ export const FlipClockPrivacyPage: React.FC = () => (
                 <p>
                     Network providers receive the selected coordinates and technical request data
                     needed to return the requested service. Direct connections also expose your
-                    public IP address. Provider policies can change; the descriptions below reflect
-                    published notices as of {LAST_UPDATED}.
+                    public IP address. See the providers’ linked notices for current processing and
+                    retention practices.
                 </p>
 
                 <div className={styles.providerTableWrap}>
@@ -376,41 +375,30 @@ export const FlipClockPrivacyPage: React.FC = () => (
                                     </a>.
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <a href="https://open-meteo.com/en/terms" rel="noreferrer" target="_blank">
-                                        Open-Meteo diagnostic fallback
-                                    </a>
-                                </td>
-                                <td>
-                                    Only an explicitly enabled non-App-Store diagnostic build can send
-                                    selected latitude/longitude, public IP address, app version, and
-                                    request details to Open-Meteo for current conditions and forecasts.
-                                    This fallback is not active in the Mac App Store version.
-                                </td>
-                                <td>
-                                    Open-Meteo states that API web-server logs, which may contain
-                                    coordinates, are deleted after 90 days. Aggregated call counts may
-                                    remain longer.
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
+                <p>
+                    An explicitly enabled non-App-Store diagnostic build can use the{" "}
+                    <a href="https://open-meteo.com/en/terms" rel="noreferrer" target="_blank">
+                        Open-Meteo diagnostic fallback
+                    </a>{" "}
+                    for forecasts. That fallback is not active in the Mac App Store version.
+                </p>
             </section>
 
             <section className={styles.documentSection}>
                 <h2>4. How to disable weather or location</h2>
                 <ul>
                     <li>Turn Weather off in FlipClock Display Settings to stop weather requests.</li>
-                    <li>Turn Use my location off to stop using the saved coordinates.</li>
+                    <li>Turn Use saved location off in Weather settings to stop using those coordinates.</li>
                     <li>
                         Revoke permission in macOS System Settings → Privacy &amp; Security →
                         Location Services → FlipClock Display.
                     </li>
                 </ul>
                 <p>
-                    Turning Weather or Use my location off stops active use but does not by itself
+                    Turning Weather or Use saved location off stops active use but does not by itself
                     erase the previously saved coordinates.
                 </p>
             </section>
@@ -425,8 +413,7 @@ export const FlipClockPrivacyPage: React.FC = () => (
                         and their timestamps.
                     </li>
                     <li>
-                        Keep Weather cache selected to delete cached forecasts and native
-                        Apple geocoding results.
+                        Keep Weather cache selected to delete cached Apple Weather forecasts.
                     </li>
                     <li>Confirm the reset.</li>
                 </ol>
@@ -518,9 +505,8 @@ export const FlipClockTermsPage: React.FC = () => (
             <section className={styles.documentSection}>
                 <h2>4. Weather, location, and alerts</h2>
                 <p>
-                    Weather and alert information comes from third-party public services, including
-                    Apple WeatherKit and Apple geocoding in the Mac App Store build. An Open-Meteo
-                    fallback may be used only by an explicitly enabled non-App-Store diagnostic build.
+                    Apple WeatherKit provides weather and available alerts, and Apple CLGeocoder
+                    derives the city or region label.
                     Data can be delayed, unavailable, incomplete, or inaccurate. FlipClock Display is
                     not an emergency-warning system and must not be your only source for safety-critical,
                     travel, medical, or property-protection decisions. Follow official local authorities

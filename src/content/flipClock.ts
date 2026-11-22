@@ -8,7 +8,7 @@ export const FLIP_CLOCK_PRODUCT = {
     productPath: "/flipclock",
     releaseDate: "2026-08-10",
     repositoryUrl: "https://github.com/WenziLikes/FlipClock",
-    version: "1.0.4",
-    versionReleaseDate: "2026-08-30",
-    versionReleaseDateLabel: "August 30, 2026",
+    version: "1.0.6",
+    versionReleaseDate: "2026-11-17",
+    versionReleaseDateLabel: "November 17, 2026 (UTC)",
 } as const
