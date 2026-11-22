@@ -16,14 +16,14 @@ Use it for:
 | Field | Value |
 | --- | --- |
 | Last refreshed | 2026-08-31 |
-| Source state | Current working tree based on commit [`5708b2e`](https://github.com/WenziLikes/Portfolio/commit/5708b2e); update this reference after the changes are committed if desired |
+| Source state | Captures were committed with the [2026-08-31 documentation update](https://github.com/WenziLikes/Portfolio/commit/78927aa). |
 | Capture command | `npm run docs:screenshots` |
 | Desktop viewport | 1280 × 800 |
 | Mobile viewport | 390 × 844 |
-| Capture controls | Explicit light/dark theme, analytics consent set to denied, animations disabled, and the external VM North chat script blocked by the screenshot runner |
+| Capture controls | Local Vite development server, explicit light/dark theme, analytics consent set to denied, screenshot animations disabled, and the external VMNorth chat script blocked |
 | Artifact scope | Release-support files in `docs/assets/`; they are not copied into the production `build/` by default |
 
-A screenshot describes the working tree captured on the date above. If code, copy, viewport rules, or assets change afterward, treat the image as historical until the gallery is refreshed again.
+These screenshots document the captured portfolio UI. Use the [chat checks in the release checklist](./release-checklist.md#6-privacy-and-external-services) to review the launcher and panel on a deployed site.
 
 ## Desktop
 
@@ -71,4 +71,4 @@ A screenshot describes the working tree captured on the date above. If code, cop
 
 ## Maintenance
 
-Run `npm run docs:screenshots` after a material visual change, review every generated image, and update the refresh date and source reference above. Commit the reviewed images with the UI change or release-preparation update that required them.
+Install Chromium with `npm run test:e2e:install` before the first capture. Run `npm run docs:screenshots` when a captured UI state changes, review every generated image, and update the refresh date and source reference. The screenshot runner and static E2E server both use port 4181, so run them separately.

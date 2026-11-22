@@ -27,7 +27,7 @@ npm ci
 npm run test:e2e:install
 ```
 
-Install Chromium before the first E2E, screenshot, or resume-export run. In a Linux CI image, Playwright also needs operating-system packages; the GitHub Actions workflow uses `npx playwright install --with-deps chromium` for that environment.
+Install Chromium before the first E2E, screenshot, or resume-export run. The GitHub Actions browser job runs on `ubuntu-24.04` and installs Chromium plus Linux system dependencies with `npx playwright install --with-deps chromium`.
 
 ## Commands
 
@@ -88,9 +88,17 @@ The default Playwright configuration no longer boots `vite dev`. It:
 
 The server resolves route folders, applies the committed `_headers` and `_redirects` rules used by the tests, and returns `build/404.html` with status `404` for unknown paths.
 
+Keep port 4181 free before running E2E or gallery capture. Playwright starts its own server and refuses to reuse an existing one.
+
 Projects cover desktop Chromium, phone widths `320`, `360`, `375`, `390`, and `430`, plus tablet width `768`. CI uses one worker, retries failures twice, and saves a trace on the first retry.
 
-If a caller has already built and verified the artifact, set `PLAYWRIGHT_SKIP_BUILD=1` before invoking Playwright to avoid a duplicate build. GitHub Actions uses this optimization only after its explicit build step; the normal local command remains self-contained.
+If the `phone-320` project-card position check fails intermittently during a parallel run, retry with one worker to match CI concurrency. Investigate persistent failures as layout regressions.
+
+```bash
+PLAYWRIGHT_SKIP_BUILD=1 npm run test:e2e -- --project phone-320 --workers=1
+```
+
+After building and verifying the current artifact, run `PLAYWRIGHT_SKIP_BUILD=1 npm run test:e2e` to reuse it. GitHub Actions follows that sequence. Use `npm run test:e2e` by itself when you want Playwright to build first.
 
 ## End-to-End Coverage
 
@@ -98,13 +106,14 @@ Current browser checks include:
 
 - home-to-resume navigation and standard PDF download metadata
 - installed iOS/PWA-style behavior where **Save PDF** uses the Web Share API with the actual PDF file
-- fallback behavior that keeps a normal download or opens the PDF separately when standalone file sharing is unavailable
-- direct deep links and hydrated not-found content delivered through a real `404` response
+- the regular download link and standalone sharing with stubbed Web Share APIs. Verify the native share sheet and fallback on physical iOS for release.
+- direct deep links and hydrated not-found content. The static smoke test asserts the HTTP `404` status.
 - privacy, copyright, FlipClock, and regional routes
 - mobile header/menu behavior and active navigation state
 - viewport containment across phone, tablet, and desktop layouts
 - first-viewport hero actions on modern phones
 - desktop sections, footer, projects, and resume sheets
+- the VMNorth launcher state-message integration, desktop hover label, and compact touch sizing using stub responses
 
 The E2E tests block or stub `https://vmnorth.com/chat-embed.js` to avoid live chat traffic. Release QA verifies that the live launcher and panel work and that the privacy disclosure is current.
 
@@ -116,10 +125,11 @@ If resume content changed, run:
 
 ```bash
 npm run export:resume
+npm run build
 npm run test:static
 ```
 
-Running `npm run build` after export is safe and remains the recommended final release order because the updated public PDF is copied into a fresh artifact.
+The final build recreates the artifact from the updated public PDF.
 
 ## Recommended Flows
 
@@ -140,7 +150,7 @@ npm run test:e2e:install
 npm test
 npm run build
 npm run test:static
-npm run test:e2e
+PLAYWRIGHT_SKIP_BUILD=1 npm run test:e2e
 ```
 
 If resume content changed, insert `npm run export:resume` before the final build/static verification. If visuals changed, run `npm run docs:screenshots` and review the changed images rather than accepting them blindly.
@@ -151,7 +161,7 @@ If resume content changed, insert `npm run export:resume` before the final build
 
 - locked install, Vitest, production build, and static smoke
 - locked install, Chromium system setup, production build, and the full Playwright matrix
-- Markdown link checking across repository documentation
+- Markdown link checking via Lychee. The workflow includes relative references and HTTP links, excludes LinkedIn, and tolerates HTTP `429`. Review the destinations themselves when links change.
 
 All three jobs are release gates. A Cloudflare Pages deployment status is not a substitute for repository CI because a host can publish a build that completed successfully while behavior or documentation checks still fail.
 
@@ -167,4 +177,4 @@ All three jobs are release gates. A Cloudflare Pages deployment status is not a 
 | Screenshot refresh | Stale visual docs or a state that can no longer be reached reliably |
 | Resume export | Missing Chromium, failed `/resume` rendering, or PDF synchronization failure |
 
-Treat build, static-smoke, and Playwright failures as release blockers.
+Resolve all three CI jobs before sign-off. See the [release checklist](./release-checklist.md) for manual gates.

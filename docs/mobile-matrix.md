@@ -36,13 +36,14 @@ Recommended manual checks before launch or after meaningful UI changes:
 The following behaviors matter more than visual polish:
 
 - hero content stays readable without collision or horizontal overflow
-- the mobile top bar stays hidden at the top of `/home` and appears after scroll begins or when the menu opens
-- the mobile top bar is visible immediately on non-home routes such as `/about`, `/projects`, and `/resume`
+- the mobile top bar stays hidden at the top of `/` and appears after scrolling or opening the menu. The legacy `/home` path redirects to `/`.
+- the mobile top bar is visible immediately on deep links within the scrolling shell, such as `/about` and `/projects`. Standalone routes such as `/resume` use their own page navigation.
 - the mobile menu opens, closes, and updates the active section correctly
-- project cards switch into the compact stacked layout at mobile widths
+- the navigation switches to its mobile layout at 1080 px and below. Project cards switch to their compact layout at 820 px and below.
 - resume sections remain readable without horizontal scroll
 - legal pages remain readable at compact widths
 - footer actions and legal links remain tappable above safe-area insets
+- the VMNorth launcher remains compact on touch-only input and opens without covering nearby controls
 
 ## Manual QA Checklist
 

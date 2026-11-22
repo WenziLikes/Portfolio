@@ -37,7 +37,7 @@ flowchart TD
     J --> N["src/seo.ts"]
     H --> O["useMediaQuery + scroll helpers"]
     C --> P["analytics.ts"]
-    B --> Q["VMNorth chat embed script + iframe"]
+    B --> Q["VMNorth chat embed script"]
     Q --> R["vmnorth.com chat runtime"]
 ```
 
@@ -60,7 +60,7 @@ flowchart TD
 | `/flipclock/terms` | Product-specific terms of use |
 | `/canada` | Regional hiring page for Canadian teams |
 | `/usa` | Regional hiring page for US teams |
-| `/europe` | Regional hiring page for Europe and default English `hreflang` targeting |
+| `/europe` | Regional hiring page for Europe, identified by the generic English `en` alternate |
 | `*` | Not-found route rendered through the shared page shell |
 
 ### Why this matters
@@ -87,7 +87,7 @@ The app uses `BrowserRouter`, but production does not rely on a generic SPA catc
 | `scripts/serve-build.mjs` | Serves the static artifact with route-folder, hosting-rule, and real `404` semantics for release checks |
 | `scripts/static-build-smoke.mjs` | Verifies direct routes, metadata, hosting rules, SEO files, and byte-identical resume artifacts |
 | `scripts/export-resume.mjs` | Builds the app, serves `build/`, exports `/resume` with Playwright, and synchronizes the PDF into both public and deployable artifacts |
-| `index.html` | Boots the React app and loads the external VMNorth site-aware chat embed |
+| `index.html` | Boots the React app, loads the site-aware VMNorth embed, and listens for launcher state |
 
 ## External Chat Boundary
 
@@ -95,7 +95,9 @@ The portfolio itself has no local application backend, but the production page l
 
 The external runtime can create and restore chat sessions, transmit contact details and messages, upload attachment metadata and bytes when a visitor chooses an attachment, and deliver live updates. VMNorth owns the related APIs and persistence; this repository owns only the embed declaration and the surrounding disclosure. Do not describe production as fully backend-free without this qualification.
 
-Playwright E2E tests, resume export, and documentation screenshot capture block the external script so automated results remain deterministic. That test isolation does not describe production behavior. Changes to the embed, its load timing, or its data handling require coordinated updates to the portfolio privacy notice, `docs/legal-and-brand.md`, production handoff, and release checklist.
+The portfolio listens for `vmnorth:chat-widget-state` messages from the VMNorth origin and the `portfolio` iframe. An available, closed widget gets the `data-chat-launcher` attribute. On hover-capable viewports with a fine pointer at 521 px and above, `src/index.scss` gives the launcher a 641 px iframe so its hover label fits while retaining the embed's clipped hit area. Opening the panel removes the override. Touch-only input uses the widget's own sizing.
+
+The main Playwright suite, resume export, and gallery capture block the external script. The dedicated [chat launcher test](../e2e/chat.spec.ts) substitutes a local script and iframe response to verify launcher sizing and opening. Review the [privacy notice](https://viacheslavmurakhin.com/privacy), [legal and brand notes](./legal-and-brand.md), [handoff](./production-handoff.md), and [release checklist](./release-checklist.md) whenever the embed or its data handling changes.
 
 ## Homepage Shell Composition
 
@@ -111,13 +113,14 @@ The portfolio shell always mounts the following sequence inside the same scroll 
 
 ## Content Architecture
 
-The project intentionally keeps human-facing copy out of scattered UI files.
+Shared copy is centralized in the content modules. Product-specific legal copy, resume education, and some UI labels live in their page components.
 
 | Source file | Owns |
 | --- | --- |
 | `src/content/site.ts` | Identity, navigation labels, target markets, about copy, expertise copy, experience timeline, resume content, Portfolio privacy/copyright copy, and route metadata |
 | `src/content/flipClock.ts` | Shared FlipClock Display identity, App Store URL, release metadata, and product route |
-| `src/content/projects.ts` | Project order, titles, descriptions, proof points, stack labels, actions, and responsive image metadata |
+| `src/content/projects.ts` | Project IDs, titles, descriptions, proof points, stack labels, actions, and responsive image metadata |
+| `src/sections/projects/Projects.tsx` | Default display order and persisted custom order |
 | `src/content/marketPages.ts` | Regional landing-page content, market-specific claims, `hreflang` alternates, and regional route metadata |
 | `src/utils/contact.ts` | Public email constants used by protected email link rendering |
 | `src/pages/flipclock/FlipClockPages.tsx` | FlipClock Display support, privacy, terms, product-specific contacts, and policy date |
@@ -173,7 +176,7 @@ The project uses three coordinated metadata layers:
 - sitemap priorities and change frequencies
 - professional audience, language, and market targeting
 - organization, person, website, breadcrumb, and page schemas
-- regional alternate links for Canada, USA, Europe, and the default route
+- regional-page alternate links for Canada (`en-CA`), USA (`en-US`), Europe (`en`), and the homepage (`x-default`)
 
 ## Operational Notes
 

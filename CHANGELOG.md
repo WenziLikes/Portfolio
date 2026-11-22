@@ -2,11 +2,19 @@
 
 [← Back to documentation hub](./docs/README.md)
 
-Notable portfolio changes are recorded here. The repository had no version tags as of 2026-08-31, so the dated history below records verified milestones from the `main` branch rather than inventing semantic version numbers or deployment dates.
+Dates below refer to milestones on the portfolio's `main` branch. FlipClock Display has its own product release history.
 
 Future releases should add an entry at the top and may use the [release notes template](./docs/release-notes-template.md) for verification and rollback detail.
 
-## Unreleased
+## 2026-11-21
+
+### Fixed
+
+- Restored the desktop VMNorth launcher hover label, added a stubbed Playwright regression for the launcher, and pinned the browser CI job to Ubuntu 24.04 ([`f2fa01b`](https://github.com/WenziLikes/Portfolio/commit/f2fa01b)).
+
+## 2026-08-31
+
+[Documentation and release checks](https://github.com/WenziLikes/Portfolio/pull/5) and [Node 24-compatible GitHub Actions](https://github.com/WenziLikes/Portfolio/pull/6).
 
 ### Added
 
@@ -14,6 +22,7 @@ Future releases should add an entry at the top and may use the [release notes te
 - Added a production-like static server and smoke test covering direct route artifacts, robots metadata, a real HTTP `404`, `_headers`, `_redirects`, SEO files, and resume-PDF consistency.
 - Added `SECURITY.md`, private-vulnerability-reporting guidance, issue forms, a pull-request template, and contributor guidance.
 - Added a pinned Node.js runtime, exact Node/npm engine requirements, a mobile homepage gallery capture, and this changelog.
+- Updated the checkout, Node setup, and artifact-upload actions to v6.
 
 ### Changed
 

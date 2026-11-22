@@ -1,6 +1,6 @@
 ## Summary
 
-[Contribution guide](./CONTRIBUTING.md) · [Security policy](../SECURITY.md)
+[Contribution guide](https://github.com/WenziLikes/Portfolio/blob/main/.github/CONTRIBUTING.md) · [Security policy](https://github.com/WenziLikes/Portfolio/security/policy)
 
 Describe the agreed scope and user-visible outcome.
 

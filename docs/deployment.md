@@ -16,9 +16,9 @@ The portfolio is deployed as a static site through the Cloudflare Pages GitHub i
 | Custom production domain | [viacheslavmurakhin.com](https://viacheslavmurakhin.com/) |
 | Build command | `npm run build` |
 | Published directory | `build` |
-| Pinned build runtime | Node.js `22.12.0` from `.nvmrc` |
+| Repository runtime baseline | Node.js `22.12.0` from `.nvmrc`. Confirm the effective Cloudflare version in the deployment build log. |
 
-GitHub records a successful Cloudflare Pages status check for commit `5708b2e` on `main`: [Cloudflare Pages deployment check](https://github.com/WenziLikes/Portfolio/runs/95191276528). The Cloudflare dashboard remains the source of truth for account-side project settings, branch controls, domains, and deployment history. Account IDs and other private dashboard identifiers do not belong in this repository.
+GitHub records a successful [Cloudflare Pages check for `f2fa01b`](https://github.com/WenziLikes/Portfolio/runs/137098651544). For current status, check the commit being released and its Cloudflare deployment details. The dashboard and build log are the sources for account-side branch controls, domains, and effective runtime settings.
 
 ## Runtime and Installation
 
@@ -42,12 +42,10 @@ Do not replace `npm ci` with `npm install` in CI or release instructions. `npm c
 
 The deployment unit is the contents of `build/`. The build command performs:
 
-1. TypeScript type-checking
-2. Vite client build
-3. SSR entry build for prerendering
-4. route prerendering through `scripts/prerender.mjs`
-5. generation of `robots.txt`, `sitemap.xml`, `/home` redirect HTML, and `404.html`
-6. copying public assets, including `_headers`, `_redirects`, and the resume PDF
+1. TypeScript type-checking.
+2. Vite client build, which copies public assets including `_headers`, `_redirects`, and the resume PDF.
+3. SSR entry build into `build/server/` for prerendering.
+4. Prerendering through `scripts/prerender.mjs`, including route HTML, `robots.txt`, `sitemap.xml`, `/home` redirect HTML, and `404.html`. The script removes `build/server/` after prerendering.
 
 ```bash
 npm run build
@@ -60,7 +58,7 @@ npm run test:static
 
 | Variable | Required | Behavior |
 | --- | --- | --- |
-| `NODE_VERSION` | Cloudflare setting recommended | Set to `22.12.0` so Pages uses the same pinned runtime as local release and GitHub Actions. |
+| `NODE_VERSION` | Optional runtime override | If configured, match `.nvmrc` (`22.12.0`). Verify the version selected by Pages in the build log. |
 | `VITE_GA_MEASUREMENT_ID` | No | Build-time GA4 measurement ID. When omitted or blank, GA4 is disabled. When present, the browser still loads GA4 only after stored user consent is `granted`. |
 
 `VITE_GA_MEASUREMENT_ID` is embedded during the Vite build. Changing it requires a new deployment. Store the production value in Cloudflare Pages environment variables; do not commit a real measurement ID to `.env.example` or documentation.
@@ -73,6 +71,7 @@ When resume content changes, run:
 
 ```bash
 npm run export:resume
+npm run build
 npm run test:static
 ```
 
@@ -84,7 +83,7 @@ npm run test:static
 4. writes the PDF to `public/documents/viacheslav-murakhin-resume.pdf`
 5. copies and byte-verifies that PDF at `build/documents/viacheslav-murakhin-resume.pdf`
 
-This makes the artifact produced by the command safe to deploy. A later `npm run build` is also safe because it copies the updated PDF from `public/` into the new build.
+The final build copies the updated public PDF. Include the regenerated public PDF in the release commit so Cloudflare can copy it during its build.
 
 ## Expected Build Output
 
@@ -121,7 +120,7 @@ In Cloudflare **Workers & Pages → the portfolio Pages project → Settings**, 
 3. the root directory is the repository root
 4. the build command is `npm run build`
 5. the build output directory is `build`
-6. `NODE_VERSION` is `22.12.0`
+6. the build log reports Node.js `22.12.0`, in line with `.nvmrc`. If `NODE_VERSION` overrides runtime selection, it matches the pin.
 7. the production `VITE_GA_MEASUREMENT_ID` is either intentionally set or intentionally absent
 8. `viacheslavmurakhin.com` is attached as the production custom domain
 
@@ -137,10 +136,10 @@ npm run test:e2e:install
 npm test
 npm run build
 npm run test:static
-npm run test:e2e
+PLAYWRIGHT_SKIP_BUILD=1 npm run test:e2e
 ```
 
-If resume copy changed, run `npm run export:resume` before the final `npm run test:static`. If visuals changed, refresh and review documentation screenshots separately with `npm run docs:screenshots`.
+If resume copy changed, run `npm run export:resume` before the final `npm run build`. If visuals changed within the gallery's capture scope, refresh and review documentation screenshots separately with `npm run docs:screenshots`.
 
 For a pull request or non-production branch, use the unique `pages.dev` preview URL shown by the Cloudflare Pages check when preview deployments are enabled. Preview availability is controlled in the Cloudflare dashboard, so the status check—not a guessed URL—is authoritative.
 
@@ -168,7 +167,7 @@ Cloudflare allows rollback to a previous successful production deployment; previ
 
 Cloudflare must serve generated directory indexes for known routes rather than rewriting every path to root `index.html`. The four FlipClock clean-path rewrites in `_redirects` must remain HTTP `200` rewrites, the resume rule in `_headers` must preserve the attachment filename, and unknown routes must return the generated `404.html` with status `404`.
 
-The production-like server used by Playwright (`scripts/serve-build.mjs`) implements those semantics locally so E2E tests exercise the deployable artifact instead of the Vite development server.
+The production-like server used by Playwright (`scripts/serve-build.mjs`) implements the repository's route, header, and rewrite rules locally. Cloudflare may normalize other clean paths with trailing-slash redirects before serving the route document. `/home` is a generated HTML meta-refresh to `/`, with a fallback link, plus a client-side route redirect.
 
 ## Post-Deploy Validation
 
@@ -181,7 +180,7 @@ After every production release:
 5. verify `/home` moves visitors to `/`
 6. verify an unknown URL returns the not-found page with HTTP `404`
 7. verify the resume response has the expected filename and current PDF content
-8. verify normal browsers download the PDF; in an installed iOS web app, verify **Save PDF** opens the system Share/Save sheet and the unsupported-share fallback opens the PDF in a separate view
+8. verify the normal download and the [standalone resume behavior](./production-handoff.md#resume-download-and-ios-behavior) on a real iOS device
 9. verify favicon, manifest, social preview, canonical links, and sitemap
-10. verify the VMNorth chat loads and that its privacy description remains accurate
+10. verify the VMNorth desktop hover label, touch launcher, panel opening, and current privacy description
 11. if GA4 is configured, grant consent on a test device and verify the visit in GA4 Realtime; also confirm no GA request occurs before consent
