@@ -96,7 +96,8 @@ test("FlipClock Display route exposes the live Mac App Store listing", async ({p
         "href",
         "https://apps.apple.com/ca/app/flipclock-display/id6759590290?mt=12"
     )
-    await expect(page.getByText(/available now on the mac app store/i)).toBeVisible()
+    await expect(page.getByText(/Apple silicon · macOS 13 or later/i)).toBeVisible()
+    await expect(page.getByText(/Mac App Store · 1\.0\.6/i)).toBeVisible()
 })
 
 test("regional landing pages render directly", async ({page}) => {

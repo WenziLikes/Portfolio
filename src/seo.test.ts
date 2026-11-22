@@ -86,21 +86,21 @@ describe("seo configuration", () => {
             isAccessibleForFree: true,
             name: "FlipClock Display",
             operatingSystem: "macOS 13.0 or later",
-            softwareVersion: "1.0.4",
-            dateModified: "2026-08-30",
+            softwareVersion: "1.0.6",
+            dateModified: "2026-11-17",
             datePublished: "2026-08-10",
         }))
         expect(webPage).toEqual(expect.objectContaining({
             mainEntity: {"@id": "https://viacheslavmurakhin.com/flipclock#software"},
             primaryImageOfPage: expect.objectContaining({
-                caption: "FlipClock Display fullscreen clock and settings preview",
+                caption: "FlipClock Display fullscreen clock preview",
             }),
         }))
         expect(FLIP_CLOCK_PRODUCT).toEqual(expect.objectContaining({
             releaseDate: "2026-08-10",
-            version: "1.0.4",
-            versionReleaseDate: "2026-08-30",
-            versionReleaseDateLabel: "August 30, 2026",
+            version: "1.0.6",
+            versionReleaseDate: "2026-11-17",
+            versionReleaseDateLabel: "November 17, 2026 (UTC)",
         }))
     })
 

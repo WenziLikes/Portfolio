@@ -15,8 +15,8 @@ Use it for:
 
 | Field | Value |
 | --- | --- |
-| Last refreshed | 2026-08-31 |
-| Source state | Captures were committed with the [2026-08-31 documentation update](https://github.com/WenziLikes/Portfolio/commit/78927aa). |
+| Last refreshed | 2026-11-22 |
+| Source state | Local build of the portfolio update for FlipClock Display 1.0.6. |
 | Capture command | `npm run docs:screenshots` |
 | Desktop viewport | 1280 × 800 |
 | Mobile viewport | 390 × 844 |
@@ -50,6 +50,10 @@ These screenshots document the captured portfolio UI. Use the [chat checks in th
 ### Privacy page
 
 ![Privacy page desktop](./assets/privacy-desktop.jpg)
+
+### FlipClock Display product page
+
+![FlipClock Display product page](./assets/flipclock-desktop.png)
 
 ## Mobile
 

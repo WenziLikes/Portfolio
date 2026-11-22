@@ -58,7 +58,7 @@ export const PROJECTS_INFO: CardInfo[] = [
         description: "Multilingual digital product studio platform with a React and TypeScript marketing frontend, Node.js backend, real-time visitor chat, secure admin workspace, and production deployment tooling.",
         eyebrow: "Product platform",
         featuredActionLabel: "Review platform",
-        featuredDescription: "Pre-launch studio platform that combines a multilingual marketing site, real-time chat, project brief intake, passkey-first admin tools, and Docker-ready production operations.",
+        featuredDescription: "Live studio platform with a multilingual marketing site, real-time visitor chat, guided project briefs, and a passkey-first admin workspace.",
         id: 5,
         image: {
             alt: "VM North product studio platform homepage preview",
@@ -173,10 +173,10 @@ export const PROJECTS_INFO: CardInfo[] = [
         description: "Published macOS fullscreen clock built with React, TypeScript, Rust, and Tauri, with polished themes, optional weather, and multi-display support.",
         eyebrow: "Shipped Mac app",
         featuredActionLabel: "View on Mac App Store",
-        featuredDescription: "Live Mac App Store product with a deterministic Canvas engine, privacy-first optional weather, premium themes, idle controls, and multi-display support.",
+        featuredDescription: "Published macOS app with free fullscreen on the primary display. Pro adds more themes, optional local weather, and secondary-display selection.",
         id: 4,
         image: {
-            alt: "FlipClock Display fullscreen clock and settings preview",
+            alt: "FlipClock Display fullscreen clock preview",
             fit: "contain",
             frameInset: "5.2rem",
             height: 675,

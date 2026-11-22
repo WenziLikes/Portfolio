@@ -33,7 +33,9 @@ describe("privacy disclosures", () => {
             "https://www.apple.com/legal/privacy/data/en/location-services/"
         )
         expect(screen.getByRole("link", {name: "Open-Meteo diagnostic fallback"})).toBeInTheDocument()
-        expect(screen.getAllByText(/not active in the Mac App Store version/i)).toHaveLength(2)
+        expect(screen.getByText(/not active in the Mac App Store version/i)).toBeInTheDocument()
+        expect(screen.getByText(/Forecasts refresh every 30 or 60 minutes/i)).toBeInTheDocument()
+        expect(screen.getByText(/Turn Use saved location off in Weather settings/i)).toBeInTheDocument()
         expect(screen.queryByText(/Nominatim/i)).not.toBeInTheDocument()
     })
 })

@@ -6,6 +6,12 @@ Dates below refer to milestones on the portfolio's `main` branch. FlipClock Disp
 
 Future releases should add an entry at the top and may use the [release notes template](./docs/release-notes-template.md) for verification and rollback detail.
 
+## 2026-11-22
+
+- Updated the FlipClock Display landing page, release metadata, icon, preview, and Free/Pro description for version 1.0.6.
+- Aligned the FlipClock support, privacy, and terms pages with the current Mac App Store weather and location behavior.
+- Refreshed the documentation screenshots and the VMNorth project description.
+
 ## 2026-11-21
 
 ### Fixed

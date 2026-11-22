@@ -569,7 +569,7 @@ export const ROUTE_META: Record<string, RouteMetaEntry> = {
             "Mac screensaver clock",
             "privacy-first weather clock",
         ],
-        ogImageAlt: "FlipClock Display fullscreen clock and settings preview",
+        ogImageAlt: "FlipClock Display fullscreen clock preview",
         ogImageHeight: 675,
         ogImagePath: flipClockPreview,
         ogImageWidth: 1200,

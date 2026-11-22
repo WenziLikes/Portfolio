@@ -90,6 +90,10 @@ test("refresh documentation screenshots", async ({browser}) => {
     await waitForUi(desktopDarkPage)
     await captureScreenshot(desktopDarkPage, "privacy-desktop.jpg")
 
+    await desktopDarkPage.goto("/flipclock")
+    await waitForUi(desktopDarkPage)
+    await captureScreenshot(desktopDarkPage, "flipclock-desktop.png")
+
     await desktopDarkPage.context().close()
 
     const desktopLightPage = await createPage(browser, {
