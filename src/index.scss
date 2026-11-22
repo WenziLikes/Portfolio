@@ -310,3 +310,12 @@ main.content.content--home {
     overflow: hidden;
   }
 }
+
+@media (min-width: 521px) and (hover: hover) and (pointer: fine) {
+  #vmnorth-chat-portfolio[data-chat-launcher] {
+    // VMNorth hides the launcher label at iframe widths of 640px and below.
+    // Keep the embed's original 420px clip so the added space passes clicks through.
+    width: 641px !important;
+    clip-path: inset(40px 0 16px calc(100% - 420px) round 999px) !important;
+  }
+}

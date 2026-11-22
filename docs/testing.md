@@ -106,7 +106,7 @@ Current browser checks include:
 - first-viewport hero actions on modern phones
 - desktop sections, footer, projects, and resume sheets
 
-The test suite aborts `https://vmnorth.com/chat-embed.js` so E2E runs remain deterministic and do not send test chat traffic. This does not remove the production dependency: live release QA must still confirm the VMNorth embed loads and that its privacy disclosure is current.
+The E2E tests block or stub `https://vmnorth.com/chat-embed.js` to avoid live chat traffic. Release QA verifies that the live launcher and panel work and that the privacy disclosure is current.
 
 ## Resume Export Verification
 

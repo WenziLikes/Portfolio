@@ -44,7 +44,7 @@ jobs:
 
   browser:
     name: Playwright production E2E
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 25
 
     steps:
