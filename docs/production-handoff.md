@@ -89,22 +89,26 @@ npm run test:static
 | `src/content/flipClock.ts` | project card, `/flipclock`, `/resume`, `src/seo.ts`, App Store links, release docs |
 | `src/pages/flipclock/FlipClockPages.tsx` | FlipClock support/privacy/terms copy, support/privacy email values, product-specific legal tests |
 | `src/content/projects.ts` | `/projects`, screenshots, `docs/hr-overview.md`, outbound repository links, structured project data |
+| Default project order | `DEFAULT_PROJECT_IDS` in `src/sections/projects/Projects.tsx`, the HR overview, and ordering tests |
 | `src/content/marketPages.ts` | `/canada`, `/usa`, `/europe`, `src/seo.ts`, HR and deployment docs |
-| resume copy | both resume routes and `public/documents/viacheslav-murakhin-resume.pdf` via `npm run export:resume` |
+| resume copy | `/resume` and `public/documents/viacheslav-murakhin-resume.pdf` via `npm run export:resume` |
 | route structure | `src/seo.ts`, `scripts/prerender.mjs`, static smoke, Playwright, deployment docs |
 | GA4 behavior or ID | `.env.example`, `/privacy`, analytics tests, legal and deployment docs |
-| VMNorth embed or chat data flow | `index.html`, `/privacy`, architecture, legal/brand, testing, handoff, and release checklist |
+| VMNorth embed or chat data flow | `index.html`, launcher styles in `src/index.scss`, `e2e/chat.spec.ts`, `/privacy`, and the integration notes in [Architecture](./architecture.md#external-chat-boundary) |
 | resume download/share component | standard download, installed iOS Share/Save, fallback, unit/E2E tests, release docs |
 | visuals/layout | visual gallery, `docs/assets/`, mobile matrix, Playwright viewport checks |
 | Cloudflare configuration | `_headers`, `_redirects`, static smoke, deployment runbook, release checklist |
 
 ## Resume Download and iOS Behavior
 
-The resume CTA has three intentional states:
+The toolbar and footer use `ResumeDownloadLink`:
 
 1. Normal browser: the link downloads `/documents/viacheslav-murakhin-resume.pdf` as `Viacheslav-Murakhin-Resume.pdf`.
-2. Installed standalone web app on iOS or another compatible platform: the component fetches the PDF, labels the action **Save PDF**, and opens the system Web Share/Save sheet with the file.
-3. Standalone file sharing unavailable or preparation failed: the fallback opens the PDF in a separate browser view so the user can save it there.
+2. Standalone app with Web Share: the link shows **Preparing PDF…** while it fetches the file. When ready, **Save PDF** in the toolbar or **Save Resume PDF** in the footer opens the system share sheet with the file.
+3. Standalone app without `navigator.share`: the link keeps normal download behavior.
+4. If the fetch or file capability check fails, the fallback link targets a separate view. A failed share also switches to this fallback for the next tap. Cancelling the share sheet keeps the share action available.
+
+The regional-page PDF buttons use regular download links. Their shared footers still offer the standalone share flow on supported devices.
 
 The production `_headers` rule supplies the attachment filename for direct PDF responses. Check both the component behavior and that response header before release.
 
@@ -116,7 +120,7 @@ The VMNorth embed is not controlled by that choice. On every route, the browser 
 
 Current documentation records PostgreSQL storage for sessions/messages, separate S3/R2-compatible object storage for attachment bytes, and email delivery for replies or follow-up links. It does not promise one fixed retention period. Access, correction, and deletion requests go to `privacy@vmnorth.com`; resetting local widget state is not a server-side deletion request.
 
-Automated Playwright, screenshot, and resume-export flows block the VMNorth script for determinism. That test behavior must never be used as evidence that production does not load the integration.
+The general Playwright tests, screenshot capture, and resume export block the external script. The dedicated launcher regression stubs the script and iframe. On the live site, hover over the closed launcher with a mouse and check that the label becomes visible. Open the panel and verify normal sizing. On a touch device, check that the launcher remains compact and tappable.
 
 ## Release-Critical Behaviors
 
@@ -136,7 +140,7 @@ Do not ship without checking:
 
 ## External Dependencies
 
-| Dependency | Production role | Failure effect |
+| Dependency | Role | Failure effect |
 | --- | --- | --- |
 | Cloudflare Pages | Static hosting, custom domain, `_headers`, `_redirects`, deployment history | Site or route delivery fails |
 | VMNorth chat | Eager support widget, iframe, sessions, messages, attachments, presence | Portfolio remains readable, but support chat can fail or degrade |
@@ -153,10 +157,11 @@ Do not ship without checking:
 | Known direct route serves homepage metadata | Host fallback or route artifact is wrong; run `npm run test:static` |
 | Unknown route returns HTTP `200` | Generic SPA fallback bypassed `build/404.html` |
 | Resume PDF is stale | Export was skipped, or final artifact predates the public PDF; run export, build, and static smoke |
-| iOS Save PDF does nothing | File fetch/share preparation failed or Web Share support changed; verify fallback opens separately |
+| iOS Save PDF does nothing | Check whether the file is still preparing, the browser lacks `navigator.share`, or a failed share switched the next tap to the separate-view fallback |
 | Resume downloads with the wrong filename | `public/_headers` was changed or host rules are not applied |
 | GA4 loads before consent | Analytics initialization regression; block release and inspect `src/utils/analytics.ts` |
 | Chat appears despite declined analytics | Expected: GA4 consent does not gate VMNorth chat |
+| Desktop chat hover label is clipped | Check the iframe state message and the hover/fine-pointer launcher override in [Architecture](./architecture.md#external-chat-boundary) |
 | Chat cannot restore after local reset | Expected local credential removal; server conversation may still exist |
 | Docs claim no external backend | Handoff/privacy/architecture drifted from the VMNorth embed |
 | Docs screenshots differ from UI | Screenshot refresh was skipped after a visual change |
@@ -169,7 +174,7 @@ Before another maintainer takes ownership or a release is published:
 1. Confirm `README.md` and the documentation hub match actual routes, commands, runtime, and dependencies.
 2. Confirm content ownership in `docs/content-model.md` still matches source files.
 3. Confirm architecture and privacy docs describe the VMNorth boundary accurately.
-4. Run locked install, unit tests, build, static smoke, and Playwright.
-5. Re-export the resume and refresh screenshots when their source content changed.
+4. Install locked dependencies and Chromium. Re-export the resume before the final build if its content changed.
+5. Run unit tests, build, static smoke, and Playwright. Refresh screenshots for visual changes within the gallery's capture scope.
 6. Check `docs/release-checklist.md` and the Cloudflare runbook in `docs/deployment.md`.
 7. Record the release with `docs/release-notes-template.md`, including commit and Cloudflare deployment evidence.

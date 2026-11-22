@@ -8,7 +8,7 @@
 
 Production portfolio website for Viacheslav Murakhin built with React, TypeScript, Vite, React Router, SCSS Modules, Vitest, and Playwright.
 
-The repository is structured as a real product rather than a one-off landing page. It includes a scroll-synced homepage shell, dedicated resume and legal pages, regional hiring landing pages, centralized content ownership, SEO metadata, automated tests, and a repeatable static-production build.
+The site includes a scroll-synced homepage, dedicated resume and legal pages, regional hiring pages, centralized content, SEO metadata, and a tested static build.
 
 ## Who This Repository Serves
 
@@ -21,7 +21,7 @@ The repository is structured as a real product rather than a one-off landing pag
 | Area | Details |
 | --- | --- |
 | Product type | Personal portfolio and hiring website |
-| Runtime model | React 18 with `BrowserRouter`, build-time prerendering, and static route HTML output |
+| Runtime model | React 18 and React Router 6 with `BrowserRouter`, build-time prerendering, and static route HTML output |
 | Primary routes | `/`, `/about`, `/expertise`, `/experience`, `/projects`, `/resume`, `/privacy`, `/copyright` |
 | Regional routes | `/canada`, `/usa`, `/europe` |
 | Product routes | `/flipclock`, `/flipclock/support`, `/flipclock/privacy`, `/flipclock/terms` |
@@ -63,11 +63,7 @@ The repository is structured as a real product rather than a one-off landing pag
 
 ### Install dependencies
 
-```bash
-npm install
-```
-
-Use the lockfile-exact install for CI, release validation, or a clean checkout:
+If you manage Node with nvm, run `nvm install` once to install the version in `.nvmrc`, then use `nvm use` in the repository. Install the locked dependencies:
 
 ```bash
 npm ci
@@ -121,6 +117,8 @@ Preview address:
 http://localhost:4173
 ```
 
+For release verification, use `npm run test:static:serve` at `http://127.0.0.1:4181`. That server exercises the committed hosting rules and `404.html`.
+
 ## Validation and Release Commands
 
 | Command | Purpose |
@@ -136,6 +134,8 @@ http://localhost:4173
 | `npm run test:e2e:install` | Install Chromium for Playwright-based flows |
 | `npm run export:resume` | Build, export `/resume` as PDF, and synchronize identical copies into `public/documents/` and `build/documents/` |
 | `npm run docs:screenshots` | Refresh documentation screenshots in `docs/assets/` |
+
+Install Playwright Chromium with `npm run test:e2e:install` before the first E2E, screenshot, or resume-export run.
 
 ## Route Map
 
@@ -158,6 +158,7 @@ http://localhost:4173
 | `src/content/site.ts` | Identity, navigation, about copy, expertise copy, resume data, website privacy/copyright copy, and base route metadata |
 | `src/content/flipClock.ts` | Canonical FlipClock Display name, App Store URL, release metadata, and product route |
 | `src/content/projects.ts` | Project cards, proof points, stacks, actions, and responsive image metadata |
+| `src/sections/projects/Projects.tsx` | Default card order, reordering, and browser-local persistence |
 | `src/content/marketPages.ts` | Canada, USA, and Europe landing-page copy plus regional route metadata |
 | `src/components/` | Shared UI such as sidebar, footer, route metadata, consent banner, protected email links, and cards |
 | `src/sections/` | Homepage sections mounted inside the main scrolling portfolio shell |
@@ -214,8 +215,8 @@ http://localhost:4173
 
 1. Read [Deployment](./docs/deployment.md) and install from the lockfile with `npm ci`.
 2. Install Playwright Chromium once with `npm run test:e2e:install`.
-3. If resume copy changed, run `npm run export:resume`, then create the final artifact with `npm run build`.
-4. Run `npm test`, `npm run test:static`, and `npm run test:e2e`.
+3. If resume copy changed, run `npm run export:resume`. Create the final artifact with `npm run build`.
+4. Run `npm test`, `npm run test:static`, and `PLAYWRIGHT_SKIP_BUILD=1 npm run test:e2e` against the freshly built artifact.
 5. Refresh docs screenshots if the UI changed materially.
 6. Walk through the [release checklist](./docs/release-checklist.md).
 
@@ -227,7 +228,7 @@ The deployable `build/` artifact contains:
 - `404.html` for unknown routes
 - `robots.txt` and `sitemap.xml`
 - canonical, Open Graph, Twitter, and JSON-LD metadata
-- `hreflang` alternate links for Canada, USA, Europe, and the default landing page
+- `hreflang` on the regional pages, with `/` referenced as `x-default`
 - manifest and icon assets
 - downloadable resume PDF
 

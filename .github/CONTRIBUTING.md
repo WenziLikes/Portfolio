@@ -20,16 +20,16 @@ npm ci
 npm run test:e2e:install
 ```
 
-Before requesting review, run:
+If resume content changed, run `npm run export:resume` first and include the regenerated public PDF. Before requesting review, run:
 
 ```bash
 npm test
 npm run build
 npm run test:static
-npm run test:e2e
+PLAYWRIGHT_SKIP_BUILD=1 npm run test:e2e
 ```
 
-Update documentation and screenshots when behavior or visuals change. If resume content changes, run `npm run export:resume` and confirm that the PDF in `build/documents/` matches the generated file in `public/documents/`.
+Update documentation when behavior changes. Refresh screenshots if the change affects a state captured in the [visual gallery](../docs/visual-gallery.md).
 
 ## Reports and Pull Requests
 

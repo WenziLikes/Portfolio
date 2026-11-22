@@ -56,6 +56,7 @@ These help with project and portfolio-intent searches.
 | `/projects` | `react developer portfolio`, `typescript portfolio`, `software developer portfolio` |
 | `/resume` | `full stack developer`, `react developer`, `typescript developer`, `java spring boot developer` |
 | `/flipclock` | `FlipClock Display`, `macOS flip clock`, `fullscreen clock for Mac`, `Mac App Store` |
+| `/flipclock/support` | `FlipClock Display support`, product setup, and troubleshooting |
 | `/canada` | `full stack developer canada`, `react developer canada`, `remote developer canada` |
 | `/usa` | `full stack developer usa`, `react developer usa`, `remote developer usa` |
 | `/europe` | `full stack developer europe`, `react developer europe`, `remote developer europe` |
@@ -71,7 +72,8 @@ These help with project and portfolio-intent searches.
 ## International SEO Guardrails
 
 - Keep the public site in clear English-first copy until real localized pages exist.
-- The project now ships distinct regional URLs for `/canada`, `/usa`, and `/europe`, so country-specific `hreflang` alternates must stay synchronized with `src/content/marketPages.ts` and `src/seo.ts`.
+- Regional pages emit the same alternate set from [`src/content/marketPages.ts`](../src/content/marketPages.ts). The mappings are `en-CA` → `/canada`, `en-US` → `/usa`, `en` → `/europe`, and `x-default` → `/`. The root document currently has no alternate tags of its own.
+- The sitemap includes `/flipclock/support`. Portfolio privacy/copyright and FlipClock privacy/terms are `noindex,follow`. See the route lists in [`src/seo.ts`](../src/seo.ts).
 - Prefer truthful international signals such as `areaServed`, contact language support, and visible availability copy over fake location pages.
 - Regional pages should differ in hiring intent and collaboration framing, not invent a different technical profile for each market.
 

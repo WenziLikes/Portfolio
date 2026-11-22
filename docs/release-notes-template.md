@@ -73,15 +73,13 @@ npm run test:e2e:install
 npm test
 npm run build
 npm run test:static
-npm run test:e2e
+PLAYWRIGHT_SKIP_BUILD=1 npm run test:e2e
 ```
 
-If resume content changed:
+If resume content changed, run the export before the final build and verification above:
 
 ```bash
 npm run export:resume
-npm run build
-npm run test:static
 ```
 
 If visuals changed:
@@ -108,7 +106,7 @@ npm run docs:screenshots
 - Standard resume download:
 - Installed iOS **Save PDF** Share/Save flow:
 - Unsupported-share fallback:
-- VMNorth chat load/start/restore:
+- VMNorth desktop hover, touch launcher, panel open, and session start/restore:
 - GA4 before and after consent, if configured:
 - External links and App Store CTA:
 - Custom-domain metadata/social preview:

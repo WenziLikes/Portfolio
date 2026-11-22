@@ -15,7 +15,7 @@ Current ownership position:
 
 Primary notice:
 
-- see `COPYRIGHT.md`
+- see the [copyright notice](../COPYRIGHT.md)
 
 ## What the Project Owns Directly
 
@@ -97,10 +97,12 @@ The current app can make external requests to:
 - VMNorth chat session, message, stream, and attachment endpoints after the visitor starts or restores a conversation
 - `fonts.googleapis.com`
 - `fonts.gstatic.com`
-- `www.googletagmanager.com` when GA4 is enabled
-- GitHub, LinkedIn, `mailto:`, and `tel:` targets after the user clicks an outbound link
+- the GA4 script at `www.googletagmanager.com` and Google Analytics measurement requests after consent in a configured build
+- outbound destinations including GitHub, LinkedIn, the Mac App Store, and VM North, along with `mailto:` and `tel:` actions
 
 That matters for both privacy documentation and performance review.
+
+FlipClock Display's macOS data handling is documented separately in its [product privacy policy](https://viacheslavmurakhin.com/flipclock/privacy). Optional weather in the Mac App Store build uses Apple WeatherKit and Apple geocoding. The Open-Meteo fallback is limited to explicitly enabled non-App-Store diagnostic builds.
 
 ## Legal Change Triggers
 

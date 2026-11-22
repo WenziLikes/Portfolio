@@ -34,8 +34,8 @@ Use it when reviewing the repository for hiring, screening, interview preparatio
 | --- | --- | --- |
 | VM North | React 19, TypeScript, Node.js, PostgreSQL, SSE, WebAuthn, Docker | Multilingual product-platform delivery, real-time visitor chat, project intake, passkey-first administration, and production operations |
 | FlipClock Display | React, TypeScript, Tauri, Rust, Canvas 2D | Shipped Mac App Store product, desktop engineering, rendering logic, privacy-first weather, and platform polish |
-| E42 Store | React, TypeScript, Java, Spring Boot | Full-stack commerce delivery, auth, catalog, cart, checkout, and backend integration |
 | CRM Dashboard | React, TypeScript, Spring Boot | Internal tooling, admin UX, reporting flows, and maintainable operations interfaces |
+| E42 Store | React, TypeScript, Java, Spring Boot | Full-stack commerce delivery, auth, catalog, cart, checkout, and backend integration |
 | Portfolio | React, TypeScript, Vite, Playwright, Vitest | Personal branding, SEO, responsive design, release readiness, and documentation quality |
 
 ## Review Signals
@@ -54,7 +54,7 @@ When reviewing the live site or repository, the strongest signals are:
 ### 3-minute review
 
 1. Open the homepage and review the hero summary.
-2. Open `/projects` and scan the five showcased projects: VM North, FlipClock Display, E42 Store, CRM Dashboard, and Portfolio.
+2. Open `/projects` and scan the five showcased projects: VM North, FlipClock Display, CRM Dashboard, E42 Store, and Portfolio.
 3. Open `/resume` and compare the experience summary to the project evidence.
 
 ### 10-minute review

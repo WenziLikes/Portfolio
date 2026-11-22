@@ -11,7 +11,7 @@ Security fixes apply to the current version on `main` and the production deploym
 Use GitHub's private vulnerability reporting flow:
 
 1. Open the repository's [Security tab](https://github.com/WenziLikes/Portfolio/security).
-2. Select **Report a vulnerability**.
+2. Select [**Report a vulnerability**](https://github.com/WenziLikes/Portfolio/security/advisories/new).
 3. Describe the affected route or component, impact, reproduction steps, and any suggested mitigation.
 
 Do not disclose a suspected vulnerability in a public issue, discussion, pull request, or social post. The private advisory is the place to coordinate validation and disclosure with the maintainer.

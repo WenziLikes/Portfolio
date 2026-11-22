@@ -46,7 +46,7 @@ Run:
 npm test
 npm run build
 npm run test:static
-npm run test:e2e
+PLAYWRIGHT_SKIP_BUILD=1 npm run test:e2e
 ```
 
 Confirm:
@@ -62,8 +62,8 @@ Confirm:
 - [ ] Home hero **Resume** opens `/resume`.
 - [ ] Footer and resume-page actions use the current PDF.
 - [ ] A normal browser downloads `Viacheslav-Murakhin-Resume.pdf`.
-- [ ] An installed iOS web app shows **Save PDF** and opens the system Share/Save sheet with the PDF file.
-- [ ] If file sharing is unsupported or preparation fails, the installed-app fallback opens the PDF in a separate view.
+- [ ] In an installed iOS web app with file sharing, **Save PDF** in the toolbar and **Save Resume PDF** in the footer open the system share sheet with the PDF.
+- [ ] Verify a normal download without Web Share and the separate-view fallback after a preparation or non-cancellation share failure, as described in the [handoff](./production-handoff.md#resume-download-and-ios-behavior).
 - [ ] Theme switching, desktop sidebar collapse, project reordering, and mobile navigation work.
 - [ ] Email, phone, GitHub, LinkedIn, VM North, project repository, and App Store links resolve as intended.
 
@@ -73,7 +73,7 @@ Confirm:
 - [ ] The notice covers ordinary request metadata, chat name/email, session credentials, messages, timestamps/state, optional attachments, storage boundaries, retention limits, and deletion requests.
 - [ ] Resetting chat/browser storage is not described as server-side deletion.
 - [ ] VMNorth data handling in `/privacy`, `docs/legal-and-brand.md`, architecture, and handoff is consistent.
-- [ ] The live VMNorth chat loads, starts a conversation, and can restore a session.
+- [ ] The live VMNorth launcher expands its label on desktop hover, stays compact on touch, opens the panel, and can start and restore a test conversation.
 - [ ] If `VITE_GA_MEASUREMENT_ID` is configured, no Google Analytics request occurs before consent and measurement works after consent.
 - [ ] Google Fonts and all other third-party requests are still documented.
 - [ ] `SECURITY.md` points vulnerability reporters to GitHub private reporting, not a public issue.
@@ -82,8 +82,8 @@ Confirm:
 
 - [ ] Canonical URLs use `https://viacheslavmurakhin.com`.
 - [ ] Titles, descriptions, Open Graph/Twitter data, and JSON-LD are accurate.
-- [ ] Regional `hreflang` alternates are correct.
-- [ ] Indexable routes remain indexable; privacy/copyright, FlipClock legal routes, `/home`, and `404.html` remain noindex as designed.
+- [ ] Regional `hreflang` alternates use `en-CA`, `en-US`, `en`, and `x-default` as listed in the [SEO guide](./seo-keywords.md#international-seo-guardrails).
+- [ ] `/flipclock/support` stays indexable. Portfolio privacy/copyright, FlipClock privacy/terms, `/home`, and `404.html` remain noindex.
 - [ ] `robots.txt`, `sitemap.xml`, `manifest.json`, favicon assets, and `seo-preview.jpg` are present in `build/`.
 - [ ] `_headers` preserves the resume attachment filename.
 - [ ] `_redirects` preserves the four FlipClock clean-path `200` rewrites.
@@ -94,7 +94,7 @@ Confirm:
 - [ ] Verify widths near `320`, `390`, `430`, and `768` pixels.
 - [ ] Verify desktop with the sidebar expanded and collapsed.
 - [ ] Verify homepage, projects, footer, market pages, legal/product pages, and resume sheets do not overflow.
-- [ ] If visuals changed, run `npm run docs:screenshots` and review every changed image.
+- [ ] If visuals within the gallery's capture scope changed, run `npm run docs:screenshots` and review every changed image. Check VMNorth visually on the live site or a preview.
 - [ ] Confirm `docs/visual-gallery.md` describes screenshots as dated release-support evidence rather than guaranteed live state.
 
 ## 9. Direct Routes
@@ -123,7 +123,7 @@ Open these through the production-like server or Cloudflare preview:
 
 - [ ] Connected repository is `WenziLikes/Portfolio` and production branch is `main`.
 - [ ] Build command is `npm run build`; output directory is `build`; root is the repository root.
-- [ ] `NODE_VERSION=22.12.0` is configured.
+- [ ] The Cloudflare build log reports Node.js `22.12.0`. If `NODE_VERSION` is set as an override, it agrees with `.nvmrc`.
 - [ ] Production `VITE_GA_MEASUREMENT_ID` is intentionally present or absent.
 - [ ] `viacheslavmurakhin.com` is attached and HTTPS is active.
 - [ ] The unique Cloudflare preview/deployment URL serves the expected commit before custom-domain verification.
