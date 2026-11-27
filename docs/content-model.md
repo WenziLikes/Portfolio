@@ -28,7 +28,7 @@ That is one of the core engineering decisions in the repository: the portfolio i
 | `TARGET_MARKETS*`, `PROFESSIONAL_LANGUAGE*`, `DEFAULT_SITE_KEYWORDS` | SEO and professional-positioning inputs shared with `src/seo.ts` |
 | `PROFILE` | Name, role, summary, location, phone, availability, and identity copy |
 | `MAIN_SECTIONS` | Main one-page navigation model |
-| `EXTERNAL_NAV_LINKS` | External brand or studio links used from the homepage shell |
+| `EXTERNAL_NAV_LINKS` | The homepage, desktop sidebar, and mobile menu share the link to the public VM North site at `https://vmnorth.com`. |
 | `SOCIAL_LINKS` | Shared GitHub, LinkedIn, phone, and email-facing link metadata |
 | `ABOUT_COPY`, `ABOUT_PRINCIPLES`, `ABOUT_STACK` | About section narrative and capability framing |
 | `EXPERTISE_COPY`, `EXPERTISE_ITEMS`, `EXPERTISE_SIGNALS` | Expertise section messaging and SEO-aligned proof areas |
