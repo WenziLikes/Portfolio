@@ -50,6 +50,7 @@ describe("App routing", () => {
         expect(screen.getByRole("link", {name: "About"})).toHaveAttribute("href", "/about")
         expect(screen.getByRole("link", {name: "Expertise"})).toHaveAttribute("href", "/expertise")
         expect(screen.getByRole("link", {name: "FlipClock Display"})).toHaveAttribute("href", "/flipclock")
+        expect(screen.getByRole("link", {name: /vm north digital product studio/i})).toHaveAttribute("href", "https://vmnorth.com")
         const regionalNav = screen.getByRole("navigation", {name: /regional hiring pages/i})
         expect(within(regionalNav).getByRole("link", {name: /canada/i})).toHaveAttribute("href", "/canada")
         expect(within(regionalNav).getByRole("link", {name: /usa/i})).toHaveAttribute("href", "/usa")
@@ -146,6 +147,7 @@ describe("App routing", () => {
         expect(sidebar).toHaveClass("portfolio-sidebar--compact")
         expect(window.localStorage.getItem("portfolio-sidebar-collapsed")).toBe("true")
         expect(screen.getByRole("link", {name: "About"})).toHaveAttribute("title", "About")
+        expect(screen.getByRole("link", {name: "Vm North"})).toHaveAttribute("href", "https://vmnorth.com")
     })
 
     test("shows theme switching controls inside the mobile menu", () => {
@@ -164,6 +166,6 @@ describe("App routing", () => {
         expect(within(mobileMenu!).getByText("Theme")).toBeInTheDocument()
         expect(within(mobileMenu!).getByRole("button", {name: /switch to dark theme/i})).toBeInTheDocument()
         expect(within(mobileMenu!).getByRole("button", {name: /switch to light theme/i})).toBeInTheDocument()
-        expect(within(mobileMenu!).getByRole("link", {name: /vm north/i})).toBeInTheDocument()
+        expect(within(mobileMenu!).getByRole("link", {name: /vm north/i})).toHaveAttribute("href", "https://vmnorth.com")
     })
 })
